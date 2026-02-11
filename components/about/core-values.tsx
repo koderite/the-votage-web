@@ -33,7 +33,7 @@ export function CoreValues() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-display text-black md:text-5xl  font-bold mb-6 tracking-tight">
+          <h2 className="text-4xl font-copperplate text-black md:text-5xl font-bold mb-6 tracking-tight">
             OUR CORE VALUES
           </h2>
           <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">

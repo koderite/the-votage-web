@@ -22,7 +22,7 @@ export function Beliefs() {
   return (
     <section className="bg-gray-100/50 py-20 px-6 md:px-[80px]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl text-black font-display md:text-5xl  font-bold text-center mb-16 md:mb-20 tracking-tight">
+        <h2 className="text-4xl text-black font-copperplate md:text-5xl font-bold text-center mb-16 md:mb-20 tracking-tight">
           WHAT WE BELIEVE
         </h2>
 

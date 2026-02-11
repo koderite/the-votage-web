@@ -39,7 +39,7 @@ export const Footer = () => {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-2xl mb-8">Quick links</h3>
+            <h3 className="font-copperplate font-bold text-2xl mb-8">Quick links</h3>
             <ul className="space-y-4 font-body text-base text-white/80">
               <li><a href="/give" className="hover:text-brand-blue transition-colors">Partner with us</a></li>
               <li><a href="/connect" className="hover:text-brand-blue transition-colors">Connect</a></li>

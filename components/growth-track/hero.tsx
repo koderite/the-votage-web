@@ -8,9 +8,9 @@ export default function HeroSection() {
     <div className="relative w-full h-screen overflow-hidden">
       {/* Background Image with Overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center bg-black"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%), url(/img/gta/hero-bg.png)`,
+          backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%), url(/img/gta/hero-bg.png)`,
         }}
       />
 
@@ -34,7 +34,7 @@ export default function HeroSection() {
                 ease: "easeOut",
               }}
             >
-              <h1 className="font-display text-white uppercase tracking-[0.02em] leading-[1.125] text-xl sm:text-[50px] lg:text-6xl">
+              <h1 className="font-copperplate text-white uppercase tracking-[0.02em] leading-[1.125] text-xl sm:text-[50px] lg:text-6xl">
                 GROWTH TRACK
               </h1>
             </motion.div>
@@ -50,7 +50,7 @@ export default function HeroSection() {
                 ease: "easeOut",
               }}
             >
-              <p className="font-display text-white uppercase tracking-[0.02em] leading-[1.125] text-[40px] sm:text-[48px] lg:text-4xl opacity-95">
+              <p className="font-copperplate text-white uppercase tracking-[0.02em] leading-[1.125] text-[40px] sm:text-[48px] lg:text-4xl opacity-95">
                 Discipling believers and raising leaders.
               </p>
             </motion.div>

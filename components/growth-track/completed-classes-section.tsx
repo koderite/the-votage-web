@@ -29,23 +29,23 @@ export default function CompletedClassesSection() {
                   transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                 >
                   {/* Small heading */}
-                  <div className="font-display text-2xl md:text-[24px] leading-[40px] text-black text-center uppercase tracking-[0.02em]">
+                  <div className="font-copperplate text-sm md:text-base text-black text-center uppercase tracking-[0.02em]">
                     growth Track academy
                   </div>
                   
                   {/* Main heading */}
-                  <div className="font-display text-3xl md:text-[40px] leading-[46px] text-black text-center uppercase tracking-[0.02em]">
+                  <div className="font-copperplate text-sub-heading text-black text-center uppercase tracking-[0.02em]">
                     completed classes
                   </div>
                   
                   {/* Description */}
-                  <div className="font-['Arial',sans-serif] text-lg md:text-[24px] leading-[1.4] text-[#5e5d5d] text-center mt-2">
+                  <div className="font-body text-body-text-lg text-[#5e5d5d] text-center mt-2">
                     Completed all lessons?Register to get your Certificate.
                   </div>
                   
                   {/* CTA Button */}
                   <motion.button
-                    className="bg-white text-black font-['Arial',sans-serif] px-10 py-4 rounded-[36px] text-[20px] leading-[24px] border border-black border-solid shadow-[1px_2px_4px_0px_rgba(0,0,0,0.1),5px_6px_8px_0px_rgba(0,0,0,0.09),12px_14px_11px_0px_rgba(0,0,0,0.05),21px_25px_13px_0px_rgba(0,0,0,0.01),33px_38px_14px_0px_rgba(0,0,0,0)] mt-4 hover:shadow-2xl transition-all duration-300"
+                    className="bg-white text-black font-body text-body-text px-10 py-4 rounded-[36px] border border-black border-solid shadow-[1px_2px_4px_0px_rgba(0,0,0,0.1),5px_6px_8px_0px_rgba(0,0,0,0.09),12px_14px_11px_0px_rgba(0,0,0,0.05),21px_25px_13px_0px_rgba(0,0,0,0.01),33px_38px_14px_0px_rgba(0,0,0,0)] mt-4 hover:shadow-2xl transition-all duration-300"
                     whileHover={{ 
                       scale: 1.05,
                       boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)"

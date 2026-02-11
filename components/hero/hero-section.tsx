@@ -2,13 +2,14 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export const HeroSection = () => {
   return (
     <div className="relative w-full h-screen min-h-200 flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 bg-gray-800"
         style={{ backgroundImage: "var(--hero-pattern)" }}
         aria-hidden="true"
       />
@@ -23,8 +24,8 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-display font-bold text-white uppercase tracking-[0.02em] leading-[1em]
-                     text-4xl md:text-6xl lg:text-[72px] mb-6"
+          className="font-copperplate font-bold text-white uppercase tracking-[0.02em] leading-[1em]
+                     text-4xl md:text-6xl lg:text-hero-heading mb-6"
         >
           A generation <br className="hidden md:block" />
           rooted in truth
@@ -48,12 +49,14 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center gap-6"
         >
-          <Button
-            variant="primary"
-            className="w-44 h-14 text-lg font-bold font-body"
-          >
-            Join us
-          </Button>
+          <Link href="/plan-your-visit">
+            <Button
+              variant="primary"
+              className="w-44 h-14 text-lg font-bold font-body"
+            >
+              Join us
+            </Button>
+          </Link>
 
           <Button
             variant="outline"

@@ -9,12 +9,12 @@ export function CallToAction() {
     <section className="bg-white py-20 px-6 md:px-[80px]">
       <div className="max-w-5xl mx-auto text-center">
         {/* Heading */}
-        <h2 className="text-4xl md:text-5xl text-black font-display  xl:text-7xl font-bold mb-4 tracking-tight">
+        <h2 className="text-4xl md:text-5xl text-black font-copperplate xl:text-7xl font-bold mb-4 tracking-tight">
           YOUR SEAT IS SAVED.
         </h2>
 
         {/* Subheading */}
-        <p className="text-lg md:text-xl text-black font-display lg:text-2xl mb-12 tracking-wide">
+        <p className="text-lg md:text-xl text-black font-copperplate lg:text-2xl mb-12 tracking-wide">
           JOIN The Votage experience this weekend.
         </p>
 

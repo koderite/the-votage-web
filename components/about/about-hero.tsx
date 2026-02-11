@@ -47,7 +47,7 @@ export const AboutHero: React.FC = () => {
     <div ref={containerRef} className="flex  flex-col items-center justify-center text-center px-4 mt-12 mb-16 md:mt-20 md:mb-10 max-w-4xl mx-auto">
       <h1 
         ref={titleRef}
-        className="font-copperplate font-display text-4xl md:text-6xl lg:text-[64px] leading-tight md:leading-[1.13em] tracking-[0.02em] text-black uppercase mb-6"
+        className="font-copperplate text-4xl md:text-6xl lg:text-[64px] leading-tight md:leading-[1.13em] tracking-[0.02em] text-black uppercase mb-6"
       >
         You Belong<br className="hidden md:block" /> here
       </h1>

@@ -69,7 +69,7 @@ export const WatchLiveSection = () => {
         >
           {/* Section Title with animated underline */}
           <div className="flex flex-col items-center gap-4">
-            <h2 className="font-display font-bold text-3xl lg:text-5xl text-white uppercase tracking-wider text-center">
+            <h2 className="font-copperplate font-bold text-3xl lg:text-5xl text-white uppercase tracking-wider text-center">
               Watch Live
             </h2>
             <motion.div

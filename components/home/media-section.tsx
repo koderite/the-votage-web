@@ -4,6 +4,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Send, Youtube } from 'lucide-react';
 
+function BlurPlaceholder() {
+  return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
+}
+
 interface MediaItem {
   id: string;
   icon: 'telegram' | 'youtube' | 'spotify';
@@ -110,7 +114,7 @@ export default function MediaSermons() {
     >
       <div className="max-w-[1400px] mx-auto">
         {/* Title */}
-        <h1 className="text-3xl font-display sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mb-8 md:mb-12 lg:mb-16 tracking-tight">
+        <h1 className="text-3xl font-copperplate sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mb-8 md:mb-12 lg:mb-16 tracking-tight">
           ACCESS OUR MEDIA<br />AND SERMONS
         </h1>
 
@@ -152,14 +156,17 @@ export default function MediaSermons() {
           {/* Right Side - Content Display */}
           <div className="w-full lg:w-[55%] xl:w-[60%] flex items-center">
             <div className="w-full rounded-2xl md:rounded-3xl overflow-hidden relative aspect-[4/3] md:aspect-[16/10] lg:aspect-[4/3]">
+              <BlurPlaceholder />
               <Image
                 src={activeItem.image}
                 alt={activeItem.contentTitle}
                 fill
-                className="object-cover object-top"
+                className="object-cover object-top relative z-10"
                 style={{ objectPosition: 'center 20%', transform: 'scaleX(-1)' }}
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
               />
               
               {/* Content Overlay */}

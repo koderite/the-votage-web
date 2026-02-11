@@ -1,9 +1,42 @@
 @import "tailwindcss";
 
+/* ============================================
+   DESIGN GUIDE - COLOR PALETTE & TYPOGRAPHY
+   ============================================ */
+
+/* Primary Colors */
 :root {
+  --color-cream: #FAF7F0;
+  --color-black: #1A1A1A;
+  --color-white: #FFFFFF;
+  --color-light-dark: #4A4A4A;
+  
+  /* Accent Color */
+  --color-warm-brown: #8B7355;
+  
+  /* Legacy colors (for backward compatibility) */
   --background: #ffffff;
   --foreground: #171717;
 }
+
+/* ============================================
+   TYPOGRAPHY - DESIGN GUIDE CLASSES
+   ============================================ */
+/* 
+   Usage Examples:
+   <h1 className="text-hero-heading">Welcome</h1>
+   <h2 className="text-section-heading">Our Mission</h2>
+   <p className="text-body-text">Join us for worship...</p>
+   <p className="text-body-text-lg">Welcome message...</p>
+   <p className="text-quote-text">Scripture quote...</p>
+   <h3 className="text-sub-heading">Subsection</h3>
+   <h4 className="text-minor-heading">Minor heading</h4>
+   <small className="text-text-sm">Small text</small>
+ */
+
+/* ============================================
+   TAILWIND THEME EXTENSION
+   ============================================ */
 
 @theme inline {
   --color-background: var(--background);
@@ -33,8 +66,105 @@
 
   /* Add your custom background image */
   --hero-pattern: url("https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__");
+  
+  /* Design Guide Color Mapping for Tailwind */
+  --color-cream: var(--color-cream);
+  --color-primary-black: var(--color-black);
+  --color-primary-white: var(--color-white);
+  --color-secondary: var(--color-light-dark);
+  --color-accent: var(--color-warm-brown);
+  
+  /* Copperplate Fonts (existing - for backward compatibility) */
+  --font-copperplate: var(--font-copperplate-bold), 'Copperplate', serif;
+  --font-copperplate-medium: var(--font-copperplate-medium), 'Copperplate', serif;
+  --font-copperplate-light: var(--font-copperplate-light), 'Copperplate', serif;
+  --font-copperplate-condensed: var(--font-copperplate-condensed-medium), 'Copperplate', serif;
+  --font-copperplate-condensed-bold: var(--font-copperplate-condensed-bold), 'Copperplate', serif;
+  --font-copperplate-condensed-light: var(--font-copperplate-condensed-light), 'Copperplate', serif;
+  
+  /* Legacy body font */
+  --font-body: 'Arial', 'sans-serif';
+  
+  /* Typography utility classes */
+  --text-body-text-lg: 1.125rem;
+  --leading-body-text-lg: 1.6;
+  --text-body-text: 1rem;
+  --leading-body-text: 1.6;
+  --text-text-sm: 0.875rem;
+  --leading-text-sm: 1.5;
+  --text-quote-text: 1.125rem;
+  --leading-quote-text: 1.6;
+  --font-quote-text: italic;
+  --text-minor-heading: 1.25rem;
+  --leading-minor-heading: 1.4;
+  --font-minor-heading: 600;
+  --text-sub-heading: 1.5rem;
+  --leading-sub-heading: 1.4;
+  --font-sub-heading: 600;
+  --text-section-heading: 2rem;
+  --leading-section-heading: 1.3;
+  --font-section-heading: 600;
+  --text-page-heading: 2.5rem;
+  --leading-page-heading: 1.2;
+  --font-page-heading: 700;
+  --text-hero-heading: 65px;
+  --leading-hero-heading: 1.1;
+  --font-hero-heading: 700;
+  --tracking-hero-heading: 0.02em;
+  
+  /* Custom colors */
+  --color-white-dim: #EBEBEB;
+  --color-nav-bg: rgba(255, 255, 255, 0.05);
+  --color-nav-item-bg: rgba(255, 255, 255, 0.1);
+  --color-overlay: rgba(0, 0, 0, 0.65);
+  
+  /* Background image */
+  --hero-pattern: url('https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__');
 }
 
+/* ============================================
+   CSS UTILITY CLASSES - RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+/* Responsive typography - Hero Heading */
+@media (min-width: 768px) {
+  .text-hero-heading {
+    font-size: 6rem;
+  }
+}
+
+/* Responsive typography - Page Heading */
+@media (min-width: 768px) {
+  .text-page-heading {
+    font-size: 3rem;
+  }
+}
+
+/* Responsive typography - Section Heading */
+@media (min-width: 768px) {
+  .text-section-heading {
+    font-size: 2.5rem;
+  }
+}
+
+/* Responsive typography - Sub Heading */
+@media (min-width: 768px) {
+  .text-sub-heading {
+    font-size: 2rem;
+  }
+}
+
+/* Quote Text - Scripture quotes */
+.text-quote-text {
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1.6;
+  border-left: 4px solid var(--color-warm-brown);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

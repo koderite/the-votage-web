@@ -74,7 +74,7 @@ export function ContactForm() {
   };
 
   return (
-    <section className="py-24 px-8 md:px-16 lg:px-24 bg-[#f5f5f3]">
+    <section id="contact-form" className="py-24 px-8 md:px-16 lg:px-24 bg-[#f5f5f3]">
       <div className="max-w-5xl mx-auto">
         {/* Section Heading */}
         <motion.div
@@ -84,7 +84,7 @@ export function ContactForm() {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center"
         >
-          <h2 className="text-5xl md:text-6xl lg:text-6xl font-display font-bold text-[#1a1a1a] mb-4">
+          <h2 className="text-5xl md:text-6xl lg:text-6xl font-copperplate font-bold text-[#1a1a1a] mb-4">
             Get In Touch
           </h2>
           <p className="text-lg text-[#1a1a1a]/70 max-w-2xl mx-auto">
@@ -285,7 +285,7 @@ export function ContactForm() {
                 disabled={isSubmitting}
                 whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
-                className="px-12 py-4 bg-white text-[#1a1a1a] border-2 border-gray-300 rounded-full font-medium text-sm lowercase hover:border-gray-400 font-display-light transition-colors disabled:opacity-50"
+                className="px-12 py-4 bg-white text-[#1a1a1a] border-2 border-gray-300 rounded-full font-medium text-sm lowercase hover:border-gray-400 font-copperplate-light transition-colors disabled:opacity-50"
               >
                 cancel
               </motion.button>

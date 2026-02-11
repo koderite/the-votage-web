@@ -2,13 +2,21 @@
 
 import Image from 'next/image';
 
+function BlurPlaceholder({ children }: { children?: React.ReactNode }) {
+  return (
+    <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-3xl">
+      {children}
+    </div>
+  );
+}
+
 export function LeadPastors() {
   return (
     <section className="py-20 px-6 text-black md:px-[80px]" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-display md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+          <h2 className="text-3xl font-copperplate md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
             MEET OUR LEAD PASTORS
           </h2>
           <p className="text-base md:text-lg max-w-2xl mx-auto">
@@ -20,14 +28,17 @@ export function LeadPastors() {
         <div className="space-y-16">
           {/* Rev. Ohis Ojeikere - Image Left, Text Right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="relative aspect-[4/3]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
+              <BlurPlaceholder />
               <Image
                 src="/img/about/lead-rev.jpg"
                 alt="Rev. Ohis Ojeikere preaching"
                 fill
-                className="w-full h-auto rounded-3xl object-cover"
+                style={{objectPosition: "center 20%"}}
+                className="w-full h-auto rounded-3xl object-cover relative z-10"
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                style={{ objectPosition: 'center 20%' }}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k=" // Tiny gray blur placeholder
               />
             </div>
             <div className="space-y-6">
@@ -52,13 +63,16 @@ export function LeadPastors() {
                 She is the convener of the Refresh Miracle Service and Refresh Morning Prayers, hosting a daily global altar at 5:00 AM. Her ministry emphasizes New Creation realities and spiritual growth. Standing as a spiritual mother, she is committed to fostering an environment where the supernatural is a daily experience.
               </p>
             </div>
-            <div className="relative aspect-[4/3] lg:order-2">
+            <div className="relative aspect-[4/3] lg:order-2 overflow-hidden rounded-3xl">
+              <BlurPlaceholder />
               <Image
                 src="/img/about/lead-FL.jpg"
                 alt="Pastor Anwinli Ojeikere speaking"
                 fill
-                className="w-full h-auto rounded-3xl object-cover"
+                className="w-full h-auto rounded-3xl object-cover relative z-10"
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
               />
             </div>
           </div>

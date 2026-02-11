@@ -1,6 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 
+function BlurPlaceholder() {
+  return <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-3xl" />;
+}
+
 export function AfterHero() {
   return (
     <section className="bg-white pt-20 pb-16 px-6  md:px-[80px]">
@@ -8,19 +12,24 @@ export function AfterHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-[39px] items-start">
           {/* Left: Image */}
           <div className="flex justify-center lg:justify-start h-full w-full relative">
-            <Image
-              src="/img/about/compelled-by-love.jpg"
-              alt="Rev-holding-mic"
-              width={800}
-              height={600}
-              className="rounded-3xl w-full object-cover h-full max-h-[700px]"
-              priority
-            />
+            <div className="rounded-3xl w-full object-cover h-full max-h-[700px] overflow-hidden">
+              <BlurPlaceholder />
+              <Image
+                src="/img/about/compelled-by-love.jpg"
+                alt="Rev-holding-mic"
+                width={800}
+                height={600}
+                className="rounded-3xl w-full object-cover h-full max-h-[700px] relative z-10"
+                priority
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
+              />
+            </div>
           </div>
 
           {/* Right: Content */}
           <div className="space-y-8 w-full">
-            <h1 className="text-3xl text-black font-display md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight">
+            <h1 className="text-3xl text-black font-copperplate md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight">
               COMPELLED BY LOVE<br />TO REACH ALL.
             </h1>
 

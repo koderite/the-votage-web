@@ -14,26 +14,22 @@ const cards = [
   },
   {
     id: 2,
-    category: 'OUR MUSIC',
-    title: 'Relentless music group',
+    category: 'OUR CONNECT GROUP',
+    title: ' Join a Connect',
+    link: '/connect',
     image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/2f4d/0d16/e8c2f6271f3960aaeece2722a8160a56?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cLAFlNcjEDmzW0j6Oy-QNkXCjojB-LKOCsqYXaAka05n6o7aVliteP2p6dpGv0J8izt3Uw1ZQZgzsvOT6LXb-MK8MaAn9gfFhONDLpBnfnbRK4Q~-43mekj~We~jiGSUoWVVBb0rfq7gPcZ7S8x3GfOvRsClLcByGPjEFz4L9ivBOP4o64j2SWYomv4SYNKlRRiUj1tytheWCVxjdm7QUlLwRnewFfmCbmphREAwUhAu4QTS5FSeomKcMdH9w0i1olN9SFpyVrRjtUCNjlQv2mJsqy1T0-Sy~VeX8Ydues32MEFXYw-nulMX-KhW7vqcUzhyAlefQFDZBUFnWiPcJQ__',
   },
+  
   {
     id: 3,
-    category: 'OUR KIDS',
-    title: 'Votage kids',
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/bebf/8751/d2a45ccd28f6008869b4e8377f295c09?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Wrsob6EqsHcO-HhIH0gLGmMyOeBgsIguPogDy5o61vdiwtqEoPIxZdDmee3zRY0x7ZWSnPBX-it~o4op2vOWPdGEswOs67Kv9h9XwCKuOaszDoubAS4KHTetaVBk~F2B10AFTrwbyxTFbyKYaL3QhH86Ly4Lg90LjjUw9v2PyxQMYp9bEzZenRouB1IRMrTDrc2KjwcQWlVKfhi29ZpWmfXiDp4EO~JFTLPE6~0dlhwNYODW~rp1ZE-U01AkTJmjxXxkjp0Ac1dNfyuYTvVqJWh9CWksE5fM6jCjSp6yRGiOqiIDc90bKvPxn1p6A-LZtzqr8m7kOPL9kJwVKPPjyg__',
-  },
-  {
-    id: 4,
-    category: 'OUR SINGLES',
-    title: 'NEXT',
+    category: 'OUR Family GROUPS',
+    title: 'Family Life',
     image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/2df2/e46b/fffd435ee1ae1739e0d2d2295de07516?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=i3Q-1mtljrJm57Ieblo8~-zyIArqfrJLoJW-SC0WLDtA4Rfk-MXxSGodWfSO03q744sXP677HYQUfQenJUJPTvqO3ySP7l1yklD618AF~EmWuga7Bg0xb3kgcb6W4-Cu4SwmC8NIxkG9TST-T2lTTlwDCb35WHosB2JvcbWl9PHPy2skvUYKsJ5pxchajvcJ9A4tnmvyQASXDkbbsExm1S~N5dozkVgktHWS0fZ7n-0tnPmwiTnafzgCXqtUSef-HTSJOaUr3CgpmVdBYfJz4qbMsEpZ4d9dGgvQPfEwJZjB7geifvrkHVtn6MKvxqK7SgrViiX~VzzSeCHqwn8jlg__',
   },
   {
-    id: 5,
+    id: 4,
     category: 'OUR COUPLES',
-    title: 'My Relationship conference',
+    title: '2 in 1',
     image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/b1ed/ef7d/f549da2a0348ff07efee1652fc2d70c3?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=WeDhQoN0cR2zAqDI7zq9MTLqYG-d~o8zs-DeyCGPHDu77GS00BHXQyPv0ZL1VU3iXABPZ2uGopeD02v6ilh1j4XmdqU9I175LTiVraTbmzErCejvpvSpqfMTd-rmbGOqsr4xtR2meS9o22K-EI3Ll-c1eBcPNzLARW1ImPTR6BL0ZebKDt98vlG8RmQ7ZkGvo0GHIIXVsNuMOb0xO3JD4TBv3mGb1GySZ2Ze5MkYrUtNy3AY-6n9e-zgW4d1Ol~oQ-3M~oWG-Huo0i6X7nEXagkhPIN-YfZUq6ZfvSAB4WHQIo9VIKZJaZvk-c1WrMwa18kELpcmI0MbatAI2GzjOQ__',
   }
 ];
@@ -94,7 +90,7 @@ export const BelongSection = () => {
         {/* Header with Navigation */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
-            <h2 className="font-display font-bold text-3xl lg:text-[40px] text-black uppercase mb-2">
+            <h2 className="font-copperplate font-bold text-3xl lg:text-[40px] text-black uppercase mb-2">
               You Belong Here!
             </h2>
             <p className="font-body text-lg lg:text-2xl text-black">
@@ -166,16 +162,16 @@ export const BelongSection = () => {
               {/* Content */}
               <div className="absolute inset-0 p-8 flex flex-col justify-between">
                 <div>
-                  <p className="font-display font-bold text-sm text-white/90 mb-2 uppercase tracking-wider">
+                  <p className="font-copperplate font-bold text-sm text-white/90 mb-2 uppercase tracking-wider">
                     {card.category}
                   </p>
-                  <h3 className="font-display font-bold text-3xl text-white leading-tight uppercase">
+                  <h3 className="font-copperplate font-bold text-3xl text-white leading-tight uppercase">
                     {card.title}
                   </h3>
                 </div>
 
                 <div className="flex items-center gap-2 group/btn">
-                  <span className="font-display font-bold text-base text-white">Learn More</span>
+                  <span className="font-copperplate font-bold text-base text-white">Learn More</span>
                   <ArrowRight className="w-5 h-5 text-white transition-transform group-hover/btn:translate-x-1" />
                 </div>
               </div>

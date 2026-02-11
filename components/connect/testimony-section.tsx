@@ -5,7 +5,7 @@ export default function TestimonySection() {
         {/* Testimonial Card */}
         <div className="bg-white rounded-3xl border-4 border-black p-8 md:p-12 text-center">
           {/* Heading */}
-          <h3 className="font-display text-black text-xl md:text-2xl lg:text-3xl font-black uppercase mb-6 leading-tight">
+          <h3 className="font-copperplate text-black text-xl md:text-2xl lg:text-3xl font-black uppercase mb-6 leading-tight">
             CONNECT CHANGED MY LIFE!!
           </h3>
 
@@ -15,7 +15,7 @@ export default function TestimonySection() {
           </p>
 
           {/* Author */}
-          <p className="font-display text-black text-xs md:text-sm uppercase tracking-wider font-black">
+          <p className="font-copperplate text-black text-xs md:text-sm uppercase tracking-wider font-black">
             ABISOYE GABRIEL
           </p>
         </div>
