@@ -96,7 +96,7 @@
   --color-overlay: rgba(0, 0, 0, 0.65);
   
   /* Background image */
-  --hero-pattern: url('https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__');
+  --hero-pattern: url('/img/hero-img.jpg');
 }
 
 /* ============================================

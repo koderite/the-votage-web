@@ -17,7 +17,7 @@ const cards = [
     category: 'OUR CONNECT GROUP',
     title: ' Join a Connect',
     link: '/connect',
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/2f4d/0d16/e8c2f6271f3960aaeece2722a8160a56?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cLAFlNcjEDmzW0j6Oy-QNkXCjojB-LKOCsqYXaAka05n6o7aVliteP2p6dpGv0J8izt3Uw1ZQZgzsvOT6LXb-MK8MaAn9gfFhONDLpBnfnbRK4Q~-43mekj~We~jiGSUoWVVBb0rfq7gPcZ7S8x3GfOvRsClLcByGPjEFz4L9ivBOP4o64j2SWYomv4SYNKlRRiUj1tytheWCVxjdm7QUlLwRnewFfmCbmphREAwUhAu4QTS5FSeomKcMdH9w0i1olN9SFpyVrRjtUCNjlQv2mJsqy1T0-Sy~VeX8Ydues32MEFXYw-nulMX-KhW7vqcUzhyAlefQFDZBUFnWiPcJQ__',
+    image: '',
   },
   
   {
@@ -28,8 +28,8 @@ const cards = [
   },
   {
     id: 4,
-    category: 'OUR COUPLES',
-    title: '2 in 1',
+    category: 'OUR TRYBE',
+    title: 'Location based community',
     image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/b1ed/ef7d/f549da2a0348ff07efee1652fc2d70c3?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=WeDhQoN0cR2zAqDI7zq9MTLqYG-d~o8zs-DeyCGPHDu77GS00BHXQyPv0ZL1VU3iXABPZ2uGopeD02v6ilh1j4XmdqU9I175LTiVraTbmzErCejvpvSpqfMTd-rmbGOqsr4xtR2meS9o22K-EI3Ll-c1eBcPNzLARW1ImPTR6BL0ZebKDt98vlG8RmQ7ZkGvo0GHIIXVsNuMOb0xO3JD4TBv3mGb1GySZ2Ze5MkYrUtNy3AY-6n9e-zgW4d1Ol~oQ-3M~oWG-Huo0i6X7nEXagkhPIN-YfZUq6ZfvSAB4WHQIo9VIKZJaZvk-c1WrMwa18kELpcmI0MbatAI2GzjOQ__',
   }
 ];
