@@ -57,7 +57,7 @@ export default function ConnectGroupsSection() {
       id: 7,
       name: "EKEHUAN CONNECT",
       day: "Fridays",
-      location: "144 Airport Road, Ajao ADP Junction",
+      location: "Education Field",
       time: "5:00pm",
     },
   ];
