@@ -28,7 +28,13 @@ export default function MessageSection() {
             key={message.id}
             className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 border"
           >
-            {/* Content */}
+            <div>
+              <img
+                src={`/img/sermon/firstlady.png`}
+                alt={message.title}
+                className="w-full h-48 object-cover rounded-t-2xl"
+              />
+            </div>
             <div className="p-5">
               <h3 className="font-semibold text-lg font-display h-12 text-black line-clamp-2">
                 {message.title}
