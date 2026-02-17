@@ -30,9 +30,9 @@ export default function MessageSection() {
           >
             <div>
               <img
-                src={`/img/sermon/firstlady.png`}
+                src={message.image}
                 alt={message.title}
-                className="w-full h-48 object-cover rounded-t-2xl"
+                className="w-full h-65 object-cover object-center rounded-t-2xl"
               />
             </div>
             <div className="p-5">

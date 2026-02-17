@@ -5,16 +5,18 @@ export interface Message {
   text: string;
   date: string;
   service: string;
+  image: string;
 }
 
 export const messages: Message[] = [
   {
     id: 1,
-    title: "Soaring By The Spirit",
-    minister: "Pastor Philip Olubakin",
+    title: "The Available Man",
+    minister: "Pastor Anwinli Ojeikere",
     text: "Isaiah 40:26",
     date: "November 2025",
     service: "International Refresh Gathering with The Winlos || Day 3",
+    image: "/img/sermon/firstlady.png",
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ export const messages: Message[] = [
     text: "Matthew 13:20-21",
     date: "November 2025",
     service: "International Refresh Gathering with The Winlos || Day 3",
+    image: "/img/sermon/firstlady2.png",
   },
   {
     id: 3,
@@ -31,6 +34,7 @@ export const messages: Message[] = [
     text: "Mark 16:17",
     date: "7th Dec 2025",
     service: "The Votage First Service",
+    image: "/img/sermon/firstlady3.png",
   },
   {
     id: 4,
@@ -39,6 +43,7 @@ export const messages: Message[] = [
     text: "Zech. 4:6",
     date: "7th Dec 2025",
     service: "The Votage Second Service",
+    image: "/img/sermon/rev.png",
   },
   {
     id: 5,
@@ -47,6 +52,7 @@ export const messages: Message[] = [
     text: "Mark 16:17",
     date: "7th Dec 2025",
     service: "The Votage Third Service",
+    image: "/img/sermon/rev3.png",
   },
   {
     id: 6,
@@ -55,6 +61,7 @@ export const messages: Message[] = [
     text: "Psalms 105:16-19",
     date: "14th Dec 2025",
     service: "The Votage First Service",
+    image: "/img/sermon/rev4.png",
   },
   {
     id: 7,
@@ -63,6 +70,7 @@ export const messages: Message[] = [
     text: "Psalms 105:16-19",
     date: "14th Dec 2025",
     service: "The Votage Second Service",
+    image: "/img/sermon/firstlady.png",
   },
   {
     id: 8,
@@ -71,6 +79,7 @@ export const messages: Message[] = [
     text: "Matthew 1:20-21",
     date: "21st Dec 2025",
     service: "The Votage First Service",
+    image: "/img/sermon/firstlady2.png",
   },
   {
     id: 9,
@@ -79,6 +88,7 @@ export const messages: Message[] = [
     text: "John 14:12",
     date: "31st Dec 2025",
     service: "The Votage Crossover Service",
+    image: "/img/sermon/firstlady3.png",
   },
   {
     id: 10,
@@ -87,6 +97,7 @@ export const messages: Message[] = [
     text: "Isaiah 6:8",
     date: "18th Jan 2026",
     service: "The Votage First Service",
+    image: "/img/sermon/rev.png",
   },
   {
     id: 11,
@@ -95,6 +106,7 @@ export const messages: Message[] = [
     text: "Acts 12:1",
     date: "18th Jan 2026",
     service: "The Votage Third Service",
+    image: "/img/sermon/rev.png",
   },
   {
     id: 12,
@@ -103,5 +115,6 @@ export const messages: Message[] = [
     text: "Mark 5:24",
     date: "31st Jan 2026",
     service: "January Refresh Miracles Service",
+    image: "/img/sermon/rev.png",
   },
 ];
