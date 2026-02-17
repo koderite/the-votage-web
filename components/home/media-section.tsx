@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { Send, Youtube } from 'lucide-react';
+import { useState } from "react";
+import Image from "next/image";
+import { Send, Youtube } from "lucide-react";
 
 function BlurPlaceholder() {
   return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
@@ -10,7 +10,7 @@ function BlurPlaceholder() {
 
 interface MediaItem {
   id: string;
-  icon: 'telegram' | 'youtube' | 'spotify';
+  icon: "telegram" | "youtube" | "spotify";
   title: string;
   subtitle: string;
   description: string;
@@ -22,48 +22,48 @@ interface MediaItem {
 
 const mediaItems: MediaItem[] = [
   {
-    id: '1',
-    icon: 'telegram',
-    title: 'SUNDAY SERMONS',
-    subtitle: 'REV. OHIS',
-    description: 'Breaking patterns & generational strong hold',
-    contentTitle: 'Understanding servanthood',
-    contentSubtitle: 'Rev. Pastor OHIS',
-    contentTag: 'Latest Sermon',
-    image: '/img/serm-rev.jpg',
+    id: "1",
+    icon: "telegram",
+    title: "SUNDAY SERMONS",
+    subtitle: "REV. OHIS",
+    description: "Breaking patterns & generational strong hold",
+    contentTitle: "Understanding servanthood",
+    contentSubtitle: "Rev. Pastor OHIS",
+    contentTag: "Latest Sermon",
+    image: "/img/serm-rev.jpg",
   },
   {
-    id: '2',
-    icon: 'youtube',
-    title: 'STREAM REFRESH PROGRAMS',
-    subtitle: 'Every Last Saturday of the month',
-    description: 'Anwiii Ojeikere(THE WINLOS)',
-    contentTitle: 'Stream Refresh Programs',
-    contentSubtitle: 'Every Last Saturday',
-    contentTag: 'Monthly Program',
-    image: '/img/stream-refresh.jpg',
+    id: "2",
+    icon: "youtube",
+    title: "STREAM REFRESH PROGRAMS",
+    subtitle: "Every Last Saturday of the month",
+    description: "Anwiii Ojeikere(THE WINLOS)",
+    contentTitle: "Stream Refresh Programs",
+    contentSubtitle: "Every Last Saturday",
+    contentTag: "Monthly Program",
+    image: "/img/stream-refresh.jpg",
   },
   {
-    id: '3',
-    icon: 'spotify',
-    title: 'SUNDAY SERMONS',
-    subtitle: 'Pastor anwinli ojeikere',
-    description: 'The Available Man',
-    contentTitle: 'The Available Man',
-    contentSubtitle: 'Pastor Anwinli Ojeikere',
-    contentTag: 'Latest Sermon',
-    image: '/img/serm-rev.jpg',
+    id: "3",
+    icon: "spotify",
+    title: "SUNDAY SERMONS",
+    subtitle: "Pastor anwinli ojeikere",
+    description: "The Available Man",
+    contentTitle: "The Available Man",
+    contentSubtitle: "Pastor Anwinli Ojeikere",
+    contentTag: "Latest Sermon",
+    image: "/img/serm-rev.jpg",
   },
   {
-    id: '4',
-    icon: 'youtube',
-    title: 'WATCH OUR MOVIES AND SHORT SKITS',
-    subtitle: 'Learns that will impact your life',
-    description: 'The Winlos',
-    contentTitle: 'Movies and Short Skits',
-    contentSubtitle: 'The Winlos',
-    contentTag: 'Latest Video',
-    image: '/img/serm-rev.jpg',
+    id: "4",
+    icon: "youtube",
+    title: "WATCH OUR MOVIES AND SHORT SKITS",
+    subtitle: "Learns that will impact your life",
+    description: "The Winlos",
+    contentTitle: "Movies and Short Skits",
+    contentSubtitle: "The Winlos",
+    contentTag: "Latest Video",
+    image: "/img/serm-rev.jpg",
   },
 ];
 
@@ -93,11 +93,11 @@ const SpotifyIcon = () => (
 
 const getIcon = (iconType: string) => {
   switch (iconType) {
-    case 'telegram':
+    case "telegram":
       return <TelegramIcon />;
-    case 'youtube':
+    case "youtube":
       return <YouTubeIcon />;
-    case 'spotify':
+    case "spotify":
       return <SpotifyIcon />;
     default:
       return <TelegramIcon />;
@@ -108,14 +108,16 @@ export default function MediaSermons() {
   const [activeItem, setActiveItem] = useState(mediaItems[0]);
 
   return (
-    <div 
+    <div
       className="min-h-screen text-white px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-8 md:py-12 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: 'url(/img/serm-con.png)' }}
+      style={{ backgroundImage: "url(/img/serm-con.png)" }}
     >
       <div className="max-w-[1400px] mx-auto">
         {/* Title */}
         <h1 className="text-3xl font-copperplate sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mb-8 md:mb-12 lg:mb-16 tracking-tight">
-          ACCESS OUR MEDIA<br />AND SERMONS
+          ACCESS OUR MEDIA
+          <br />
+          AND SERMONS
         </h1>
 
         {/* Main Content */}
@@ -128,8 +130,8 @@ export default function MediaSermons() {
                 onClick={() => setActiveItem(item)}
                 className={`w-full text-left p-4 md:p-6 rounded-2xl md:rounded-3xl transition-all duration-300 relative group ${
                   activeItem.id === item.id
-                    ? 'bg-[#1a1a1a] border-l-4 border-white'
-                    : 'bg-[#0d0d0d] hover:bg-[#1a1a1a] border-l-4 border-transparent'
+                    ? "bg-[#1a1a1a] border-l-4 border-white"
+                    : "bg-[#0d0d0d] hover:bg-[#1a1a1a] border-l-4 border-transparent"
                 }`}
               >
                 <div className="flex items-start gap-4 md:gap-5">
@@ -162,13 +164,16 @@ export default function MediaSermons() {
                 alt={activeItem.contentTitle}
                 fill
                 className="object-cover object-top relative z-10"
-                style={{ objectPosition: 'center 20%', transform: 'scaleX(-1)' }}
+                style={{
+                  objectPosition: "center 20%",
+                  transform: "scaleX(-1)",
+                }}
                 sizes="(max-width: 1024px) 100vw, 60vw"
                 priority
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
               />
-              
+
               {/* Content Overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 lg:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                 <div className="space-y-2 md:space-y-3 mb-3 md:mb-4">
