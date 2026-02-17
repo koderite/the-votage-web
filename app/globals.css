@@ -43,6 +43,29 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Copperplate Fonts */
+  --font-display: var(--font-copperplate-bold), "Copperplate", serif;
+  --font-display-medium: var(--font-copperplate-medium), "Copperplate", serif;
+  --font-display-light: var(--font-copperplate-light), "Copperplate", serif;
+  --font-display-condensed:
+    var(--font-copperplate-condensed-medium), "Copperplate", serif;
+  --font-display-condensed-bold:
+    var(--font-copperplate-condensed-bold), "Copperplate", serif;
+  --font-display-condensed-light:
+    var(--font-copperplate-condensed-light), "Copperplate", serif;
+  --font-body: "Arial", "sans-serif";
+
+  /* Add your custom colors */
+  --color-white: #ffffff;
+  --color-white-dim: #ebebeb;
+  --color-nav-bg: rgba(255, 255, 255, 0.05);
+  --color-nav-item-bg: rgba(255, 255, 255, 0.1);
+  --color-overlay: rgba(0, 0, 0, 0.65);
+  --color-text-body: #5e5d5d;
+
+  /* Add your custom background image */
+  --hero-pattern: url("https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__");
   
   /* Design Guide Color Mapping for Tailwind */
   --color-cream: var(--color-cream);
