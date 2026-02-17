@@ -21,11 +21,11 @@ export default function ConnectHero() {
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
         />
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50 z-20"></div>
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex items-center min-h-screen h-full px-6 sm:px-6 lg:px-20 max-w-[1440px] mx-auto">
+      <div className="relative z-20 flex items-center min-h-screen h-full px-6 sm:px-6 lg:px-20 max-w-[1440px] mx-auto">
         <div className="max-w-4xl">
           {/* Heading */}
           <h1 className="font-copperplate text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] uppercase tracking-tight">
