@@ -90,7 +90,7 @@ export const BelongSection = () => {
         {/* Header with Navigation */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
-            <h2 className="font-copperplate font-bold text-3xl lg:text-[40px] text-black uppercase mb-2">
+            <h2 className="font-copperplate font-bold text-3xl lg:text-[48px] text-black uppercase mb-2">
               You Belong Here!
             </h2>
             <p className="font-body text-lg lg:text-2xl text-black">
@@ -162,16 +162,16 @@ export const BelongSection = () => {
               {/* Content */}
               <div className="absolute inset-0 p-8 flex flex-col justify-between">
                 <div>
-                  <p className="font-copperplate font-bold text-sm text-white/90 mb-2 uppercase tracking-wider">
+                  <p className="font-body font-bold text-body-text text-white/90 mb-2 uppercase tracking-wider">
                     {card.category}
                   </p>
-                  <h3 className="font-copperplate font-bold text-3xl text-white leading-tight uppercase">
+                  <h3 className="font-body font-bold text-3xl text-white leading-tight uppercase">
                     {card.title}
                   </h3>
                 </div>
 
                 <div className="flex items-center gap-2 group/btn">
-                  <span className="font-copperplate font-bold text-base text-white">Learn More</span>
+                  <span className="font-body font-bold text-base text-white">Learn More</span>
                   <ArrowRight className="w-5 h-5 text-white transition-transform group-hover/btn:translate-x-1" />
                 </div>
               </div>
