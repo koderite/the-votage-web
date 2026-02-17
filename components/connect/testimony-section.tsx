@@ -3,7 +3,7 @@ export default function TestimonySection() {
     <section className="w-full py-16 md:py-24 bg-[#FFF8F0] px-4">
       <div className="max-w-4xl mx-auto">
         {/* Testimonial Card */}
-        <div className="bg-white rounded-3xl shadow-[0_0_0_4px_rgba(0,0,0,1)] p-8 md:p-12 text-center">
+        <div className="bg-white rounded-3xl shadow-[0_10px_50px_rgba(0,0,0,0.2)] p-8 md:p-12 text-center">
           {/* Heading */}
           <h3 className="font-copperplate text-black text-xl md:text-2xl lg:text-3xl font-black uppercase mb-6 leading-tight">
             CONNECT CHANGED MY LIFE!!
