@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const SermonHero = () => {
   return (
-    <div className="relative w-full h-screen min-h-200 flex items-center justify-center overflow-hidden">
+    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 bg-gray-800"

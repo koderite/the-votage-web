@@ -22,18 +22,15 @@ export default function MessageSection() {
           </p>
         </div>
       </div>
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {messages.map((message) => (
           <div
             key={message.id}
-            className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden border"
+            className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 border"
           >
-            {/* Image Placeholder */}
-            <div className="h-48 bg-gradient-to-br from-blue-600 to-red-600" />
-
             {/* Content */}
             <div className="p-5">
-              <h3 className="font-semibold text-lg font-display text-black leading-snug">
+              <h3 className="font-semibold text-lg font-display h-12 text-black line-clamp-2">
                 {message.title}
               </h3>
 
@@ -43,7 +40,9 @@ export default function MessageSection() {
 
               <p className="text-xs text-gray-400 mt-2">{message.date}</p>
 
-              <p className="text-xs text-gray-400">{message.service}</p>
+              <p className="text-xs line-clamp-1 text-gray-400">
+                {message.service}
+              </p>
 
               <Button variant="black" className="mt-4 w-full">
                 Download
