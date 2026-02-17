@@ -5,10 +5,6 @@ import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
-function BlurPlaceholder() {
-  return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
-}
-
 export default function ConnectGroupsSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -17,30 +13,51 @@ export default function ConnectGroupsSection() {
   const groups = [
     {
       id: 1,
-      name: "KABOO TRYBE",
+      name: "KABOD CONNECT",
       day: "Tuesdays",
-      location: "143 Airport Road, Ajao ADP Junction",
+      location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
     },
     {
       id: 2,
-      name: "NEWNESS TRYBE",
-      day: "Tuesdays",
-      location: "342 Airport Road, Ajao ADP Junction",
+      name: "NEWNESS CONNECT",
+      day: "Wednesdays",
+      location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
     },
     {
       id: 3,
-      name: "UGBOWO TRYBE",
-      day: "Tuesdays",
-      location: "142 Airport Road, Ajao ADP Junction",
+      name: "UGBOWO CONNECT",
+      day: "Fridays",
+      location: "The Orchard Garden",
       time: "5:00pm",
     },
     {
       id: 4,
-      name: "KABOO TRYBE",
-      day: "Tuesdays",
-      location: "142 Airport Road, Ajao ADP Junction",
+      name: "FLORISH CONNECT",
+      day: "Thursdays",
+      location: "144 Airport Road, Ajao ADP Junction",
+      time: "5:00pm",
+    },
+        {
+      id: 5,
+      name: "GATEKEEPERS CONNECT",
+      day: "Wednesdays",
+      location: "144 Airport Road, Ajao ADP Junction",
+      time: "5:00pm",
+    },
+        {
+      id: 6,
+      name: "KOINONIA CONNECT",
+      day: "Saturdays",
+      location: "144 Airport Road, Ajao ADP Junction",
+      time: "5:00pm",
+    },
+        {
+      id: 7,
+      name: "EKEHUAN CONNECT",
+      day: "Fridays",
+      location: "Education Field",
       time: "5:00pm",
     },
   ];
