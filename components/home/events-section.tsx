@@ -52,7 +52,7 @@ export const EventsSection = () => {
               <div className="px-2 pb-4">
                 <h3 className="font-copperplate text-xl text-black mb-1">{event.title}</h3>
                 <p className="font-copperplate text-base text-black mb-2">{event.subtitle}</p>
-                <p className="font-body text-xs text-[#959595]">{event.date}</p>
+                <p className="font-body text-xs text-[#4E4E4E]">{event.date}</p>
               </div>
             </div>
           ))}

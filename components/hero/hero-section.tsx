@@ -3,15 +3,18 @@ import React from "react";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export const HeroSection = () => {
   return (
     <div className="relative w-full h-screen min-h-200 flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 bg-gray-800"
-        style={{ backgroundImage: "var(--hero-pattern)" }}
-        aria-hidden="true"
+      <Image
+        src="/img/hero-img.jpg"
+        alt="Hero Background"
+        fill
+        className="object-cover"
+        priority
       />
 
       {/* Dark Overlay */}

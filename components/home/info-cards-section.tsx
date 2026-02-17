@@ -50,7 +50,7 @@ export const InfoCardsSection = () => {
               <div className="absolute top-0 right-0 w-24 h-24 bg-black rounded-bl-[100%] transition-transform duration-500 group-hover:scale-110 origin-top-right" />
 
               {/* Title */}
-              <h3 className="font-copperplate font-bold text-2xl lg:text-3xl text-black mb-8 relative z-10">
+              <h3 className="font-copperplate font-bold text-2xl lg:text-sub-heading text-black mb-8 relative z-10">
                 {card.title}
               </h3>
 

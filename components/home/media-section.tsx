@@ -114,7 +114,7 @@ export default function MediaSermons() {
     >
       <div className="max-w-[1400px] mx-auto">
         {/* Title */}
-        <h1 className="text-3xl font-copperplate sm:text-4xl md:text-5xl lg:text-[3.5rem] leading-tight mb-8 md:mb-12 lg:mb-16 tracking-tight">
+        <h1 className="text-3xl font-copperplate sm:text-4xl md:text-5xl lg:text-[48px] leading-tight mb-8 md:mb-12 lg:mb-16 tracking-tight">
           ACCESS OUR MEDIA<br />AND SERMONS
         </h1>
 
@@ -138,7 +138,7 @@ export default function MediaSermons() {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm md:text-base lg:text-lg tracking-wider mb-1">
+                    <h3 className="text-sm md:text-base lg:text-minor-heading tracking-wider mb-1">
                       {item.title}
                     </h3>
                     <p className="text-xs md:text-sm text-gray-400 mb-1 uppercase tracking-wide">
