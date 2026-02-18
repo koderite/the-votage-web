@@ -26,19 +26,19 @@ export default function MessageSection() {
         {messages.map((message) => (
           <div
             key={message.id}
-            className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 border"
+            className="bg-white rounded-2xl transition duration-300 shadow-sm hover:shadow-lg"
           >
             <div>
               <img
                 src={message.image}
                 alt={message.title}
-                className="w-full h-65 object-cover object-center rounded-t-2xl"
+                className="w-full aspect-square object-cover object-center"
               />
             </div>
-            <div className="p-5">
-              <h3 className="font-semibold text-lg font-display h-12 text-black line-clamp-2">
+            <div className="p-4">
+              <h4 className="font-semibold font-display text-black line-clamp-1">
                 {message.title}
-              </h3>
+              </h4>
 
               <p className="text-sm text-gray-500 mt-2">{message.minister}</p>
 
