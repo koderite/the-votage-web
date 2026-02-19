@@ -20,7 +20,7 @@ const accordionItems = [
   {
     id: 'give-building',
     title: 'Give to our Building',
-    href: null,
+    href: "/give",
     content: 'Help us build a place where generations can encounter God. Your generosity shapes the future of our church and creates a lasting legacy for the Kingdom. Every contribution makes a difference.'
   }
 ];
