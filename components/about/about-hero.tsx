@@ -43,6 +43,36 @@ export const AboutHero: React.FC = () => {
     gsap.to(btnRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
   };
 
+  const handleExploreClick = () => {
+    const afterHeroSection = document.getElementById('after-hero');
+    if (afterHeroSection) {
+      const targetPosition = afterHeroSection.offsetTop;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1500; // 1.5 seconds for a slow, smooth scroll
+      let startTime: number | null = null;
+
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        // Easing function for smooth deceleration
+        const ease = (t: number) => t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        
+        window.scrollTo(0, startPosition + distance * ease(progress));
+        
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      };
+      
+      requestAnimationFrame(animation);
+    }
+  };
+
   return (
     <div ref={containerRef} className="flex  flex-col items-center justify-center text-center px-4 mt-12 mb-16 md:mt-20 md:mb-10 max-w-4xl mx-auto">
       <h1 
@@ -65,6 +95,7 @@ export const AboutHero: React.FC = () => {
         ref={btnRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={handleExploreClick}
         className="bg-black text-white px-8 py-3 rounded-[40px] font-arial text-xl md:text-2xl flex items-center border border-black hover:text-black justify-center gap-2 hover:bg-transparent transition-colors"
       >
         Explore

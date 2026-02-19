@@ -31,7 +31,7 @@ export function LeadPastors() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
               <BlurPlaceholder />
               <Image
-                src="/img/about/lead-rev.jpg"
+                src="/img/serm-rev.jpg"
                 alt="Rev. Ohis Ojeikere preaching"
                 fill
                 style={{objectPosition: "center 20%"}}

@@ -22,7 +22,7 @@ export function Beliefs() {
   return (
     <section className="bg-gray-100/50 py-20 px-6 md:px-[80px]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl text-black font-copperplate md:text-5xl font-bold text-center mb-16 md:mb-20 tracking-tight">
+        <h2 className="text-4xl text-black font-copperplate md:text-section-heading font-bold text-center mb-16 md:mb-20 tracking-tight">
           WHAT WE BELIEVE
         </h2>
 
@@ -31,7 +31,7 @@ export function Beliefs() {
             <div key={index} className="flex flex-col items-center text-center">
               {/* Icon */}
               <div className={`${belief.iconBgColor} p-6 md:p-5 rounded-full mb-6 md:mb-8 shadow-lg`}>
-                <belief.icon className="w-14 h-14 md:w-15 md:h-15 text-black" strokeWidth={1.5} />
+                <belief.icon className="w-10 h-10 md:w-12 md:h-12 text-black" strokeWidth={1.5} />
               </div>
 
               {/* Text */}
