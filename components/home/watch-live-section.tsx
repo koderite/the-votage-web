@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { YouTubeIcon } from "@/components/icons/youtube-icon";
 
 export const WatchLiveSection = () => {
-  const videoId = "RXT3Cdv19cs";
+  const videoId = "KC3-UJNrRY4";
   const [showOverlay, setShowOverlay] = useState(true);
 
   const handlePlay = () => {
