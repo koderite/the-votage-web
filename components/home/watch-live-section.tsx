@@ -1,44 +1,45 @@
 "use client";
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Youtube } from 'lucide-react';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { YouTubeIcon } from "@/components/icons/youtube-icon";
 
 export const WatchLiveSection = () => {
-  const videoId = 'RXT3Cdv19cs';
+  const videoId = "RXT3Cdv19cs";
   const [showOverlay, setShowOverlay] = useState(true);
-  
+
   const handlePlay = () => {
     setShowOverlay(false);
   };
-  
+
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
       {/* YouTube iframe - always present */}
       <iframe
-        key={showOverlay ? 'no-autoplay' : 'autoplay'}
+        key={showOverlay ? "no-autoplay" : "autoplay"}
         src={`https://www.youtube.com/embed/${videoId}?autoplay=${showOverlay ? 0 : 1}&modestbranding=1&rel=0&enablejsapi=1`}
         title="Watch Live Stream"
         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
         allowFullScreen
         className="absolute inset-0 w-full h-full border-0"
       />
-      
+
       {/* Transparent overlay with opacity - hides when clicked */}
       {showOverlay && (
-        <div 
+        <motion.div
           className="absolute inset-0 bg-black/60 cursor-pointer z-10"
           onClick={handlePlay}
+          whileHover="hover"
         >
           {/* Centered Watch Live content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             {/* YouTube Icon */}
             <motion.div
-              className="w-24 h-24 rounded-full bg-brand-red flex items-center justify-center shadow-2xl mb-6 hover:scale-110 transition-transform"
-              whileHover={{ scale: 1.1 }}
+              className="w-30 h-30 rounded-full bg-brand-red flex items-center justify-center shadow-2xl mb-6"
+              variants={{ hover: { scale: 1.1 } }}
             >
-              <Youtube className="w-12 h-12 text-white" fill="white" />
+              <YouTubeIcon className="lg:w-20 lg:h-20 size-12 sm:size-15   text-[#FF0000]" />
             </motion.div>
-            
+
             {/* Watch Live Text */}
             <motion.p
               className="text-white font-copperplate text-3xl lg:text-5xl uppercase tracking-wider"
@@ -48,17 +49,17 @@ export const WatchLiveSection = () => {
             >
               Watch Live
             </motion.p>
-            
-            <motion.p
-              className="text-white/70 font-poppins text-lg mt-4"
+
+            {/* <motion.p
+              className="text-white/70 font-poppins text-base mt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               Click to play
-            </motion.p>
+            </motion.p> */}
           </div>
-        </div>
+        </motion.div>
       )}
     </section>
   );

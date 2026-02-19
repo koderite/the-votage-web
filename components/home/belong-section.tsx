@@ -10,27 +10,27 @@ const cards = [
     category: 'WHO WE ARE',
     title: 'ABOUT US',
     link: '/about',
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/423e/b026/efbe57a7d304cf8c706b8119f87565fd?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=FQ6hN-nq~0IYab8VZHSAipRLSTnxQbgX6xX9Az9PuCC-jegUSH9gV~7i3JXYAu9U9EO6xt3k~Nedj-ghChTJQ~5CXt1A~3vp49vNHDj0DR8m6sjsmhSM4u~tJJaqO0pG4qDHIk78cWVcZOa3BjsNIxZdIZ0LOLgeO4XnoTtp-eAoVQR-qIHRayr1WCiSCm6tmsVttrSXxndxXStBpWf8T0bzEIIx78G6lOXaR3NHfYeKH8~zod1-96~HQyu8yoKcerD2pK-WDRexMlMtWx2M1Odu0UoloxS9eCQDLOB1pUnXlpb8nr2HNBTNTmpivdW7pB0XslFzGDvNNtpTIv9dNg__',
+    image: '/img/belong-1.jpg',
   },
   {
     id: 2,
     category: 'OUR CONNECT GROUP',
     title: ' Join a Connect',
     link: '/connect',
-    image: '',
+    image: '/img/belong-2.png',
   },
   
   {
     id: 3,
     category: 'OUR Family GROUPS',
     title: 'Family Life',
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/2df2/e46b/fffd435ee1ae1739e0d2d2295de07516?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=i3Q-1mtljrJm57Ieblo8~-zyIArqfrJLoJW-SC0WLDtA4Rfk-MXxSGodWfSO03q744sXP677HYQUfQenJUJPTvqO3ySP7l1yklD618AF~EmWuga7Bg0xb3kgcb6W4-Cu4SwmC8NIxkG9TST-T2lTTlwDCb35WHosB2JvcbWl9PHPy2skvUYKsJ5pxchajvcJ9A4tnmvyQASXDkbbsExm1S~N5dozkVgktHWS0fZ7n-0tnPmwiTnafzgCXqtUSef-HTSJOaUr3CgpmVdBYfJz4qbMsEpZ4d9dGgvQPfEwJZjB7geifvrkHVtn6MKvxqK7SgrViiX~VzzSeCHqwn8jlg__',
+    image: '/img/belong-3.jpg',
   },
   {
     id: 4,
     category: 'OUR TRYBE',
     title: 'Location based community',
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/b1ed/ef7d/f549da2a0348ff07efee1652fc2d70c3?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=WeDhQoN0cR2zAqDI7zq9MTLqYG-d~o8zs-DeyCGPHDu77GS00BHXQyPv0ZL1VU3iXABPZ2uGopeD02v6ilh1j4XmdqU9I175LTiVraTbmzErCejvpvSpqfMTd-rmbGOqsr4xtR2meS9o22K-EI3Ll-c1eBcPNzLARW1ImPTR6BL0ZebKDt98vlG8RmQ7ZkGvo0GHIIXVsNuMOb0xO3JD4TBv3mGb1GySZ2Ze5MkYrUtNy3AY-6n9e-zgW4d1Ol~oQ-3M~oWG-Huo0i6X7nEXagkhPIN-YfZUq6ZfvSAB4WHQIo9VIKZJaZvk-c1WrMwa18kELpcmI0MbatAI2GzjOQ__',
+    image: '/img/belong-4.jpg',
   }
 ];
 
@@ -152,8 +152,11 @@ export const BelongSection = () => {
             >
               {/* Background Image */}
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url(${card.image})` }}
+                className={`absolute inset-0 bg-cover transition-transform duration-700 group-hover:scale-110`}
+                style={{ 
+                  backgroundImage: `url(${card.image})`,
+                  backgroundPosition: index >= 2 ? 'center 50% ' : 'center center'
+                }}
               />
               
               {/* Gradient Overlay */}

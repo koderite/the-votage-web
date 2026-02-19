@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -72,7 +72,11 @@ export default function HeroSection() {
                   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => document.getElementById('next-section')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() =>
+                  document
+                    .getElementById("next-section")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
               >
                 Apply now
               </motion.button>

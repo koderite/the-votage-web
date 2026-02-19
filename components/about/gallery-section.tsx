@@ -6,8 +6,8 @@ import gsap from 'gsap';
 
 const images = [
   {
-    id: 4, // Far Left (Duplicate for layout balance)
-    url: "https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/f732/d2e5/1e55735a0d6d5f35a7d020d6f8ed0965?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YPnNdhX7ouf4TDUgXU7twjD4tqag6lZyiGdcSp8T7AHMvy564~EVfePd4Sip~5tGu4pmLsyRcUeBy1k8OXjAnBhKwkXJs5Hz99HbelCHeDgSl69VxgsrOjqt6yIbUKoH2aAqAYFgfouPnOp~wKK-biC7e0FdBKHHGaBks4w8MOQLtE5QB0xGZf8Fj5TMy7as9mcQzdD16hUs6nGWeIwNJMIUiBExB79Qz1YzxaFtPXEn7qctlmYhC7sxGUx0Y-74XFXezDfFdX3FbZH66b~sUsFpQfEo7Tk5J5ojth4jqOoI-FxGzfQ1vpOxuJfbk06eEp0i30tSpLKOsf53MCY1ew__",
+    id: 0, // Far Left (Duplicate for layout balance)
+    url: "/img/about/hero-1.jpg",
     alt: "Community gathering"
   },
   {
@@ -17,17 +17,17 @@ const images = [
   },
   {
     id: 2, // Center (Speaker)
-    url: "https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/32fd/a76e/1e7b36933f0f9675cbeccefe6066034d?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=R9~W5HN92uSSzEax8FF7Pn~7ZW0IXtoW-nCJCjFVHvqv3DxlUL6VP9gSMz~fV7mLppr6W9qOdVYV4NA0fzG7Zbnm60BJf6nM7oJCyRRBpXdOiNMnGHVO02h-KOvF3PIRSwx7TEqpGqrKJqDdAWJrRZXiWTd-wZceQMEvzzEi-IVh5JkuGyKBptrco-iOe1Gf6TjLiIraOR6aSJJqSRFsWHEdb403Zgs8OgZH5XEjxJtCC2yF-Dw25jkJcYDHFkBjotpuquUUzdWRxd07-H5eSA4iMUfft-sNyeyzwOL2ffEy8w-~9gwPtqzq6qsJqSdaefOX3u7gACO7W0gkFoH3qw__",
+    url: "/img/about/hero-3.jpg",
     alt: "Speaker on stage"
   },
   {
     id: 3, // Right
-    url: "https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/f732/d2e5/1e55735a0d6d5f35a7d020d6f8ed0965?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YPnNdhX7ouf4TDUgXU7twjD4tqag6lZyiGdcSp8T7AHMvy564~EVfePd4Sip~5tGu4pmLsyRcUeBy1k8OXjAnBhKwkXJs5Hz99HbelCHeDgSl69VxgsrOjqt6yIbUKoH2aAqAYFgfouPnOp~wKK-biC7e0FdBKHHGaBks4w8MOQLtE5QB0xGZf8Fj5TMy7as9mcQzdD16hUs6nGWeIwNJMIUiBExB79Qz1YzxaFtPXEn7qctlmYhC7sxGUx0Y-74XFXezDfFdX3FbZH66b~sUsFpQfEo7Tk5J5ojth4jqOoI-FxGzfQ1vpOxuJfbk06eEp0i30tSpLKOsf53MCY1ew__",
+    url: "/img/about/hero-2.jpg",
     alt: "Community gathering"
   },
   {
     id: 5, // Far Right (Duplicate for layout balance)
-    url: "https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/654e/950f/1977d165bfe0eede3a7eeb54a5815f6f?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=omWHzMqxZWWvAR6-4rkmhxO9juSUEIj7UX54XHqIsc44czdXNGIi-sQoj-5C9xIDmJhv9dUxD54xILXFWjhRHsqwVaIc2my8v8meZlS-tbimYUERL9zW8JD27BHDkf4UV1nxpbv2JY12Cpv~dBNVB5yQ79EtndRwC3Gyiyklq-29256PxSmgesfXfc3Rd2mXZWY9EwA7SesoLTipYRr4QpmOlwq0IZe0~iyC2NWQw0H2IE0ri1ZCvcU2mT4f2PEk~mzNK28oVSAwqr72x~IPwCjWfDwJS2QZiZ-g1b3IkjedNpcL1jVJP1~fJrJowFStyeNHSk9q3XyFgyE7JM9F8A__",
+    url: "/img/about/hero-4.jpg",
     alt: "Worship service"
   }
 ];
@@ -92,7 +92,7 @@ export const GallerySection: React.FC = () => {
       scale: 1.08, 
       y: -15,
       zIndex: 50,
-      boxShadow: "0px 30px 60px rgba(0,0,0,0.35)",
+      boxShadow: "0px 20px 40px rgba(0,0,0,0.2)",
       borderRadius: "50px",
       duration: 0.5, 
       ease: "power3.out" 
@@ -117,7 +117,7 @@ export const GallerySection: React.FC = () => {
       scale: 1, 
       y: 0,
       zIndex: 1,
-      boxShadow: "0px 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      boxShadow: "0px 4px 6px -1px rgba(0, 0, 0, 0.1)",
       borderRadius: "40px",
       duration: 0.5, 
       ease: "power3.out" 
@@ -153,7 +153,7 @@ export const GallerySection: React.FC = () => {
               ${getHeightClass(index)}
               ${index % 2 === 0 ? 'gallery-item-even' : 'gallery-item-odd'}
               rounded-[40px] md:rounded-[50px] 
-              overflow-hidden shadow-lg cursor-pointer bg-gray-200
+              overflow-hidden shadow-md cursor-pointer bg-gray-200
               transform-gpu will-change-transform
             `}
             onMouseEnter={(e) => handleMouseEnter(e, index)}
