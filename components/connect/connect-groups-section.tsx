@@ -113,7 +113,7 @@ export default function ConnectGroupsSection() {
         <div className="mb-10">
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1 text-center">
-              <h2 className="font-copperplate text-2xl md:text-3xl lg:text-4xl font-black text-black leading-tight uppercase">
+              <h2 className="font-copperplate text-section-heading lg:text-major-heading font-black text-black leading-tight uppercase">
                 FIND A CONNECT THAT FITS INTO<br />
                 YOUR SCHEDULE
               </h2>

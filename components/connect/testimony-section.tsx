@@ -5,12 +5,12 @@ export default function TestimonySection() {
         {/* Testimonial Card */}
         <div className="bg-white rounded-3xl shadow-[0_10px_50px_rgba(0,0,0,0.2)] p-8 md:p-12 text-center">
           {/* Heading */}
-          <h3 className="font-copperplate text-black text-xl md:text-2xl lg:text-3xl font-black uppercase mb-6 leading-tight">
+          <h3 className="font-copperplate text-black text-section-heading lg:text-major-heading font-black uppercase mb-6 leading-tight">
             CONNECT CHANGED MY LIFE!!
           </h3>
 
           {/* Testimony Text */}
-          <p className="font-body text-black text-sm md:text-base leading-relaxed mb-6">
+          <p className="font-body text-black text-body-text lg:text-lg leading-relaxed mb-6">
             &ldquo;I Joined Connect As A Really Confused Person. I Was Unclear About Major Decisions Of My Life And Unsure Of Where To Go From Where I Was. The Connect System Of Church Got Me Looking And By Extension Gave Me Access To People Who Walked With Me And Results In My Subsequent Life Decisions. Safe To Say I Am Not The Same Clueless Person Who Came To The Votage Indecisive And Helpless.I Currently Have Real Friends And Godly Connections I&rsquo;d Never Have Imagined In Previous Years!&rdquo;
           </p>
 

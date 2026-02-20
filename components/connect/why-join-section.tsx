@@ -49,7 +49,7 @@ export default function WhyJoinSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
           <div className="flex flex-col items-center text-center md:items-start md:text-left px-4 md:px-0">
-            <h2 className="font-copperplate text-3xl sm:text-4xl md:text-3xl lg:text-4xl font-black text-black mb-12 md:mb-10 leading-tight uppercase">
+            <h2 className="font-copperplate text-section-heading lg:text-major-heading font-black text-black mb-12 md:mb-10 leading-tight uppercase">
               Why You Should Join a<br />
               Connect Group
             </h2>
@@ -57,7 +57,7 @@ export default function WhyJoinSection() {
             <div className="space-y-8 md:space-y-6 max-w-lg w-full">
               {reasons.map((reason, index) => (
                 <div key={index}>
-                  <p className="font-body text-base sm:text-lg md:text-base text-gray-700 leading-relaxed">
+                  <p className="font-body text-body-text lg:text-lg text-gray-700 leading-relaxed">
                     <span className="font-copperplate font-black text-black uppercase tracking-wide">{reason.title}</span> : {reason.description}
                   </p>
                 </div>

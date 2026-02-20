@@ -42,11 +42,11 @@ export default function TrybeSection() {
 
           {/* Right side - Content */}
           <div className="flex flex-col items-center text-center md:items-end md:text-right">
-            <h2 className="font-copperplate text-2xl md:text-3xl lg:text-4xl font-black text-white md:text-black mb-4 leading-tight uppercase">
+            <h2 className="font-copperplate text-section-heading lg:text-major-heading font-black text-white md:text-black mb-4 leading-tight uppercase">
               Your Trybe is Waiting
             </h2>
 
-            <p className="font-body text-white md:text-gray-700 text-sm md:text-base leading-relaxed mb-6 max-w-md">
+            <p className="font-body text-white md:text-gray-700 text-body-text lg:text-lg leading-relaxed mb-6 max-w-md">
               While Connect Groups focus on interests and stages of life, Trybes focus on proximity—ensuring you are never too far from your church family.
             </p>
 

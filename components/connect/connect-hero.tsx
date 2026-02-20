@@ -28,14 +28,14 @@ export default function ConnectHero() {
       <div className="relative z-20 flex items-center min-h-screen h-full px-6 sm:px-6 lg:px-20 max-w-[1440px] mx-auto">
         <div className="max-w-4xl">
           {/* Heading */}
-          <h1 className="font-copperplate text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] uppercase tracking-tight">
+          <h1 className="font-copperplate text-4xl md:text-6xl lg:text-hero-heading font-black text-white mb-4 sm:mb-6 leading-[1em] uppercase tracking-[0.02em]">
             Welcome to the<br />
             Connect System<br />
             of The Votage
           </h1>
 
           {/* Description */}
-          <p className="font-body text-sm sm:text-base md:text-lg text-white mb-6 sm:mb-8 max-w-xl leading-relaxed">
+          <p className="font-body text-lg md:text-subheading text-white mb-6 sm:mb-8 max-w-xl leading-[1.15em]">
             Life is better together. At The Votage, Connect Groups are more than a meeting. They are where family happens.
           </p>
 
