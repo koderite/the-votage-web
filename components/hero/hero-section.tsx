@@ -39,7 +39,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="font-body text-white-dim text-lg md:text-2xl leading-[1.15em] max-w-2xl mb-12"
+          className="font-body text-white-dim text-lg lg:text-sub-heading leading-[1.15em] max-w-2xl mb-12"
         >
           We exist to share the life-giving message of Jesus and raise devoted
           followers of Christ.

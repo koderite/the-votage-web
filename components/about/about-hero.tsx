@@ -74,10 +74,10 @@ export const AboutHero: React.FC = () => {
   };
 
   return (
-    <div ref={containerRef} className="flex  flex-col items-center justify-center text-center px-4 mt-12 mb-16 md:mt-20 md:mb-10 max-w-4xl mx-auto">
+    <div ref={containerRef} className="flex  flex-col items-center justify-center text-center px-4 mt-12 mb-16 md:mt-20  md:mb-10 max-w-4xl mx-auto">
       <h1 
         ref={titleRef}
-        className="font-copperplate text-4xl md:text-6xl lg:text-[64px] leading-tight md:leading-[1.13em] tracking-[0.02em] text-black uppercase mb-6"
+        className="font-copperplate text-4xl md:text-6xl lg:text-hero-heading leading-tight md:leading-[1.13em] tracking-[0.02em] text-black uppercase mb-6"
       >
         You Belong<br className="hidden md:block" /> here
       </h1>
@@ -85,7 +85,7 @@ export const AboutHero: React.FC = () => {
       <div className="max-w-[506px] mx-auto mb-8">
         <p 
           ref={subtitleRef}
-          className="font-arial text-lg md:text-2xl leading-[1.15em] text-black"
+          className="font-arial text-lg md:text-sub-heading leading-[1.15em] text-black"
         >
           Explore our journey, our heart for the truth, and find a community where you truly belong.
         </p>

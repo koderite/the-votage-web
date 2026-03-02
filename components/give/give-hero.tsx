@@ -24,7 +24,7 @@ export const GiveHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="font-display font-bold text-white uppercase tracking-hero-heading leading-[1em]
-                     text-4xl md:text-6xl lg:text-[72px] mb-6"
+                     text-4xl md:text-6xl lg:text-hero-heading mb-6"
         >
           Giving
         </motion.h1>
@@ -34,7 +34,7 @@ export const GiveHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="font-body text-white-dim text-lg md:text-xl leading-[1.15em] mb-12"
+          className="font-body text-white-dim text-body-text lg:text-body-text-lg leading-[1.15em] mb-12"
         >
           To give is an act of worship ,We give to Build the Kingdom of God
         </motion.p>

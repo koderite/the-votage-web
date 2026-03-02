@@ -27,7 +27,7 @@ const mediaItems: MediaItem[] = [
     id: '0',
     icon: 'youtube',
     title: 'WATCH OUR MOVIES AND SHORT SKITS',
-    subtitle: 'Learns that will impact your life',
+    subtitle: 'Lessons and stories that will impact your life',
     description: 'The Winlos',
     contentTitle: 'Spirtuals Part 4',
     contentSubtitle: 'The Winlos',
@@ -167,7 +167,7 @@ export default function MediaSermons() {
 
           {/* Right Side - Content Display */}
           <div className="w-full lg:w-[55%] xl:w-[60%] flex items-center">
-            <div className="w-full rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
+            <div className="w-full rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative h-[250px] sm:h-[300px] md:h-[400px] lg:aspect-[4/3]">
               <BlurPlaceholder />
               <motion.div
                 key={activeItem.id}
@@ -181,8 +181,7 @@ export default function MediaSermons() {
                   src={activeItem.image}
                   alt={activeItem.contentTitle}
                   fill
-                  className="object-cover object-top"
-                  style={{ objectPosition: 'center 20%' }}
+                  className="object-contain md:object-cover"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority
                   placeholder="blur"

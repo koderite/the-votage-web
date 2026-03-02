@@ -16,7 +16,7 @@ export const WatchLiveSection = () => {
       {/* YouTube iframe - always present */}
       <iframe
         key={showOverlay ? "no-autoplay" : "autoplay"}
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=${showOverlay ? 0 : 1}&modestbranding=1&rel=0&enablejsapi=1`}
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=${showOverlay ? 0 : 1}&modestbranding=1&rel=0&enablejsapi=1}`}
         title="Watch Live Stream"
         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
         allowFullScreen

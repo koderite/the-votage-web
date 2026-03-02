@@ -17,6 +17,7 @@ export default function ConnectGroupsSection() {
       day: "Tuesdays",
       location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
+      image: "/img/connect-images.png",
     },
     {
       id: 2,
@@ -24,13 +25,15 @@ export default function ConnectGroupsSection() {
       day: "Wednesdays",
       location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
+      image: "/img/connect-6.jpg",
     },
     {
       id: 3,
       name: "UGBOWO CONNECT",
       day: "Fridays",
       location: "The Orchard Garden",
-      time: "5:00pm",
+      time: "5:00pm", 
+      image: "/img/connect-1.jpg",
     },
     {
       id: 4,
@@ -38,6 +41,7 @@ export default function ConnectGroupsSection() {
       day: "Thursdays",
       location: "144 Airport Road, Ajao ADP Junction",
       time: "5:00pm",
+      image: "/img/connect-3.jpg",
     },
         {
       id: 5,
@@ -45,6 +49,7 @@ export default function ConnectGroupsSection() {
       day: "Wednesdays",
       location: "144 Airport Road, Ajao ADP Junction",
       time: "5:00pm",
+      image: "/img/connect-4.jpg",
     },
         {
       id: 6,
@@ -52,6 +57,7 @@ export default function ConnectGroupsSection() {
       day: "Saturdays",
       location: "144 Airport Road, Ajao ADP Junction",
       time: "5:00pm",
+      image: "/img/connect-9.jpg",
     },
         {
       id: 7,
@@ -59,6 +65,7 @@ export default function ConnectGroupsSection() {
       day: "Fridays",
       location: "Education Field",
       time: "5:00pm",
+      image: "/img/connect-11.jpg",
     },
   ];
 
@@ -113,13 +120,13 @@ export default function ConnectGroupsSection() {
         <div className="mb-10">
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1 text-center">
-              <h2 className="font-copperplate text-2xl md:text-3xl lg:text-4xl font-black text-black leading-tight uppercase">
+              <h2 className="font-copperplate text-2xl md:text-3xl lg:text-section-heading font-black text-black leading-tight uppercase">
                 FIND A CONNECT THAT FITS INTO<br />
                 YOUR SCHEDULE
               </h2>
             </div>
           </div>
-          <p className="font-body text-gray-700 text-xs md:text-sm max-w-3xl mx-auto text-center">
+          <p className="font-body text-gray-700 text-body-text lg:text-body-text-lg max-w-3xl mx-auto text-center">
             Browse through connect groups, more than words, they define our identity and guide how we live, love, serve, and grow as a community.
           </p>
         </div>
@@ -178,7 +185,7 @@ export default function ConnectGroupsSection() {
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
-                  src="/img/connect-images.png"
+                  src={group.image}
                   alt={group.name}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

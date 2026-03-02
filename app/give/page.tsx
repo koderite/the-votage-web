@@ -14,7 +14,7 @@ export default function GivePage() {
         <GiveHero />
         <JoinMission />
         <InternationalTransfer />
-        <WhereGiving />
+        {/* <WhereGiving /> */}
       </main>
 
       <Footer />
