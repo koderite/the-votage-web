@@ -17,19 +17,19 @@ export default function InternationalTransfer() {
           <TransferCard
             data={transferData.USD}
             accent="bg-yellow-50"
-            bordercolor="#B0B000"
+            bordercolor="orange"
           />
           <div className="md:mt-8">
             <TransferCard
               data={transferData.GBP}
               accent="bg-blue-50"
-              bordercolor="#0000FF"
+              bordercolor="#000000"
             />
           </div>
           <TransferCard
             data={transferData.EUR}
-            accent="bg-purple-50"
-            bordercolor="#800080"
+            accent="bg-orange-50"
+            bordercolor="orange"
           />
         </div>
       </div>

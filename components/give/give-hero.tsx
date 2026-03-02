@@ -24,7 +24,7 @@ export const GiveHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="font-display font-bold text-white uppercase tracking-hero-heading leading-[1em]
-                     text-4xl md:text-6xl lg:text-[72px] mb-6"
+                     text-4xl md:text-6xl  mb-6"
         >
           Giving
         </motion.h1>
