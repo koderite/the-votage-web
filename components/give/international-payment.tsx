@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export default function InternationalPayment() {
   return (
-    <div className="rounded-2xl bg-white shadow-[0_0_20px_rgba(0,0,0,0.2)] px-6 py-8">
+    <div className="rounded-2xl bg-white shadow-[0_0_20px_rgba(0,0,0,0.2)] px-6 py-8 ">
       <div className="grid place-items-center mb-6">
         <Image
           src="/img/give/banklogo.svg"
