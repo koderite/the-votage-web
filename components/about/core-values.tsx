@@ -36,7 +36,7 @@ export function CoreValues() {
           <h2 className="text-4xl font-copperplate text-black md:text-section-heading font-bold mb-6 tracking-tight">
             OUR CORE VALUES
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-minor-heading lg:text-minor-heading-lg text-gray-700 max-w-4xl mx-auto ">
             Our values and beliefs are more than words; they define our identity and guide how we live, serve, and grow as a community.
           </p>
         </div>
@@ -52,7 +52,7 @@ export function CoreValues() {
               <h3 className="text-xl md:text-2xl font-bold mb-6 leading-tight">
                 {value.title}
               </h3>
-              <p className="text-base leading-relaxed opacity-90">
+              <p className="text-base lg:text-body-text-lg leading-relaxed opacity-90">
                 {value.description}
               </p>
             </div>

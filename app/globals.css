@@ -1,11 +1,26 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN GUIDE - COLOR PALETTE & TYPOGRAPHY
+   RESPONSIVE BREAKPOINTS
    ============================================ */
+/* 
+   Breakpoint Reference:
+   - sm: 640px   (Small tablets)
+   - md: 768px   (Tablets - default tablet breakpoint)
+   - lg: 1024px  (Desktops)
+   - xl: 1280px  (Large desktops)
+   - 2xl: 1536px (Extra large desktops)
+*/
 
-/* Primary Colors */
 :root {
+  /* Tablet breakpoint variable */
+  --breakpoint-tablet: 768px;
+  
+  /* ============================================
+     DESIGN GUIDE - COLOR PALETTE & TYPOGRAPHY
+     ============================================ */
+
+  /* Primary Colors */
   --color-cream: #FAF7F0;
   --color-black: #1A1A1A;
   --color-white: #FFFFFF;
@@ -88,32 +103,54 @@
   /* Legacy body font */
   --font-body: 'Poppins', 'sans-serif';
   
-  /* Typography utility classes */
+  /* Typography utility classes - Base sizes (mobile) */
+
+  /* body text - destop (lg:) */
   --text-body-text-lg: 18px;
   --leading-body-text-lg: 1.6;
+  /* body txt - tablet (sm:) */
   --text-body-text: 16px;
   --leading-body-text: 1.6;
+  /* body text mobile */
   --text-text-sm: 14px;
   --leading-text-sm: 1.5;
+  /* quote text */
   --text-quote-text: 18px;
   --leading-quote-text: 1.6;
   --font-quote-text: italic;
-  --text-minor-heading: 20px;
+  /* minor heading text destop */
+  --text-minor-heading-lg: 20px;
   --leading-minor-heading: 1.4;
   --font-minor-heading: 600;
+  /* minor heading text mobile */
+  --text-minor-heading: 18px;
+  --leading-minor-heading: ;
+  /* sub-heading text destop */
   --text-sub-heading: 24px;
   --leading-sub-heading: 1.4;
   --font-sub-heading: 600;
+  /* section-heading  destop */
   --text-section-heading: 48px;
   --leading-section-heading: 1.3;
   --font-section-heading: 600;
+
+  /* page-heading destop*/
   --text-page-heading: 40px;
   --leading-page-heading: 1.2;
   --font-page-heading: 700;
+  /* hero heading destop */
   --text-hero-heading: 65px;
   --leading-hero-heading: 1.1;
   --font-hero-heading: 700;
   --tracking-hero-heading: 0.02em;
+  
+  /* Tablet text sizes (sm: 640px) - Use with sm:text-* */
+  --text-hero-heading-sm: 96px;
+  --text-page-heading-sm: 48px;
+  --text-section-heading-sm: 40px;
+  --text-sub-heading-sm: 32px;
+  --text-body-text-lg-sm: 20px;
+
   
   /* Custom colors */
   --color-white-dim: #EBEBEB;
@@ -129,33 +166,14 @@
    CSS UTILITY CLASSES - RESPONSIVE TYPOGRAPHY
    ============================================ */
 
-/* Responsive typography - Hero Heading */
-@media (min-width: 768px) {
-  .text-hero-heading {
-    font-size: 96px;
-  }
-}
+/* ============================================
+   TABLET UTILITIES (min-width: 768px)
+   Use with Tailwind md: prefix - e.g., md:text-hero-heading
+   ============================================ */
 
-/* Responsive typography - Page Heading */
-@media (min-width: 768px) {
-  .text-page-heading {
-    font-size: 48px;
-  }
-}
 
-/* Responsive typography - Section Heading */
-@media (min-width: 768px) {
-  .text-section-heading {
-    font-size: 40px;
-  }
-}
 
-/* Responsive typography - Sub Heading */
-@media (min-width: 768px) {
-  .text-sub-heading {
-    font-size: 32px;
-  }
-}
+
 
 /* Quote Text - Scripture quotes */
 .text-quote-text {

@@ -43,10 +43,10 @@ export function LeadPastors() {
             </div>
             <div className="space-y-6">
               <h3 className="text-2xl md:text-3xl font-bold">Rev. Ohis Ojeikere</h3>
-              <p className="text-base md:text-lg leading-relaxed">
+              <p className="text-body-text lg:text-body-text-lg leading-relaxed">
                 Rev. Ohis Ojeikere is a seasoned teacher and visionary with an apostolic mandate to reach this generation. From leading children's ministry at age 13 to serving as an RCCG Youth Pastor, his life has been defined by a deep commitment to the Great Commission. In 2013, he co-founded The Winlos, a global media ministry impacting millions.
               </p>
-              <p className="text-base md:text-lg leading-relaxed">
+              <p className="text-body-text lg:text-body-text-lg leading-relaxed">
                 Following a divine instruction in 2018, he founded The Votage Church to bridge digital reach with spiritual depth. He is dedicated to the business of fervent prayer and presenting every man mature in Christ.
               </p>
             </div>
