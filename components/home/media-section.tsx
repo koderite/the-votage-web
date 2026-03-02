@@ -27,7 +27,7 @@ const mediaItems: MediaItem[] = [
     id: '0',
     icon: 'youtube',
     title: 'WATCH OUR MOVIES AND SHORT SKITS',
-    subtitle: 'Learns that will impact your life',
+    subtitle: 'Lessons and stories that will impact your life',
     description: 'The Winlos',
     contentTitle: 'Spirtuals Part 4',
     contentSubtitle: 'The Winlos',
