@@ -23,7 +23,7 @@ export const SermonHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-copperplate font-bold text-white uppercase tracking-[0.02em] leading-[1em]
+          className="font-copperplate text-white uppercase tracking-[0.02em] leading-[1em]
                      text-4xl md:text-6xl lg:text-hero-heading mb-6"
         >
           sermons & messages
@@ -41,13 +41,13 @@ export const SermonHero = () => {
           something prepared specifically for you, and it is good for your soul.
         </motion.p>
 
-        <div className="w-full max-w-md">
+        {/* <div className="w-full max-w-md">
           <input
             type="search"
             placeholder="Search sermons..."
             className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none w-full"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
