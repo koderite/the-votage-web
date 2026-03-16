@@ -1,23 +1,23 @@
 export default function TestimonySection() {
   return (
-    <section className="w-full py-16 md:py-24 bg-white px-4">
-      <div className="max-w-5xl mx-auto">
+    <section className="w-full py-16 md:py-24 bg-[#FFF8F0] px-4">
+      <div className="max-w-4xl mx-auto">
         {/* Testimonial Card */}
-        <div className="bg-black rounded-3xl p-8 md:p-12">
+        <div className="bg-white rounded-3xl shadow-[0_10px_50px_rgba(0,0,0,0.2)] p-8 md:p-12 text-center">
           {/* Heading */}
-          <h3 className="font-display text-white text-xl md:text-2xl font-black uppercase mb-6 leading-tight">
-            Testimony of How Connect Has Helped Me.
+          <h3 className="font-copperplate text-black text-xl md:text-2xl lg:text-3xl font-black uppercase mb-6 leading-tight">
+            CONNECT CHANGED MY LIFE!!
           </h3>
 
           {/* Testimony Text */}
-          <p className="font-body text-white text-base md:text-lg leading-relaxed mb-6">
-           lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-           </p>
+          <p className="font-body text-black text-sm md:text-quote-text leading-relaxed mb-6">
+            &ldquo;I Joined Connect As A Really Confused Person. I Was Unclear About Major Decisions Of My Life And Unsure Of Where To Go From Where I Was. The Connect System Of Church Got Me Looking And By Extension Gave Me Access To People Who Walked With Me And Results In My Subsequent Life Decisions. Safe To Say I Am Not The Same Clueless Person Who Came To The Votage Indecisive And Helpless.I Currently Have Real Friends And Godly Connections I&rsquo;d Never Have Imagined In Previous Years!&rdquo;
+          </p>
 
           {/* Author */}
-          <div className="pt-6 border-t border-gray-600">
-            <p className="font-display text-white text-xs uppercase tracking-wider font-black">TESTIFIER TESTIMONY</p>
-          </div>
+          <p className="font-copperplate text-black text-xs md:text-sm uppercase tracking-wider font-black">
+            ABISOYE GABRIEL
+          </p>
         </div>
       </div>
     </section>

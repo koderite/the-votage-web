@@ -14,6 +14,7 @@ const navLinks = [
   { name: 'Sermons', hasDropdown: false },
   { name: 'Give', hasDropdown: false },
   { name: 'Contact', hasDropdown: true },
+  { name: 'Growth Track', href: '/growth-track', hasDropdown: false },
 ];
 
 interface NavbarProps {
@@ -25,6 +26,17 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // Only run animation on initial browser load, not on client-side navigation
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('navbarAnimated');
+    if (!hasVisited) {
+      sessionStorage.setItem('navbarAnimated', 'true');
+    } else {
+      setHasAnimated(true);
+    }
+  }, []);
 
   const handlePlanYourVisitClick = () => {
     if (pathname === '/plan-your-visit') {
@@ -61,9 +73,9 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      initial={hasAnimated ? false : { y: -100 }}
+      animate={hasAnimated ? false : { y: 0 }}
+      transition={hasAnimated ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
       className={`
         fixed top-0 left-0 right-0 z-50 w-full
         transition-all duration-300 ease-in-out max-h-20
@@ -82,12 +94,29 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
       `}>
         {/* Logo */}
         <motion.div
-          className="shrink-0 rounded-full overflow-hidden bg-white/10"
+          className="shrink-0 rounded-full overflow-hidden bg-white/10 cursor-pointer"
           animate={{
             width: isScrolled ? '3.5rem' : '3.75rem',
             height: isScrolled ? '3.5rem' : '3.75rem',
+            scale: [1, 1.05, 1, 1, 1.05, 1],
+            rotate: [0, 0, 0, 360, 360, 360],
           }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          transition={{
+            duration: 0.3,
+            ease: 'easeInOut',
+            scale: {
+              duration: 3,
+              repeat: Infinity,
+              repeatDelay: 4,
+              ease: 'easeInOut',
+            },
+            rotate: {
+              duration: 3,
+              repeat: Infinity,
+              repeatDelay: 4,
+              ease: 'easeInOut',
+            },
+          }}
         >
           <Logo />
         </motion.div>
@@ -104,7 +133,7 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <Link
-                href={`/${link.name.toLowerCase()}`}
+                href={link.href || `/${link.name.toLowerCase().replace(/\s+/g, '-')}`}
                 className="flex items-center gap-1.5"
               >
                 {link.name}
@@ -170,7 +199,7 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <Link href={`/${link.name.toLowerCase()}`} className="flex items-center gap-2">
+                  <Link href={link.href || `/${link.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center gap-2">
                     {link.name}
                     {link.hasDropdown && <ChevronDown className="w-4 h-4" />}
                   </Link>

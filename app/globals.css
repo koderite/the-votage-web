@@ -1,36 +1,191 @@
 @import "tailwindcss";
 
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+/* 
+   Breakpoint Reference:
+   - sm: 640px   (Small tablets)
+   - md: 768px   (Tablets - default tablet breakpoint)
+   - lg: 1024px  (Desktops)
+   - xl: 1280px  (Large desktops)
+   - 2xl: 1536px (Extra large desktops)
+*/
+
 :root {
+  /* Tablet breakpoint variable */
+  --breakpoint-tablet: 768px;
+  
+  /* ============================================
+     DESIGN GUIDE - COLOR PALETTE & TYPOGRAPHY
+     ============================================ */
+
+  /* Primary Colors */
+  --color-cream: #FAF7F0;
+  --color-black: #1A1A1A;
+  --color-white: #FFFFFF;
+  --color-light-dark: #4A4A4A;
+  
+  /* Accent Color */
+  --color-warm-brown: #8B7355;
+  
+  /* Legacy colors (for backward compatibility) */
   --background: #ffffff;
   --foreground: #171717;
 }
+
+/* ============================================
+   TYPOGRAPHY - DESIGN GUIDE CLASSES
+   ============================================ */
+/* 
+   Usage Examples:
+   <h1 className="text-hero-heading">Welcome</h1>
+   <h2 className="text-section-heading">Our Mission</h2>
+   <p className="text-body-text">Join us for worship...</p>
+   <p className="text-body-text-lg">Welcome message...</p>
+   <p className="text-quote-text">Scripture quote...</p>
+   <h3 className="text-sub-heading">Subsection</h3>
+   <h4 className="text-minor-heading">Minor heading</h4>
+   <small className="text-text-sm">Small text</small>
+ */
+
+/* ============================================
+   TAILWIND THEME EXTENSION
+   ============================================ */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  
+
+  /* Poppins Font */
+  --font-poppins: var(--font-poppins), "Poppins", sans-serif;
+
   /* Copperplate Fonts */
-  --font-display: var(--font-copperplate-bold), 'Copperplate', serif;
-  --font-display-medium: var(--font-copperplate-medium), 'Copperplate', serif;
-  --font-display-light: var(--font-copperplate-light), 'Copperplate', serif;
-  --font-display-condensed: var(--font-copperplate-condensed-medium), 'Copperplate', serif;
-  --font-display-condensed-bold: var(--font-copperplate-condensed-bold), 'Copperplate', serif;
-  --font-display-condensed-light: var(--font-copperplate-condensed-light), 'Copperplate', serif;
-  --font-body: 'Arial', 'sans-serif';
-  
+  --font-display: var(--font-copperplate-bold), "Copperplate", serif;
+  --font-display-medium: var(--font-copperplate-medium), "Copperplate", serif;
+  --font-display-light: var(--font-copperplate-light), "Copperplate", serif;
+  --font-display-condensed:
+    var(--font-copperplate-condensed-medium), "Copperplate", serif;
+  --font-display-condensed-bold:
+    var(--font-copperplate-condensed-bold), "Copperplate", serif;
+  --font-display-condensed-light:
+    var(--font-copperplate-condensed-light), "Copperplate", serif;
+  --font-body: "Poppins", sans-serif;
+
   /* Add your custom colors */
-  --color-white: #FFFFFF;
+  --color-white: #ffffff;
+  --color-white-dim: #ebebeb;
+  --color-nav-bg: rgba(255, 255, 255, 0.05);
+  --color-nav-item-bg: rgba(255, 255, 255, 0.1);
+  --color-overlay: rgba(0, 0, 0, 0.65);
+  --color-text-body: #5e5d5d;
+
+  /* Add your custom background image */
+  --hero-pattern: url("https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__");
+  
+  /* Design Guide Color Mapping for Tailwind */
+  --color-cream: var(--color-cream);
+  --color-primary-black: var(--color-black);
+  --color-primary-white: var(--color-white);
+  --color-secondary: var(--color-light-dark);
+  --color-accent: var(--color-warm-brown);
+  
+  /* Copperplate Fonts (existing - for backward compatibility) */
+  --font-copperplate: var(--font-copperplate-bold), 'Copperplate', serif;
+  --font-copperplate-medium: var(--font-copperplate-medium), 'Copperplate', serif;
+  --font-copperplate-light: var(--font-copperplate-light), 'Copperplate', serif;
+  --font-copperplate-condensed: var(--font-copperplate-condensed-medium), 'Copperplate', serif;
+  --font-copperplate-condensed-bold: var(--font-copperplate-condensed-bold), 'Copperplate', serif;
+  --font-copperplate-condensed-light: var(--font-copperplate-condensed-light), 'Copperplate', serif;
+  
+  /* Legacy body font */
+  --font-body: 'Poppins', 'sans-serif';
+  
+  /* Typography utility classes - Base sizes (mobile) */
+
+  /* body text - destop (lg:) */
+  --text-body-text-lg: 18px;
+  --leading-body-text-lg: 1.6;
+  /* body txt - tablet (sm:) */
+  --text-body-text: 16px;
+  --leading-body-text: 1.6;
+  /* body text mobile */
+  --text-text-sm: 14px;
+  --leading-text-sm: 1.5;
+  /* quote text */
+  --text-quote-text: 18px;
+  --leading-quote-text: 1.6;
+  --font-quote-text: italic;
+  /* minor heading text destop */
+  --text-minor-heading-lg: 20px;
+  --leading-minor-heading: 1.4;
+  --font-minor-heading: 600;
+  /* minor heading text mobile */
+  --text-minor-heading: 18px;
+  --leading-minor-heading: ;
+  /* sub-heading text destop */
+  --text-sub-heading: 24px;
+  --leading-sub-heading: 1.4;
+  --font-sub-heading: 600;
+  /* section-heading  destop */
+  --text-section-heading: 40px;
+  --leading-section-heading: 1.3;
+  --font-section-heading: 600;
+
+  /* page-heading destop*/
+  --text-page-heading: 40px;
+  --leading-page-heading: 1.2;
+  --font-page-heading: 700;
+  /* hero heading destop */
+  --text-hero-heading: 65px;
+  --leading-hero-heading: 1.1;
+  --font-hero-heading: 700;
+  --tracking-hero-heading: 0.02em;
+  
+  /* Tablet text sizes (sm: 640px) - Use with sm:text-* */
+  --text-hero-heading-sm: 96px;
+  --text-page-heading-sm: 40px;
+  --text-section-heading-sm: 40px;
+  --text-sub-heading-sm: 32px;
+  --text-body-text-lg-sm: 20px;
+
+  
+  /* Custom colors */
   --color-white-dim: #EBEBEB;
   --color-nav-bg: rgba(255, 255, 255, 0.05);
   --color-nav-item-bg: rgba(255, 255, 255, 0.1);
   --color-overlay: rgba(0, 0, 0, 0.65);
   
-  /* Add your custom background image */
-  --hero-pattern: url('https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/46a1/1068/5be4de114d24186039db4eb4af1ded4a?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=HJUnJNmftsrQ~ezTsyVq6AQtVrn0gqKxjo60DSM0W-DvJ6VWGQVvdRdbBKyEpZP1zC9t3NJrDrzh2mQ8j1PYoXgnEk-QrZWYUD2RcWOXBlc~E2GauHyG7EePPOue4MA31wbSk~URhqSnjEwTcNcSHTn7yYumXEOpbPy5OthngAsxq3DfYYF8TsUHpRuQZ2JT3JaBUPa9j8-auvU7vG24kQ~dEFvxMndVs07wF3tD64RsUz3Wm8sM0nS4eKcs3pH6vJfY6VoSJf7BXlVe7KWA-xO0o9tN7vO6sv8qWU0mBRnfewVlyfKTyFtk2LXGlrOcGQ5qEyD72qxOfxWKEed-lw__');
+  /* Background image */
+  --hero-pattern: url('/img/hero-img.jpg');
 }
 
+/* ============================================
+   CSS UTILITY CLASSES - RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+/* ============================================
+   TABLET UTILITIES (min-width: 768px)
+   Use with Tailwind md: prefix - e.g., md:text-hero-heading
+   ============================================ */
+
+
+
+
+
+/* Quote Text - Scripture quotes */
+.text-quote-text {
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.6;
+  border-left: 4px solid var(--color-warm-brown);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -41,5 +196,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
 }

@@ -1,65 +1,81 @@
 import Image from "next/image";
 
+function BlurPlaceholder() {
+  return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
+}
+
 export default function WhyJoinSection() {
   const reasons = [
     {
       title: "SPIRITUAL GROWTH",
       description:
-        "Information About Connect. What It Is And What They Do To Present The Kingdom, The Power AoD",
+        "Information about connect, what it is and what they do to present the kingdom, the power aod",
     },
     {
-      title: "SPIRITUAL GROWTH",
+      title: "REAL CONNECTIONS",
       description:
-        "Information About Connect. What It Is And What They Do To Present The Kingdom, The Power And",
+        "Information about connect, what it is and what they do to present the kingdom, the power And",
     },
     {
-      title: "SPIRITUAL GROWTH",
+      title: "GET ANSWERS",
       description:
-        "Information About Connect. What It Is And What CVNGSCVMVHMH VNCF AND THEYRE COMING.",
+        "Information about connect, what it is and what they do to present the kingdom, the power aoD",
+    },
+    {
+      title: "BECOME FAMILY",
+      description:
+        "Info/talks about connect, what it is and what they/we/me ohnvndgmk, the power AoD",
     },
   ];
 
   return (
-    <section className="w-full py-16 md:py-24 bg-black px-4">
+    <section className="w-full py-20 md:py-30 bg-white px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        {/* Mobile Image - Visible only on mobile */}
+        <div className="md:hidden mb-12">
+          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl max-w-md mx-auto">
+            <BlurPlaceholder />
+            <Image
+             src="/img/belong-2.png"
+              alt="Connect Group"
+              fill
+              className="object-cover relative z-10"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ">
           {/* Left side - Content */}
-          <div>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white mb-12 leading-tight uppercase">
-              Why You<br />
-              Should Join a<br />
+          <div className="flex flex-col items-center text-center md:items-start md:text-left  md:px-0">
+            <h2 className="font-copperplate text-3xl  lg:text-section-heading font-black px-1 text-black mb-12 md:mb-10 leading-tight uppercase">
+              Why You Should Join a<br />
               Connect Group
             </h2>
 
-            <div className="space-y-8">
+            <div className="space-y-8 md:space-y-6 max-w-lg w-full">
               {reasons.map((reason, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-6 w-6 rounded-full bg-white flex-shrink-0 mt-0.5">
-                      <span className="text-black text-sm font-bold">✓</span>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-display text-base font-black text-white tracking-wider mb-3 uppercase">
-                      {reason.title}
-                    </h3>
-                    <p className="font-body text-gray-300 text-lg leading-relaxed">
-                      {reason.description}
-                    </p>
-                  </div>
+                <div key={index}>
+                  <p className="font-body text-base sm:text-lg lg:text-body-text-lg text-gray-700 leading-relaxed">
+                    <span className="font-copperplate font-black text-black uppercase tracking-wide">{reason.title}</span> : {reason.description}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right side - Image */}
-          <div>
-            <div className="relative aspect-square rounded-2xl overflow-hidden">
+          {/* Right side - Image (Desktop only) */}
+          <div className="hidden md:block">
+            <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
+              <BlurPlaceholder />
               <Image
-                src="/img/why-you-should-join-a-connect-group.png"
+                src="/img/belong-2.png"
                 alt="Connect Group"
                 fill
-                className="object-cover"
+                className="object-cover object-top relative z-10"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
               />
             </div>
           </div>

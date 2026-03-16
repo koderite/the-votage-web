@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 export function PlanYourVisitHero() {
   return (
     <div 
-      className="relative w-full h-[60vh] md:h-[80vh] lg:h-screen bg-cover bg-center bg-no-repeat"
+      className="relative w-full h-[60vh] md:h-[80vh] lg:h-screen bg-cover bg-center bg-no-repeat bg-gray-800"
       style={{ backgroundImage: `url(/img/plan-your-visit/hero-bg.png)` }}
     >
       {/* Overlay for better text readability */}
@@ -20,7 +20,7 @@ export function PlanYourVisitHero() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             {/* Heading */}
-            <h1 className="text-white font-display text-[40px] md:text-[64px] font-bold tracking-tight leading-[1.1] mb-6">
+            <h1 className="text-white font-copperplate text-[40px] md:text-[64px] font-bold tracking-tight leading-[1.1] mb-6">
               PLAN YOUR VISIT
             </h1>
 
@@ -30,7 +30,7 @@ export function PlanYourVisitHero() {
             </p>
 
             {/* CTA Button */}
-            <button className="bg-black font-display text-white px-10 py-4 rounded-full text-[15px] font-semibold tracking-wide uppercase hover:bg-black/90 transition-all duration-300 cursor-pointer">
+            <button className="bg-black font-copperplate text-white px-10 py-4 rounded-full text-[15px] font-semibold tracking-wide uppercase hover:bg-black/90 transition-all duration-300 cursor-pointer">
               I'M COMING
             </button>
           </motion.div>

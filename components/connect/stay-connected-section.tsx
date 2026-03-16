@@ -5,7 +5,7 @@ export default function StayConnectedSection() {
     <section className="w-full py-16 md:py-24 bg-white px-4">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
-        <h2 className="font-display text-2xl md:text-3xl font-black text-black mb-12 uppercase">
+        <h2 className="font-copperplate text-2xl md:text-3xl font-black text-black mb-12 uppercase">
           STAY CONNECTED
         </h2>
 
@@ -17,7 +17,7 @@ export default function StayConnectedSection() {
             </div>
           </div>
           <div className="flex-1 flex items-center">
-            <p className="font-display text-black text-sm md:text-base font-black leading-relaxed max-w-3xl uppercase">
+            <p className="font-copperplate text-black text-sm md:text-base font-black leading-relaxed max-w-3xl uppercase">
               AT THE VOTAGE, WE EXIST TO REACH PEOPLE WITH THE LIFE-GIVING MESSAGE OF JESUS, THAT THEY MIGHT BECOME FULLY DEVOTED FOLLOWERS OF CHRIST.
             </p>
           </div>

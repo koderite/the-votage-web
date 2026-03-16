@@ -40,5 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local development (not pushed to GitHub)
-app/layout.tsx
+

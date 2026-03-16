@@ -8,7 +8,7 @@ import { ContactInfo } from "@/components/contact/contact-info";
 export default function ContactPage() {
   return (
     <div className="relative w-full overflow-hidden">
-      <Navbar darkText />
+      <Navbar  />
       <ContactHero />
       <ContactForm />
       <LocationMap />

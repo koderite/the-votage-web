@@ -10,7 +10,7 @@ export function LocationMap() {
   const longitude = 5.5880919;
   const address =
     "144, Ogba–Airport Road, Opposite DVD Filling Station, Benin City, Edo State, Nigeria";
-  const locationName = "Vintage Church";
+  const locationName = "Votage Church";
 
   const [mapKey, setMapKey] = useState(0);
 
@@ -40,7 +40,7 @@ export function LocationMap() {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center"
         >
-          <h2 className="text-5xl font-display md:text-6xl lg:text-6xl font-bold text-[#1a1a1a] mb-4">
+          <h2 className="text-5xl font-copperplate md:text-6xl lg:text-6xl font-bold text-[#1a1a1a] mb-4">
             Find Us
           </h2>
           <p className="text-lg text-[#1a1a1a]/70 max-w-2xl mx-auto">
@@ -73,7 +73,7 @@ export function LocationMap() {
                   <MapPin className="w-6 h-6 text-white" />
                 </motion.div>
                 <div>
-                  <h3 className="text-xl font-display font-bold text-[#1a1a1a] mb-2">
+                  <h3 className="text-xl font-copperplate font-bold text-[#1a1a1a] mb-2">
 
                     {locationName}
                   </h3>
@@ -143,7 +143,7 @@ export function LocationMap() {
                 src={`https://maps.google.com/maps?q=${latitude},${longitude}&t=m&z=17&output=embed`}
                 allowFullScreen
                 loading="lazy"
-                title="Vintage Church Location Map"
+                title="Votage Church Location Map"
               />
 
               {/* Custom Overlay Label - Now Clickable */}
@@ -161,7 +161,7 @@ export function LocationMap() {
                     <MapPin className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-left">
-                    <h4 className="font-bold font-display text-[#1a1a1a] text-sm">
+                    <h4 className="font-bold font-copperplate text-[#1a1a1a] text-sm">
                       {locationName}
                     </h4>
                     <p className="text-xs text-[#1a1a1a]/60">

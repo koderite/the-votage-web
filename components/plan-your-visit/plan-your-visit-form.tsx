@@ -116,7 +116,7 @@ export function PlanYourVisitContactForm() {
           className="text-center mb-12 md:mb-16"
           variants={itemVariants}
         >
-          <h2 className="text-[36px] font-display text-black md:text-[42px] lg:text-[48px] font-bold tracking-tight leading-tight mb-4">
+          <h2 className="text-[36px] font-copperplate text-black md:text-[42px] lg:text-[48px] font-bold tracking-tight leading-tight mb-4">
             LET US KNOW YOU'RE COMING
           </h2>
           <p className="text-[16px] md:text-[18px] lg:text-[24px] text-black/80">
@@ -297,7 +297,7 @@ export function PlanYourVisitContactForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full font-display bg-black text-white py-5 rounded-full text-[14px] font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full font-copperplate bg-black text-white py-5 rounded-full text-[14px] font-semibold tracking-wider uppercase transition-all duration-300 hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Submitting..." : "LET US KNOW YOU'RE COMING"}
             </button>

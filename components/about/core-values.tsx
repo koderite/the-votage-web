@@ -21,7 +21,7 @@ export function CoreValues() {
     {
       title: 'Excellence in Mandate',
       description: 'We represent the Kingdom with distinction. From our digital reach to our local tribes, we "do all we can" with a spirit of excellence, ensuring the life-giving message of Jesus is presented with clarity, quality, and honor.',
-      bgColor: 'bg-gray-800',
+      bgColor: 'bg-black',
       textColor: 'text-white',
       offset: 'lg:translate-y-0',
       icon: Award,
@@ -29,14 +29,14 @@ export function CoreValues() {
   ];
 
   return (
-    <section className="bg-white py-20 px-6 md:px-[80px]">
+    <section className="bg-white py-20 px-6 md:pb-50 md:px-[80px]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-display text-black md:text-5xl  font-bold mb-6 tracking-tight">
+          <h2 className="text-4xl font-copperplate text-black md:text-section-heading font-bold mb-6 tracking-tight">
             OUR CORE VALUES
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-minor-heading lg:text-minor-heading-lg text-gray-700 max-w-4xl mx-auto ">
             Our values and beliefs are more than words; they define our identity and guide how we live, serve, and grow as a community.
           </p>
         </div>
@@ -46,13 +46,13 @@ export function CoreValues() {
           {values.map((value, index) => (
             <div
               key={index}
-              className={`${value.bgColor} ${value.textColor} ${value.offset} p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.18)] transition-all duration-300 hover:scale-105`}
+              className={`${value.bgColor} ${value.textColor} ${value.offset} p-8 md:p-10 rounded-3xl shadow-[0_4px_15px_rgb(0,0,0,0.06)] hover:shadow-[0_8px_25px_rgb(0,0,0,0.1)] transition-all duration-300 hover:scale-105`}
             >
               <value.icon className="w-10 h-10 mb-4" strokeWidth={1.5} />
               <h3 className="text-xl md:text-2xl font-bold mb-6 leading-tight">
                 {value.title}
               </h3>
-              <p className="text-base leading-relaxed opacity-90">
+              <p className="text-base lg:text-body-text-lg leading-relaxed opacity-90">
                 {value.description}
               </p>
             </div>

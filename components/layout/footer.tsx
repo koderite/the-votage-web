@@ -39,23 +39,23 @@ export const Footer = () => {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-display font-bold text-2xl mb-8">Quick links</h3>
+            <h3 className="font-copperplate font-bold text-2xl mb-8">Quick links</h3>
             <ul className="space-y-4 font-body text-base text-white/80">
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Partner with us</a></li>
+              <li><a href="/give" className="hover:text-brand-blue transition-colors">Partner with us</a></li>
               <li><a href="/connect" className="hover:text-brand-blue transition-colors">Connect</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Leadership</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Give</a></li>
+              <li><a href="/join" className="hover:text-brand-blue transition-colors">Join Us</a></li>
+              <li><a href="/give" className="hover:text-brand-blue transition-colors">Give</a></li>
             </ul>
           </div>
 
           {/* Column 3: Navigation */}
           <div className="pt-0 lg:pt-16">
             <ul className="space-y-4 font-body text-base text-white/80">
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Home</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Sermon</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Give</a></li>
-              <li><a href="#" className="hover:text-brand-blue transition-colors">Growth Track</a></li>
+              <li><a href="/" className="hover:text-brand-blue transition-colors">Home</a></li>
+              <li><a href="/about" className="hover:text-brand-blue transition-colors">About Us</a></li>
+              <li><a href="/sermons" className="hover:text-brand-blue transition-colors">Sermons</a></li>
+              <li><a href="/growth-track" className="hover:text-brand-blue transition-colors">Growth Track</a></li>
+              <li><a href="/plan-your-visit" className="hover:text-brand-blue transition-colors">Plan Your Visit</a></li>
             </ul>
           </div>
 
