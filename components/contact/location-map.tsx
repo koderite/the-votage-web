@@ -10,7 +10,7 @@ export function LocationMap() {
   const longitude = 5.5880919;
   const address =
     "144, Ogba–Airport Road, Opposite DVD Filling Station, Benin City, Edo State, Nigeria";
-  const locationName = "Vintage Church";
+  const locationName = "Votage Church";
 
   const [mapKey, setMapKey] = useState(0);
 
@@ -143,7 +143,7 @@ export function LocationMap() {
                 src={`https://maps.google.com/maps?q=${latitude},${longitude}&t=m&z=17&output=embed`}
                 allowFullScreen
                 loading="lazy"
-                title="Vintage Church Location Map"
+                title="Votage Church Location Map"
               />
 
               {/* Custom Overlay Label - Now Clickable */}

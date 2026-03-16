@@ -12,12 +12,12 @@ export default function MessageSection() {
         <div className="mb-12">
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1 text-center">
-              <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-black text-black leading-tight uppercase">
+              <h2 className="font-display text-2xl  lg:text-section-heading font-black text-black leading-tight uppercase">
                 Our latest sermons
               </h2>
             </div>
           </div>
-          <p className="font-body text-gray-700 text-xs md:text-sm max-w-3xl mx-auto text-center">
+          <p className="font-body text-gray-700 text-xs lg:text-body-text-lg max-w-3xl mx-auto text-center">
             Sermons are uploaded at the end of every service for your progress
             and refreshments during the week as you go by your dail actifities.
           </p>
@@ -27,7 +27,7 @@ export default function MessageSection() {
         {messages.map((message) => (
           <div
             key={message.id}
-            className="bg-white rounded-2xl transition duration-300 shadow-sm hover:shadow-lg"
+            className="bg-white rounded-2xl  transition duration-300 shadow-sm hover:shadow-lg"
           >
             <div>
               <img

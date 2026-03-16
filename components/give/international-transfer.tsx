@@ -8,12 +8,12 @@ export default function InternationalTransfer() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="mb-8">
-          <h2 className="font-display text-center text-2xl md:text-3xl lg:text-4xl font-black text-black leading-tight uppercase">
+          <h2 className="font-display text-center text-2xl md:text-3xl lg:text-section-heading font-black text-black leading-tight pb-5 uppercase">
             International Transfer
           </h2>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-start gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 items-start gap-8 py-15">
           <TransferCard
             data={transferData.USD}
             accent="bg-yellow-50"

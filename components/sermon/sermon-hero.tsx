@@ -34,10 +34,10 @@ export const SermonHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="font-body text-white-dim text-lg md:text-2xl leading-[1.15em] max-w-3xl mb-8"
+          className="font-body text-white-dim text-lg lg:text-body-text-lg leading-[1.15em] max-w-2xl mb-8"
         >
           Get access to uplifting messages that inspires your faith and deepens
-          your relationship with god.think of it as a spiritual buffet; there’s
+          your relationship with God. Think of it as a spiritual buffet; there’s
           something prepared specifically for you, and it is good for your soul.
         </motion.p>
 

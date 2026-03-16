@@ -26,6 +26,17 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // Only run animation on initial browser load, not on client-side navigation
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('navbarAnimated');
+    if (!hasVisited) {
+      sessionStorage.setItem('navbarAnimated', 'true');
+    } else {
+      setHasAnimated(true);
+    }
+  }, []);
 
   const handlePlanYourVisitClick = () => {
     if (pathname === '/plan-your-visit') {
@@ -62,9 +73,9 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      initial={hasAnimated ? false : { y: -100 }}
+      animate={hasAnimated ? false : { y: 0 }}
+      transition={hasAnimated ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
       className={`
         fixed top-0 left-0 right-0 z-50 w-full
         transition-all duration-300 ease-in-out max-h-20

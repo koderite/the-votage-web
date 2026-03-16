@@ -29,36 +29,36 @@ export default function WhyJoinSection() {
   ];
 
   return (
-    <section className="w-full py-16 md:py-24 bg-white px-4 relative overflow-hidden">
-      {/* Mobile Background Image with Gradient Overlay */}
-      <div className="absolute inset-0 md:hidden">
-        <BlurPlaceholder />
-        <Image
-          src="/img/why-you-should-join-a-connect-group.png"
-          alt="Connect Group"
-          fill
-          className="object-cover relative z-10"
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
-        />
-        {/* Gradient overlay - darker at top and bottom for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80 z-20"></div>
-      </div>
+    <section className="w-full py-20 md:py-30 bg-white px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Mobile Image - Visible only on mobile */}
+        <div className="md:hidden mb-12">
+          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl max-w-md mx-auto">
+            <BlurPlaceholder />
+            <Image
+             src="/img/belong-2.png"
+              alt="Connect Group"
+              fill
+              className="object-cover relative z-10"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
+            />
+          </div>
+        </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ">
           {/* Left side - Content */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <h2 className="font-copperplate text-2xl md:text-3xl lg:text-4xl font-black text-white md:text-black mb-10 leading-tight uppercase">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left  md:px-0">
+            <h2 className="font-copperplate text-3xl  lg:text-section-heading font-black px-1 text-black mb-12 md:mb-10 leading-tight uppercase">
               Why You Should Join a<br />
               Connect Group
             </h2>
 
-            <div className="space-y-6 max-w-lg w-full">
+            <div className="space-y-8 md:space-y-6 max-w-lg w-full">
               {reasons.map((reason, index) => (
                 <div key={index}>
-                  <p className="font-body text-sm md:text-base text-white md:text-gray-700 leading-relaxed">
-                    <span className="font-copperplate font-black text-white md:text-black uppercase tracking-wide">{reason.title}</span> : {reason.description}
+                  <p className="font-body text-base sm:text-lg lg:text-body-text-lg text-gray-700 leading-relaxed">
+                    <span className="font-copperplate font-black text-black uppercase tracking-wide">{reason.title}</span> : {reason.description}
                   </p>
                 </div>
               ))}
@@ -67,13 +67,13 @@ export default function WhyJoinSection() {
 
           {/* Right side - Image (Desktop only) */}
           <div className="hidden md:block">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
               <BlurPlaceholder />
               <Image
-                src="/img/why-you-should-join-a-connect-group.png"
+                src="/img/belong-2.png"
                 alt="Connect Group"
                 fill
-                className="object-cover relative z-10"
+                className="object-cover object-top relative z-10"
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
               />
