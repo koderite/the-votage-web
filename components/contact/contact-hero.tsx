@@ -9,6 +9,7 @@ export function ContactHero() {
   return (
     <div className="relative min-h-screen overflow-hidden" style={{
             backgroundImage: ` url(/img/contact/hero.png)`,
+            filter: 'grayscale(100%)',
           }}>
       {/* Background Image with Parallax Effect */}
       <motion.div
@@ -18,7 +19,7 @@ export function ContactHero() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <div
-          className="w-full h-full  bg-cover inset-0 absolute bg-center bg-black/40"
+          className="w-full h-full  bg-cover inset-0 absolute bg-center bg-black/60"
           
         />
       </motion.div>
@@ -38,7 +39,7 @@ export function ContactHero() {
         }}
       />
 
-      <motion.div
+      {/* <motion.div
         className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-orange-200/30 rounded-full blur-3xl"
         animate={{
           x: [0, -30, 0],
@@ -50,7 +51,7 @@ export function ContactHero() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-      />
+      /> */}
 
       {/* Main Content */}
       <div className="relative z-10 flex items-center min-h-screen px-8 md:px-16 lg:px-24">
@@ -60,7 +61,7 @@ export function ContactHero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-7xl md:text-4xl lg:text-6xl font-copperplate font-bold tracking-tight mb-6 text-[#FFFDD0]"
+            className="text-7xl md:text-4xl lg:text-6xl font-copperplate font-bold tracking-tight mb-6 text-white"
           >
             <motion.span
               className="inline-block"
@@ -99,7 +100,7 @@ export function ContactHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-[#FFFDD0] mb-8 max-w-xl leading-relaxed"
+            className="text-lg md:text-xl text-white mb-8 max-w-xl leading-relaxed"
           >
             We'd love to hear from you! reach out to us with your prayers
             questions and more questions regarding church.
@@ -117,7 +118,7 @@ export function ContactHero() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="relative px-12 py-4 bg-[#FFFDD0] text-black rounded-full text-base font-medium overflow-hidden group"
+              className="relative px-12 py-4 bg-white text-black rounded-full text-base font-medium overflow-hidden group"
             >
               <motion.span
                 className="relative font-bold z-10"
