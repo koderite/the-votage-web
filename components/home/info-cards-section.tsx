@@ -10,7 +10,7 @@ const infoCards = [
     title: 'Service Time',
     icon: <Clock className="w-6 h-6 text-white" />,
     contentTitle: 'Our Three Services',
-    contentDetails: ['7:00 am', '8:00 am', '10:00 am'],
+    contentDetails: ['7:00 am', '8:30 am', '10:00 am'],
     isTime: true,
   },
   {
@@ -18,7 +18,7 @@ const infoCards = [
     title: 'Location',
     icon: <MapPin className="w-6 h-6 text-white" />,
     contentTitle: 'Benin City',
-    contentDetails: ['No144 Airport Road, after ADP Junction'],
+    contentDetails: ['No. 144 Airport Road, Opposite DVD filling station'],
     isTime: false,
   },
   {
