@@ -24,16 +24,11 @@ export const GiveHero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="font-display font-bold text-white uppercase tracking-hero-heading leading-[1em]
-<<<<<<< HEAD
                      text-4xl md:text-6xl  mb-6"
-=======
-                     text-4xl md:text-6xl lg:text-hero-heading mb-6"
->>>>>>> origin/dev
         >
           Giving
         </motion.h1>
 
-        {/* Subheadline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
