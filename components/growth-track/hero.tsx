@@ -5,7 +5,8 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden ">
+
       {/* Background Image */}
       <Image
         src="/img/gta/hero-bg.png"
@@ -15,9 +16,10 @@ export default function HeroSection() {
       />
 
       {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/70 " />
 
       {/* Content Container */}
-      <div className="relative h-full flex items-center">
+      <div className="relative h-full flex items-center z-10">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-20 w-full">
           <motion.div
             className="max-w-2xl"
@@ -87,7 +89,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-black/70 z-10" />
 
 
       {/* Decorative Gradient Overlay at Bottom */}
