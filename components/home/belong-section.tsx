@@ -15,22 +15,21 @@ const cards = [
   {
     id: 2,
     category: 'OUR CONNECT GROUP',
-    title: ' Join a Connect',
+    title: 'JOIN A CONNECT',
     link: '/connect',
     image: '/img/belong-2.png',
   },
-  
   {
     id: 3,
-    category: 'OUR Family GROUPS',
-    title: 'Family Life',
-    image: '/img/belong-3.jpg',
+   title : 'GROWTH TRACK',
+   category : 'GROW IN YOUR FAITH',   image: '/img/sermon/sermon1.jpg', 
   },
   {
     id: 4,
-    category: 'OUR TRYBE',
-    title: 'Location based community',
-    image: '/img/belong-4.jpg',
+   title : 'SERMONS',
+   category : 'WATCH & LISTEN',
+    image: '/img/connect/connect1.jpg',
+
   }
 ];
 
