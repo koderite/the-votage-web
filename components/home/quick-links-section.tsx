@@ -9,19 +9,24 @@ const accordionItems = [
     id: 'join-connect',
     title: 'Join a connect',
     href: '/connect',
-    content: 'Connect groups are small communities where you can build real relationships, grow in your faith, and be part of a family that cares for one another. Join a connect today and find your community.'
+    content: 'Connect groups are small communities where you can build real relationships, grow in your faith, and be part of a family that cares for one another. Join a connect today and find your community.',
+    cta: "Join Now"
   },
   {
     id: 'get-baptized',
     title: 'Get Baptized',
     href: '/contact',
-    content: 'Baptism is a public declaration of your faith in Jesus Christ. It symbolizes the old you being buried and the new you rising to live a transformed life. Join us for our next baptism service.'
+    content: 'Baptism is a public declaration of your faith in Jesus Christ. It symbolizes the old you being buried and the new you rising to live a transformed life. Join us for our next baptism service.',
+        cta: "Register for class"
+
   },
   {
     id: 'give-building',
     title: 'Give to our Building',
     href: "/give",
-    content: 'Help us build a place where generations can encounter God. Your generosity shapes the future of our church and creates a lasting legacy for the Kingdom. Every contribution makes a difference.'
+    content: 'Help us build a place where generations can encounter God. Your generosity shapes the future of our church and creates a lasting legacy for the Kingdom. Every contribution makes a difference.',
+        cta: "Give Now"
+
   }
 ];
 
@@ -74,11 +79,11 @@ export const QuickLinksSection = () => {
                       </p>
                       {item.href ? (
                         <Link href={item.href} className="mt-4 inline-block px-6 py-2 bg-black text-white font-body text-lg rounded hover:bg-gray-800 transition-colors">
-                          Learn More
+                          {item.cta}
                         </Link>
                       ) : (
                         <button className="mt-4 px-6 py-2 bg-black text-white font-body text-lg rounded hover:bg-gray-800 transition-colors">
-                          Learn More
+                          {item.cta}
                         </button>
                       )}
                     </div>

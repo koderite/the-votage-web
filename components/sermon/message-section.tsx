@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { messages } from "./message";
 
@@ -50,9 +51,13 @@ export default function MessageSection() {
                 {message.service}
               </p>
 
+              
+              <a href={message.link} target="_blank" >
               <Button variant="black" className="mt-4 w-full">
                 Download
               </Button>
+              </a>
+              
             </div>
           </div>
         ))}

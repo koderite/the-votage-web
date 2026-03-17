@@ -14,7 +14,7 @@ export const SermonHero = () => {
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/70 z-10" />
+      <div className="absolute inset-0 bg-black/60 z-10" />
 
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto mt-20">
@@ -23,13 +23,12 @@ export const SermonHero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-copperplate font-bold text-white uppercase tracking-[0.02em] leading-[1em]
-                     text-4xl md:text-6xl lg:text-hero-heading mb-6"
+          className="font-copperplate text-white uppercase tracking-[0.02em] leading-[1em]
+                     text-4xl md:text-6xl mb-6"
         >
           sermons & messages
         </motion.h1>
 
-        {/* Subheadline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
