@@ -26,16 +26,17 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(true);
 
   // Only run animation on initial browser load, not on client-side navigation
   useEffect(() => {
     const hasVisited = sessionStorage.getItem('navbarAnimated');
     if (!hasVisited) {
+      // First visit - allow animation by setting hasAnimated to false
+      setHasAnimated(false);
       sessionStorage.setItem('navbarAnimated', 'true');
-    } else {
-      setHasAnimated(true);
     }
+    // If hasVisited exists, keep hasAnimated as true (no animation on subsequent visits)
   }, []);
 
   const handlePlanYourVisitClick = () => {
@@ -93,44 +94,18 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
         ${isScrolled ? 'h-16' : 'h-20'}
       `}>
         {/* Logo */}
-        <motion.div
-          className="shrink-0 rounded-full overflow-hidden bg-white/10 cursor-pointer"
-          animate={{
-            width: isScrolled ? '3.5rem' : '3.75rem',
-            height: isScrolled ? '3.5rem' : '3.75rem',
-            scale: [1, 1.05, 1, 1, 1.05, 1],
-            rotate: [0, 0, 0, 360, 360, 360],
-          }}
-          transition={{
-            duration: 0.3,
-            ease: 'easeInOut',
-            scale: {
-              duration: 3,
-              repeat: Infinity,
-              repeatDelay: 4,
-              ease: 'easeInOut',
-            },
-            rotate: {
-              duration: 3,
-              repeat: Infinity,
-              repeatDelay: 4,
-              ease: 'easeInOut',
-            },
-          }}
+        <div
+          className="shrink-0 rounded-full overflow-hidden bg-white/10 cursor-pointer h-[3.75rem] w-[3.75rem]"
         >
           <Logo />
-        </motion.div>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link, index) => (
-            <motion.div
+            <div
               key={link.name}
               className={`group flex items-center gap-1.5 ${getTextColor()} font-sans text-base transition-colors`}
-              animate={{
-                fontSize: isScrolled ? '0.875rem' : '1rem',
-              }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <Link
                 href={link.href || `/${link.name.toLowerCase().replace(/\s+/g, '-')}`}
@@ -141,17 +116,13 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
                   <ChevronDown className={`w-4 h-4 ${getDropdownIconColor()} transition-transform group-hover:rotate-180`} />
                 )}
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA Button */}
-        <motion.div
+        <div
           className="hidden lg:block"
-          animate={{
-            scale: isScrolled ? 0.9 : 1,
-          }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           <Button 
             variant="nav-cta" 
@@ -164,19 +135,15 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
           >
             Plan Your Visit
           </Button>
-        </motion.div>
+        </div>
 
         {/* Mobile Menu Toggle */}
-        <motion.button
+        <button
           className={`lg:hidden p-2 ${darkText && !isScrolled ? 'text-black' : 'text-white'}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          animate={{
-            scale: isScrolled ? 0.9 : 1,
-          }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           {isMobileMenuOpen ? <X /> : <Menu />}
-        </motion.button>
+        </button>
       </div>
 
       {/* Mobile Menu */}
