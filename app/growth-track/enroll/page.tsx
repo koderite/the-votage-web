@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { motion } from 'motion/react';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { Navbar } from '@/components/layout/navbar';
-import { Footer } from '@/components/layout/footer';
-import { EnrollmentForm } from '@/components/gta-form/enrollment-form';
+import { motion } from "motion/react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { EnrollmentForm } from "@/components/gta-form/enrollment-form";
 
 export default function EnrollmentPage() {
   const handleSubmit = async (data: any) => {
     // TODO: Implement actual API submission
-    console.log('Form data:', data);
-    
+    console.log("Form data:", data);
+
     // Example API call:
     // const response = await fetch('/api/enrollment', {
     //   method: 'POST',
@@ -32,7 +32,7 @@ export default function EnrollmentPage() {
           className="absolute inset-0 pointer-events-none"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         >
           <div className="absolute inset-0 overflow-hidden">
             <img
@@ -56,7 +56,7 @@ export default function EnrollmentPage() {
               className="flex flex-col font-copperplate font-bold justify-center relative shrink-0 text-white tracking-[1.44px] uppercase"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             >
               <p className="whitespace-pre-wrap text-[48px] md:text-[64px] lg:text-hero-heading leading-[1]">
                 GROWTH TRACK
@@ -67,7 +67,7 @@ export default function EnrollmentPage() {
               className="flex flex-col font-['Arial',sans-serif] justify-center relative shrink-0 text-[#ebebeb]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             >
               <p className="whitespace-pre-wrap text-[18px] md:text-[24px]">
                 New Enrollment Form
@@ -88,7 +88,7 @@ export default function EnrollmentPage() {
           </p>
           <motion.div
             animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path

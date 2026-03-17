@@ -110,6 +110,7 @@
   --leading-body-text-lg: 1.6;
   /* body txt - tablet (sm:) */
   --text-body-text: 16px;
+  --text-body-text-small: 15px;
   --leading-body-text: 1.6;
   /* body text mobile */
   --text-text-sm: 14px;

@@ -1,4 +1,4 @@
-// app/api/submit/route.ts - API proxy for SpreadAPI
+
 
 export async function POST(request: Request) {
   try {
