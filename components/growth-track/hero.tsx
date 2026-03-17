@@ -6,13 +6,15 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-black"
-        style={{
-          backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%), url(/img/gta/hero-bg.png)`,
-        }}
+      {/* Background Image */}
+      <Image
+        src="/img/gta/hero-bg.png"
+        alt="Growth Track Hero"
+        fill
+        className="object-cover"
       />
+
+      {/* Dark Overlay */}
 
       {/* Content Container */}
       <div className="relative h-full flex items-center">
@@ -84,6 +86,9 @@ export default function HeroSection() {
           </motion.div>
         </div>
       </div>
+
+      <div className="absolute inset-0 bg-black/70 z-10" />
+
 
       {/* Decorative Gradient Overlay at Bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
