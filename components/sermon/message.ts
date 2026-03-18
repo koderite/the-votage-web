@@ -101,5 +101,36 @@ export const messages: Message[] = [
     image: "/img/sermon/firstlady2.png",
     link: "https://t.me/AAAAAEZ6sbhFRtY4ERUROA/973"
   },
+  {
+    id: 10,
+    title: "How to recover wasted years and break repeated cycle  Prt. 3",
+    minister: "Rev. Ohis Ojeikere",
+    text: "Joel 2:25",
+    date: "11th Jan. 2026",
+    service: "The Votage Third Service",
+    image: "/img/sermon/rev3.png",
+    link: "https://t.me/AAAAAEZ6sbhFRtY4ERUROA/972"
+  },
+  {
+    id: 11,
+    title: "How to recover wasted years and break repeated cycle  Prt. 2",
+    minister: "Rev. Ohis Ojeikere",
+    text: "Gen 18: 19",
+    date: "11th Jan. 2026",
+    service: "The Votage Second Service",
+    image: "/img/sermon/rev4.png",
+    link: "https://t.me/AAAAAEZ6sbhFRtY4ERUROA/971"
+  },
+  
+  {
+    id: 12,
+    title: "How to recover wasted years and break repeated cycle  Prt. 1",
+    minister: "Rev. Ohis Ojeikere",
+    text: "Joel 2:25",
+    date: "11th Jan. 2026",
+    service: "The Votage First Service",
+    image: "/img/sermon/rev.png",
+    link: "https://t.me/AAAAAEZ6sbhFRtY4ERUROA/970"
+  },
   
 ];
