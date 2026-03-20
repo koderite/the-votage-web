@@ -23,12 +23,16 @@ const cards = [
     id: 3,
    title : 'GROWTH TRACK',
    category : 'GROW IN YOUR FAITH',   image: '/img/sermon/sermon1.jpg', 
+       link: '/growth-track',
+
   },
   {
     id: 4,
    title : 'SERMONS',
    category : 'WATCH & LISTEN',
     image: '/img/connect/connect1.jpg',
+        link: '/sermons',
+
 
   }
 ];
