@@ -22,8 +22,8 @@ export default function ConnectGroupsSection() {
       location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
       image: "/img/connect-images.png",
-      leader: "Pastor David Ojo",
-      whatsapp: "+234 812 345 6789",
+      leader: "Pst Tobi Tijani",
+      whatsapp: "+234 904 535 4864",
       message: "Welcome to KABOD CONNECT! Experience the glory of God's presence in our Tuesday gatherings. We're committed to building a community where faith, fellowship, and growth intersect. Join us as we explore God's word and grow together in Christ.",
     },
     {
@@ -33,42 +33,43 @@ export default function ConnectGroupsSection() {
       location: "144 Airport Road, After ADP Junction",
       time: "5:00pm",
       image: "/img/connect-6.jpg",
-      leader: "Sister Grace Adeyemi",
-      whatsapp: "+234 805 987 6543",
+      leader: "Pst Happysteve Agbonghale",
+      whatsapp: "+234 809 417 0863",
       message: "NEWNESS CONNECT welcomes you! Every Wednesday, we gather to experience the transformative power of Christ's love. Whether you're new to our community or looking to deepen your faith, you'll find acceptance, encouragement, and purposeful connections here.",
     },
     {
       id: 3,
+      name: "GATEKEEPERS CONNECT",
+      day: "Thursdays",
+      location: "144 Airport Road, Ajao ADP Junction",
+      time: "5:00pm",
+      image: "/img/connect-4.jpg",
+      leader: "Pst Blessing Ochade",
+      whatsapp: "+234 706 699 5249",
+      message: "Welcome to GATEKEEPERS CONNECT! As gatekeepers of God's kingdom, we gather to pray, intercede, and stand in faith for our community. Join our Wednesday meetings to be part of something powerful and transformative.",
+    },
+   
+    {
+      id: 4,
+      name: "FLORISH CONNECT",
+      day: "Fridays",
+      location: "144 Airport Road, Ajao ADP Junction",
+      time: "5:00pm",
+      image: "/img/connect-3.jpg",
+      leader: "Pst Osaretin Osarumwense ",
+      whatsapp: "+234 805 928 1336",
+      message: "FLORISH CONNECT invites you to Thursday nights filled with God's presence and community love. We believe in flourishing together—spiritually, emotionally, and relationally. Experience a connect group where your growth matters and your voice is heard.",
+    },
+     {
+      id: 5,
       name: "UGBOWO CONNECT",
       day: "Fridays",
       location: "The Orchard Garden",
       time: "5:00pm", 
       image: "/img/connect-1.jpg",
-      leader: "Brother Michael Okonkwo",
-      whatsapp: "+234 803 112 2334",
+      leader: "Min Petry Ebhonu  ",
+      whatsapp: "+234 813 613 2716",
       message: "Join UGBOWO CONNECT for meaningful Friday evening gatherings! Led by our passionate team, we create an atmosphere of authentic worship, biblical teaching, and genuine community. Come as you are and discover your purpose in God's kingdom.",
-    },
-    {
-      id: 4,
-      name: "FLORISH CONNECT",
-      day: "Thursdays",
-      location: "144 Airport Road, Ajao ADP Junction",
-      time: "5:00pm",
-      image: "/img/connect-3.jpg",
-      leader: "Pastor Emanuel Taiwo",
-      whatsapp: "+234 809 445 5566",
-      message: "FLORISH CONNECT invites you to Thursday nights filled with God's presence and community love. We believe in flourishing together—spiritually, emotionally, and relationally. Experience a connect group where your growth matters and your voice is heard.",
-    },
-    {
-      id: 5,
-      name: "GATEKEEPERS CONNECT",
-      day: "Wednesdays",
-      location: "144 Airport Road, Ajao ADP Junction",
-      time: "5:00pm",
-      image: "/img/connect-4.jpg",
-      leader: "Sister Folake Adeniran",
-      whatsapp: "+234 808 667 7788",
-      message: "Welcome to GATEKEEPERS CONNECT! As gatekeepers of God's kingdom, we gather to pray, intercede, and stand in faith for our community. Join our Wednesday meetings to be part of something powerful and transformative.",
     },
     {
       id: 6,
@@ -77,19 +78,19 @@ export default function ConnectGroupsSection() {
       location: "144 Airport Road, Ajao ADP Junction",
       time: "5:00pm",
       image: "/img/connect-9.jpg",
-      leader: "Brother Adekunle Babalola",
-      whatsapp: "+234 802 334 5566",
+      leader: "Pst Obianuju Okpala ",
+      whatsapp: "+234 814 547 7860",
       message: "KOINONIA—true fellowship awaits you on Saturday! Our connect group is built on the foundation of genuine Christian community, where we share our lives, support one another, and grow in grace together. Experience authentic koinonia with us.",
     },
     {
       id: 7,
       name: "EKEHUAN CONNECT",
-      day: "Fridays",
+      day: "Saturdays",
       location: "Education Field",
       time: "5:00pm",
       image: "/img/connect-11.jpg",
-      leader: "Pastor Chioma Nwosu",
-      whatsapp: "+234 806 998 1122",
+      leader: "Min Petry Ebhonu",
+      whatsapp: "+234 813 613 2716",
       message: "EKEHUAN CONNECT brings you Friday gatherings saturated with God's word and fervent prayer. Led by passionate believers, we're dedicated to creating a space where faith is strengthened, lives are changed, and God's kingdom advances.",
     },
   ];
@@ -139,7 +140,7 @@ export default function ConnectGroupsSection() {
 
   return (
     <section className="bg-[#FFF8F0] py-16 lg:py-24 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-20">
+      <div className="max-w-360 mx-auto px-6 lg:px-20">
         
         {/* Header with Navigation */}
         <div className="mb-10">
@@ -205,7 +206,7 @@ export default function ConnectGroupsSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="relative flex-shrink-0 w-[85vw] md:w-[400px] h-[500px] rounded-lg overflow-hidden group cursor-pointer snap-center"
+              className="relative shrink-0 w-[85vw] md:w-100 h-125 rounded-lg overflow-hidden group cursor-pointer snap-center"
               onClick={() => {
                 setSelectedGroup(group.id);
                 setIsModalOpen(true);
@@ -234,7 +235,7 @@ export default function ConnectGroupsSection() {
               </button>
               
               {/* Subtle Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
               {/* Content with backdrop */}
               <div className="absolute bottom-0 left-0 right-0">
@@ -246,17 +247,17 @@ export default function ConnectGroupsSection() {
 
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-white flex-shrink-0 drop-shadow" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-white shrink-0 drop-shadow" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                       </svg>
                       <p className="font-body text-white text-sm drop-shadow">{group.day}</p>
                     </div>
                     <div className="flex items-start gap-2">
-                      <MapPin className="w-4 h-4 text-white flex-shrink-0 mt-0.5 drop-shadow" />
+                      <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5 drop-shadow" />
                       <p className="font-body text-white/90 text-sm leading-tight drop-shadow">{group.location}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-white flex-shrink-0 drop-shadow" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-white shrink-0 drop-shadow" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                       </svg>
                       <p className="font-body text-white text-sm drop-shadow">{group.time}</p>
@@ -305,7 +306,7 @@ export default function ConnectGroupsSection() {
                       <h3 className="font-copperplate text-xl font-black text-black uppercase mb-1">
                         {group.name}
                       </h3>
-                      <div className="h-0.5 w-16 bg-gradient-to-r from-orange-500 to-orange-300 mb-4" />
+                      <div className="h-0.5 w-16 bg-linear-to-r from-orange-500 to-orange-300 mb-4" />
                     </div>
 
                     {/* Leader Info */}
@@ -332,25 +333,25 @@ export default function ConnectGroupsSection() {
                       </p>
                       <div className="space-y-2 text-sm text-gray-700">
                         <div className="flex items-center gap-3">
-                          <svg className="w-4 h-4 text-orange-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 text-orange-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                           </svg>
                           <span>{group.day}</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <svg className="w-4 h-4 text-orange-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 text-orange-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                           </svg>
                           <span>{group.time}</span>
                         </div>
                         <div className="flex items-start gap-3">
-                          <MapPin className="w-4 h-4 text-orange-600 flex-shrink-0 mt-0.5" />
+                          <MapPin className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
                           <span>{group.location}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* WhatsApp Contact Card */}
+                    {/* WhatsApp Contact Card
                     <div className="flex flex-col gap-3 bg-green-50 p-4 rounded-xl mt-6 border border-green-200 shadow-sm">
                       <div className="flex items-center justify-between">
                         <div>
@@ -393,7 +394,7 @@ export default function ConnectGroupsSection() {
                       {copied && (
                         <p className="text-xs text-green-700 font-medium">Copied to clipboard!</p>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 ))}
             </div>
