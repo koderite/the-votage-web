@@ -317,6 +317,9 @@ export default function ConnectGroupsSection() {
                       <p className="font-display text-lg text-black font-bold">
                         {group.leader}
                       </p>
+                       <p className="text-sm text-gray-600 ">
+                        <span className="font-medium text-xs">Phone No.:</span> {group.whatsapp}
+                      </p>
                     </div>
 
                     {/* Message */}
