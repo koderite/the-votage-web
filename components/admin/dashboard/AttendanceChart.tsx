@@ -11,7 +11,7 @@ import {
   ReferenceDot,
 } from 'recharts';
 import { Lightbulb, ChevronDown } from 'lucide-react';
-import type { AttendanceDataPoint } from '../../types/index';
+import type { AttendanceDataPoint } from '../types/index';
 
 interface AttendanceChartProps {
   data: AttendanceDataPoint[];

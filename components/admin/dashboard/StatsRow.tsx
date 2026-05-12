@@ -1,4 +1,4 @@
-import type { StatCardData } from '../../types/index';
+import type { StatCardData } from '../types/index';
 import { StatCard } from './StatCard';
 
 interface StatsRowProps {

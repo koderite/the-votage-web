@@ -1,7 +1,7 @@
 import { TrendingUp, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useCountUp } from '../../hooks/useCountUp';
-import { cn } from '../../lib/utils';
+import { useCountUp } from '../hooks/useCountUp';
+import { cn } from '../lib/utils';
 
 interface StatCardProps {
   label: string;

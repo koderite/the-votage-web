@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import type { ComparisonData } from '../../types/index';
+import type { ComparisonData } from '../types/index';
 
 interface YearComparisonChartProps {
   data: ComparisonData;
@@ -50,7 +50,7 @@ function CustomLegend() {
 }
 
 export function YearComparisonChart({ data }: YearComparisonChartProps) {
-  const chartData = data.labels.map((label, index) => ({
+  const chartData = data.labels.map((label: string, index: number) => ({
     label,
     series1: data.series[0].data[index],
     series2: data.series[1].data[index],

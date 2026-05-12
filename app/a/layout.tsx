@@ -3,7 +3,7 @@
 import { SidebarProvider, useSidebar } from '@/components/admin/contexts/SidebarContext'
 import { Sidebar } from '@/components/admin/layout/Sidebar'
 import { HeaderBar } from '@/components/admin/layout/HeaderBar'
-import '@/app/admin/globals-admin.css'
+import '@/app/a/globals-admin.css'
 
 function AdminShell({ children }: { children: React.ReactNode }) {
   const { collapsed } = useSidebar()
