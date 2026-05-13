@@ -1,15 +1,25 @@
 @import "tailwindcss";
 
 /* ============================================
+   DESIGN TOKENS - TYPOGRAPHY & SPACING
+   ============================================ */
+@import "./design-tokens.css";
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+@import "./typography-utilities.css";
+
+/* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
 /* 
-   Breakpoint Reference:
-   - sm: 640px   (Small tablets)
-   - md: 768px   (Tablets - default tablet breakpoint)
-   - lg: 1024px  (Desktops)
-   - xl: 1280px  (Large desktops)
-   - 2xl: 1536px (Extra large desktops)
+    Breakpoint Reference:
+    - sm: 640px   (Small tablets)
+    - md: 768px   (Tablets - default tablet breakpoint)
+    - lg: 1024px  (Desktops)
+    - xl: 1280px  (Large desktops)
+    - 2xl: 1536px (Extra large desktops)
 */
 
 :root {
@@ -56,13 +66,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* Inter Font - Primary body font from design tokens */
+  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Poppins Font */
+  /* Poppins Font (legacy - kept for backward compatibility) */
   --font-poppins: var(--font-poppins), "Poppins", sans-serif;
 
-  /* Copperplate Fonts */
+  /* Copperplate Fonts - Display/Headings from design tokens */
   --font-display: var(--font-copperplate-bold), "Copperplate", serif;
   --font-display-medium: var(--font-copperplate-medium), "Copperplate", serif;
   --font-display-light: var(--font-copperplate-light), "Copperplate", serif;
@@ -72,7 +83,9 @@
     var(--font-copperplate-condensed-bold), "Copperplate", serif;
   --font-display-condensed-light:
     var(--font-copperplate-condensed-light), "Copperplate", serif;
-  --font-body: "Poppins", sans-serif;
+  
+  /* Body font - Using Inter from design tokens */
+  --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
 
   /* Add your custom colors */
   --color-white: #ffffff;
@@ -100,8 +113,8 @@
   --font-copperplate-condensed-bold: var(--font-copperplate-condensed-bold), 'Copperplate', serif;
   --font-copperplate-condensed-light: var(--font-copperplate-condensed-light), 'Copperplate', serif;
   
-  /* Legacy body font */
-  --font-body: 'Poppins', 'sans-serif';
+  /* Legacy body font (kept for backward compatibility) */
+  /* Use --font-inter for body text going forward */
   
   /* Typography utility classes - Base sizes (mobile) */
 
@@ -197,5 +210,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
 }

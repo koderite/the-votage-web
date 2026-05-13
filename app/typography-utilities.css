@@ -1,0 +1,351 @@
+/**
+ * Typography Utilities - The Voltage Church Website
+ * 
+ * Utility classes for typography based on design tokens.
+ * These classes provide quick styling options for common text patterns.
+ * 
+ * Usage:
+ * - Import this file in globals.css after design-tokens.css
+ * - Use classes directly in your components: className="font-display text-h1"
+ */
+
+/* ============================================
+   FONT FAMILY CLASSES
+   ============================================ */
+
+/* Body text - Primary font (Inter) */
+.font-body {
+  font-family: var(--font-family-body);
+}
+
+/* Display - Copperplate for headings */
+.font-display {
+  font-family: var(--font-family-display);
+}
+
+.font-display-medium {
+  font-family: var(--font-family-display-medium);
+}
+
+.font-display-light {
+  font-family: var(--font-family-display-light);
+}
+
+.font-display-condensed {
+  font-family: var(--font-family-display-condensed);
+}
+
+.font-display-condensed-bold {
+  font-family: var(--font-family-display-condensed-bold);
+}
+
+.font-display-condensed-light {
+  font-family: var(--font-family-display-condensed-light);
+}
+
+/* Monospace */
+.font-mono {
+  font-family: var(--font-family-mono);
+}
+
+
+/* ============================================
+   HEADING CLASSES (h1-h6)
+   ============================================ */
+
+/* H1 - Main page headings */
+.h1 {
+  font-size: var(--text-h1);
+  line-height: var(--text-h1-line-height);
+  font-weight: var(--text-h1-font-weight);
+  letter-spacing: var(--text-h1-letter-spacing);
+  font-family: var(--font-family-display);
+}
+
+/* H2 - Section headings */
+.h2 {
+  font-size: var(--text-h2);
+  line-height: var(--text-h2-line-height);
+  font-weight: var(--text-h2-font-weight);
+  letter-spacing: var(--text-h2-letter-spacing);
+  font-family: var(--font-family-display);
+}
+
+/* H3 - Subsection headings */
+.h3 {
+  font-size: var(--text-h3);
+  line-height: var(--text-h3-line-height);
+  font-weight: var(--text-h3-font-weight);
+  letter-spacing: var(--text-h3-letter-spacing);
+  font-family: var(--font-family-display);
+}
+
+/* H4 - Minor headings */
+.h4 {
+  font-size: var(--text-h4);
+  line-height: var(--text-h4-line-height);
+  font-weight: var(--text-h4-font-weight);
+  letter-spacing: var(--text-h4-letter-spacing);
+  font-family: var(--font-family-display);
+}
+
+/* H5 - Small headings */
+.h5 {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+  font-family: var(--font-family-display);
+}
+
+/* H6 - Smallest headings */
+.h6 {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-normal);
+  font-family: var(--font-family-display);
+}
+
+
+/* ============================================
+   BODY TEXT CLASSES
+   ============================================ */
+
+/* Body Large - Featured content */
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: var(--text-body-lg-line-height);
+  font-weight: var(--text-body-lg-font-weight);
+  font-family: var(--font-family-body);
+}
+
+/* Body - Standard content */
+.text-body {
+  font-size: var(--text-body);
+  line-height: var(--text-body-line-height);
+  font-weight: var(--text-body-font-weight);
+  font-family: var(--font-family-body);
+}
+
+/* Body Small - Supporting text */
+.text-body-sm {
+  font-size: var(--text-body-sm);
+  line-height: var(--text-body-sm-line-height);
+  font-weight: var(--text-body-sm-font-weight);
+  font-family: var(--font-family-body);
+}
+
+/* Caption - Labels, meta information */
+.text-caption {
+  font-size: var(--text-caption);
+  line-height: var(--text-caption-line-height);
+  font-weight: var(--text-caption-font-weight);
+  letter-spacing: var(--text-caption-letter-spacing);
+  font-family: var(--font-family-body);
+  text-transform: uppercase;
+}
+
+
+/* ============================================
+   DISPLAY TEXT CLASSES
+   ============================================ */
+
+/* Display - Hero promotional text */
+.text-display {
+  font-size: var(--text-display);
+  line-height: var(--text-display-line-height);
+  font-weight: var(--text-display-font-weight);
+  letter-spacing: var(--text-display-letter-spacing);
+  font-family: var(--font-family-display);
+}
+
+
+/* ============================================
+   FONT SIZE UTILITY CLASSES
+   ============================================ */
+
+/* Using token values */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+
+
+/* ============================================
+   FONT WEIGHT UTILITY CLASSES
+   ============================================ */
+
+.font-regular { font-weight: var(--font-weight-regular); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+
+/* ============================================
+   LINE HEIGHT UTILITY CLASSES
+   ============================================ */
+
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
+
+
+/* ============================================
+   LETTER SPACING UTILITY CLASSES
+   ============================================ */
+
+.tracking-tight { letter-spacing: var(--letter-spacing-tight); }
+.tracking-normal { letter-spacing: var(--letter-spacing-normal); }
+.tracking-wide { letter-spacing: var(--letter-spacing-wide); }
+.tracking-wider { letter-spacing: var(--letter-spacing-wider); }
+
+
+/* ============================================
+   TEXT ALIGNMENT CLASSES
+   ============================================ */
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+
+/* ============================================
+   TEXT TRANSFORMATION CLASSES
+   ============================================ */
+
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+.normal-case { text-transform: none; }
+
+
+/* ============================================
+   TEXT DECORATION CLASSES
+   ============================================ */
+
+.underline { text-decoration: underline; }
+.overline { text-decoration: overline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+
+/* ============================================
+   ITERATION UTILITY CLASSES (common use cases)
+   ============================================ */
+
+/* Lead text - Introduction paragraphs */
+.text-lead {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-body);
+}
+
+/* Label - Form labels, tags */
+.text-label {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+  font-family: var(--font-family-body);
+  text-transform: uppercase;
+}
+
+/* Quote - Scripture or testimonial quotes */
+.text-quote {
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  line-height: var(--line-height-relaxed);
+  font-family: var(--font-family-body);
+  border-left: 4px solid var(--color-warm-brown);
+  padding-left: var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+/* Navigation link */
+.text-nav-link {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+  font-family: var(--font-family-body);
+  text-transform: uppercase;
+}
+
+/* Button text */
+.text-btn {
+  font-size: var(--text-button);
+  line-height: var(--text-button-line-height);
+  font-weight: var(--text-button-font-weight);
+  letter-spacing: var(--text-button-letter-spacing);
+  font-family: var(--font-family-body);
+  text-transform: uppercase;
+}
+
+
+/* ============================================
+   RESPONSIVE HEADING CLASSES
+   ============================================ */
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .tablet\:h1 {
+    font-size: var(--font-size-h1-tablet);
+  }
+  .tablet\:h2 {
+    font-size: var(--font-size-h2-tablet);
+  }
+  .tablet\:h3 {
+    font-size: var(--font-size-h3-tablet);
+  }
+  .tablet\:text-display {
+    font-size: var(--font-size-display-tablet);
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .desktop\:h1 {
+    font-size: var(--font-size-h1-desktop);
+  }
+  .desktop\:h2 {
+    font-size: var(--font-size-h2-desktop);
+  }
+  .desktop\:h3 {
+    font-size: var(--font-size-h3-desktop);
+  }
+  .desktop\:text-display {
+    font-size: var(--font-size-display-desktop);
+  }
+}
+
+
+/* ============================================
+   ACCESSIBILITY UTILITY CLASSES
+   ============================================ */
+
+/* Screen reader only - visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visible - keyboard navigation focus */
+.focus-visible:focus {
+  outline: 2px solid var(--color-warm-brown);
+  outline-offset: 2px;
+}
