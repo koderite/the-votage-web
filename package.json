@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "overrides": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
