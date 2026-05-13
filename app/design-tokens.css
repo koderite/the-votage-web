@@ -1,0 +1,175 @@
+/**
+ * Design Tokens - The Voltage Church Website
+ * 
+ * This file contains all typography and spacing design tokens as CSS custom properties.
+ * These tokens provide a single source of truth for consistent styling across the application.
+ * 
+ * Usage:
+ * - Import this file in globals.css
+ * - Use token values via: var(--font-size-xl) or var(--space-6)
+ * - Typography utilities are available via classes defined in typography-utilities.css
+ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES SETUP
+   ============================================ */
+
+:root {
+  /* ============================================
+     FONT FAMILIES
+     ============================================ */
+  
+  /* Primary font for body text */
+  --font-family-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Display font for headings - Copperplate variants */
+  --font-family-display: var(--font-copperplate-bold), 'Copperplate', serif;
+  --font-family-display-medium: var(--font-copperplate-medium), 'Copperplate', serif;
+  --font-family-display-light: var(--font-copperplate-light), 'Copperplate', serif;
+  --font-family-display-condensed: var(--font-copperplate-condensed-medium), 'Copperplate', serif;
+  --font-family-display-condensed-bold: var(--font-copperplate-condensed-bold), 'Copperplate', serif;
+  --font-family-display-condensed-light: var(--font-copperplate-condensed-light), 'Copperplate', serif;
+  
+  /* Monospace font for code */
+  --font-family-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+
+
+  /* ============================================
+     FONT SIZE SCALE
+     ============================================ */
+  
+  /* Base sizes - mobile first */
+  --font-size-xs: 0.75rem;      /* 12px - captions, labels */
+  --font-size-sm: 0.875rem;     /* 14px - secondary text */
+  --font-size-base: 1rem;       /* 16px - body text */
+  --font-size-lg: 1.125rem;     /* 18px - large body, small headings */
+  --font-size-xl: 1.25rem;      /* 20px - h4 */
+  --font-size-2xl: 1.5rem;      /* 24px - h3 */
+  --font-size-3xl: 1.875rem;    /* 30px - h2 */
+  --font-size-4xl: 2.25rem;     /* 36px - h1 */
+  --font-size-5xl: 3rem;        /* 48px - hero headings */
+
+
+  /* ============================================
+     FONT WEIGHTS
+     ============================================ */
+  
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+
+  /* ============================================
+     LINE HEIGHTS
+     ============================================ */
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+
+  /* ============================================
+     LETTER SPACING
+     ============================================ */
+  
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.05em;
+
+
+  /* ============================================
+     SPACING SCALE
+     ============================================ */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+
+  /* ============================================
+     TYPOGRAPHY STYLES - COMBINED UTILITIES
+     ============================================ */
+  
+  /* Display/Hero - Large promotional text */
+  --text-display: var(--font-size-5xl);
+  --text-display-line-height: var(--line-height-tight);
+  --text-display-font-weight: var(--font-weight-bold);
+  --text-display-letter-spacing: var(--letter-spacing-wide);
+  
+  /* H1 - Main page headings */
+  --text-h1: var(--font-size-4xl);
+  --text-h1-line-height: var(--line-height-tight);
+  --text-h1-font-weight: var(--font-weight-bold);
+  --text-h1-letter-spacing: var(--letter-spacing-wide);
+  
+  /* H2 - Section headings */
+  --text-h2: var(--font-size-3xl);
+  --text-h2-line-height: var(--line-height-tight);
+  --text-h2-font-weight: var(--font-weight-semibold);
+  --text-h2-letter-spacing: var(--letter-spacing-normal);
+  
+  /* H3 - Subsection headings */
+  --text-h3: var(--font-size-2xl);
+  --text-h3-line-height: var(--line-height-normal);
+  --text-h3-font-weight: var(--font-weight-semibold);
+  --text-h3-letter-spacing: var(--letter-spacing-normal);
+  
+  /* H4 - Minor headings */
+  --text-h4: var(--font-size-xl);
+  --text-h4-line-height: var(--line-height-normal);
+  --text-h4-font-weight: var(--font-weight-semibold);
+  --text-h4-letter-spacing: var(--letter-spacing-normal);
+  
+  /* Body Large - Featured content */
+  --text-body-lg: var(--font-size-lg);
+  --text-body-lg-line-height: var(--line-height-relaxed);
+  --text-body-lg-font-weight: var(--font-weight-regular);
+  
+  /* Body - Standard content */
+  --text-body: var(--font-size-base);
+  --text-body-line-height: var(--line-height-normal);
+  --text-body-font-weight: var(--font-weight-regular);
+  
+  /* Body Small - Supporting text */
+  --text-body-sm: var(--font-size-sm);
+  --text-body-sm-line-height: var(--line-height-normal);
+  --text-body-sm-font-weight: var(--font-weight-regular);
+  
+  /* Caption - Labels, meta information */
+  --text-caption: var(--font-size-xs);
+  --text-caption-line-height: var(--line-height-normal);
+  --text-caption-font-weight: var(--font-weight-medium);
+  --text-caption-letter-spacing: var(--letter-spacing-wide);
+  
+  /* Button - Button and link text */
+  --text-button: var(--font-size-sm);
+  --text-button-line-height: var(--line-height-normal);
+  --text-button-font-weight: var(--font-weight-semibold);
+  --text-button-letter-spacing: var(--letter-spacing-wide);
+
+
+  /* ============================================
+     RESPONSIVE TYPOGRAPHY SCALE
+     ============================================ */
+  
+  /* Tablet breakpoint (768px) */
+  --font-size-h1-tablet: 2.5rem;      /* 40px */
+  --font-size-h2-tablet: 2rem;        /* 32px */
+  --font-size-h3-tablet: 1.5rem;       /* 24px */
+  --font-size-display-tablet: 3.5rem; /* 56px */
+  
+  /* Desktop breakpoint (1024px) */
+  --font-size-h1-desktop: 3rem;        /* 48px */
+  --font-size-h2-desktop: 2.25rem;     /* 36px */
+  --font-size-h3-desktop: 1.75rem;     /* 28px */
+  --font-size-display-desktop: 4rem;   /* 64px */
+}
