@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Agentation } from "agentation";
 import Script from "next/script";
 
-// Inter font - Primary body font (from design tokens)
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-// Poppins font (legacy - kept for backward compatibility)
+// Poppins font
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -66,11 +58,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${inter.variable} ${poppins.variable} ${copperplateBold.variable} ${copperplateMedium.variable} ${copperplateLight.variable} ${copperplateCondensedMedium.variable} ${copperplateCondensedBold.variable} ${copperplateCondensedLight.variable} antialiased`}
+        className={` ${poppins.variable} ${copperplateBold.variable} ${copperplateMedium.variable} ${copperplateLight.variable} ${copperplateCondensedMedium.variable} ${copperplateCondensedBold.variable} ${copperplateCondensedLight.variable} antialiased`}
       >
         {process.env.NODE_ENV === "development" && <Agentation />}
         {children}
-           <Script id="votage-chat-widget" strategy="afterInteractive">{`
+        <Script id="votage-chat-widget" strategy="afterInteractive">{`
           (function () {
             const button = document.createElement("button");
             button.innerHTML = "💬 Chat";
@@ -88,10 +80,10 @@ export default function RootLayout({
             const iframe = document.createElement("iframe");
             iframe.src = "https://votage-ai-assistant.vercel.app/";
             iframe.style.position = "fixed";
-            iframe.style.bottom = "80px";
-            iframe.style.right = "20px";
-            iframe.style.width = "380px";
-            iframe.style.height = "600px";
+            iframe.style.bottom = "60px";
+            iframe.style.right = "0px";
+            iframe.style.width = "320px";
+            iframe.style.height = "550px";
             iframe.style.border = "none";
             iframe.style.display = "none";
             iframe.style.borderRadius = "12px";
