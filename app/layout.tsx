@@ -62,7 +62,7 @@ export default function RootLayout({
       >
         {process.env.NODE_ENV === "development" && <Agentation />}
         {children}
-           <Script id="votage-chat-widget" strategy="afterInteractive">{`
+        <Script id="votage-chat-widget" strategy="afterInteractive">{`
           (function () {
             const button = document.createElement("button");
             button.innerHTML = "💬 Chat";
@@ -80,10 +80,10 @@ export default function RootLayout({
             const iframe = document.createElement("iframe");
             iframe.src = "https://votage-ai-assistant.vercel.app/";
             iframe.style.position = "fixed";
-            iframe.style.bottom = "80px";
-            iframe.style.right = "20px";
-            iframe.style.width = "380px";
-            iframe.style.height = "600px";
+            iframe.style.bottom = "60px";
+            iframe.style.right = "0px";
+            iframe.style.width = "320px";
+            iframe.style.height = "550px";
             iframe.style.border = "none";
             iframe.style.display = "none";
             iframe.style.borderRadius = "12px";
