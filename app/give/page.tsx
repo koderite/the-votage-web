@@ -13,8 +13,8 @@ export default function GivePage() {
       <main className=" min-h-screen">
         <GiveHero />
         <JoinMission />
-        <InternationalTransfer />
-        {/* <WhereGiving /> */}
+        {/* <InternationalTransfer />
+        <WhereGiving /> */}
       </main>
 
       <Footer />
