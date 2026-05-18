@@ -1,6 +1,6 @@
 'use client'
 
-import { SignedIn, SignedOut, SignOutButton, UserButton } from '@clerk/nextjs'
+import { SignOutButton, UserButton } from '@clerk/nextjs'
 import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
