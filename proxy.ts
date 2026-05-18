@@ -55,11 +55,10 @@ export default clerkMiddleware(async (auth, req) => {
   /**
    * STEP 1: Authentication Check
    * 
-   * For ALL non-public routes, require the user to be signed in.
-   * If not signed in, Clerk automatically redirects to the sign-in page.
-   * After successful sign-in, the user is redirected back to the original URL.
+   * Only protect admin routes (except /admin/login which is public).
+   * For all other routes (like /), no auth required.
    */
-  if (!isPublicRoute(req)) {
+  if (isAdminRoute(req) && !isPublicRoute(req)) {
     await auth.protect()
   }
 
@@ -68,23 +67,13 @@ export default clerkMiddleware(async (auth, req) => {
    * 
    * For all /admin/* routes (except /admin/login which is already public):
    * Check if the signed-in user's email is in the ADMIN_EMAILS whitelist.
-   * 
-   * This runs AFTER auth().protect() ensures the user is authenticated,
-   * so we have access to sessionClaims.email.
    */
   if (isAdminRoute(req) && !isPublicRoute(req)) {
-    // Destructuring auth() gives us the user's ID and their JWT claims
     const { userId, sessionClaims } = await auth()
-    
-    // Only check email whitelist if:
-    // 1. User is authenticated (userId exists)
-    // 2. ADMIN_EMAILS is configured (has at least one email)
+
     if (userId && ADMIN_EMAILS.length > 0) {
-      // Extract email from Clerk's session claims (set during sign-in)
       const userEmail = (sessionClaims?.email as string | undefined)?.toLowerCase()
-      
-      // If user's email is NOT in the whitelist, redirect to home page.
-      // This prevents authenticated but unauthorized users from accessing admin.
+
       if (userEmail && !ADMIN_EMAILS.includes(userEmail)) {
         return Response.redirect(new URL('/', req.url))
       }
