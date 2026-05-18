@@ -1,6 +1,6 @@
 'use client'
 
-import { SignOutButton, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignOutButton, UserButton } from '@clerk/nextjs'
 import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
@@ -40,19 +40,14 @@ export function HeaderBar() {
             <Settings size={20} className="text-[#6B7280]" />
           </button>
 
-          <SignOutButton>
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-              <LogOut size={20} className="text-[#6B7280]" />
-            </button>
-          </SignOutButton>
-
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox: 'h-8 w-8'
-              }
-            }}
-          />
+          <SignedIn>
+            <SignOutButton>
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <LogOut size={20} className="text-[#6B7280]" />
+              </button>
+            </SignOutButton>
+            <UserButton appearance={{ elements: { avatarBox: 'h-8 w-8' } }} />
+          </SignedIn>
         </div>
     </header>
   )

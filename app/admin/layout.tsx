@@ -1,35 +1,26 @@
-'use client'
+import { AdminProviders } from './AdminProviders'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
-import { SidebarProvider, useSidebar } from '@/components/admin/contexts/SidebarContext'
-import { Sidebar } from '@/components/admin/layout/Sidebar'
-import { HeaderBar } from '@/components/admin/layout/HeaderBar'
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { userId } = await auth()
+  
+  if (!userId) {
+    redirect('/sign-in')
+  }
 
-function AdminShell({ children }: { children: React.ReactNode }) {
-  const { collapsed } = useSidebar()
+  const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
+    .split(',')
+    .map(e => e.trim().toLowerCase())
+    .filter(Boolean)
 
-  return (
-    <div className="flex min-h-screen bg-[#F0F2F5]">
-      <Sidebar />
-      <main
-        className={[
-          'flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out',
-          'lg:ml-[260px]',
-          collapsed ? 'lg:ml-[72px]' : '',
-        ].join(' ')}
-      >
-        <HeaderBar />
-        <div className="flex-1 p-4 lg:p-6 space-y-6">
-          {children}
-        </div>
-      </main>
-    </div>
-  )
-}
+  // Get user info from session claims
+  const { sessionClaims } = await auth()
+  const userEmail = (sessionClaims?.email as string | undefined)?.toLowerCase()
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <SidebarProvider>
-      <AdminShell>{children}</AdminShell>
-    </SidebarProvider>
-  )
+  if (adminEmails.length > 0 && userEmail && !adminEmails.includes(userEmail)) {
+    redirect('/')
+  }
+
+  return <AdminProviders>{children}</AdminProviders>
 }

@@ -52,33 +52,7 @@ const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
  * - auth().sessionClaims: JWT claims including email, roles, etc.
  */
 export default clerkMiddleware(async (auth, req) => {
-  /**
-   * STEP 1: Authentication Check
-   * 
-   * Only protect admin routes (except /admin/login which is public).
-   * For all other routes (like /), no auth required.
-   */
-  if (isAdminRoute(req) && !isPublicRoute(req)) {
-    await auth.protect()
-  }
-
-  /**
-   * STEP 2: Admin Authorization Check
-   * 
-   * For all /admin/* routes (except /admin/login which is already public):
-   * Check if the signed-in user's email is in the ADMIN_EMAILS whitelist.
-   */
-  if (isAdminRoute(req) && !isPublicRoute(req)) {
-    const { userId, sessionClaims } = await auth()
-
-    if (userId && ADMIN_EMAILS.length > 0) {
-      const userEmail = (sessionClaims?.email as string | undefined)?.toLowerCase()
-
-      if (userEmail && !ADMIN_EMAILS.includes(userEmail)) {
-        return Response.redirect(new URL('/', req.url))
-      }
-    }
-  }
+  // No middleware protection - handled client-side with Clerk components
 })
 
 /**
