@@ -1,4 +1,5 @@
-import { auth } from '@clerk/nextjs/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth.config'
 import { redirect } from 'next/navigation'
 
 const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
@@ -6,23 +7,30 @@ const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
   .map(e => e.trim().toLowerCase())
   .filter(Boolean)
 
-export async function requireAdmin() {
-  const { userId, sessionClaims } = await auth()
+export async function getSession() {
+  return getServerSession(authOptions)
+}
 
-  if (!userId) {
+export async function requireAdmin() {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
     redirect('/sign-in')
   }
 
-  if (ADMIN_EMAILS.length > 0) {
-    const userEmail = (sessionClaims?.email as string | undefined)?.toLowerCase()
-    if (userEmail && !ADMIN_EMAILS.includes(userEmail)) {
-      redirect('/')
-    }
+  const userEmail = session.user?.email?.toLowerCase()
+
+  if (ADMIN_EMAILS.length > 0 && userEmail && !ADMIN_EMAILS.includes(userEmail)) {
+    redirect('/')
   }
 
-  return { userId }
+  return session
 }
 
-export function isAdmin(): boolean {
-  return true
+export async function isAdmin(): Promise<boolean> {
+  const session = await getServerSession(authOptions)
+  if (!session) return false
+
+  const userEmail = session.user?.email?.toLowerCase()
+  return userEmail ? ADMIN_EMAILS.includes(userEmail) : false
 }

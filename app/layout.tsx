@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 import { Agentation } from "agentation";
 import Script from "next/script";
@@ -61,16 +61,10 @@ export default function RootLayout({
       <body
         className={` ${poppins.variable} ${copperplateBold.variable} ${copperplateMedium.variable} ${copperplateLight.variable} ${copperplateCondensedMedium.variable} ${copperplateCondensedBold.variable} ${copperplateCondensedLight.variable} antialiased`}
       >
-        <ClerkProvider
-          dynamic
-          signInUrl="/sign-in"
-          signUpUrl="/sign-up"
-          afterSignInUrl="/admin/dashboard"
-          afterSignOutUrl="/sign-in"
-        >
+        <Providers>
           {process.env.NODE_ENV === "development" && <Agentation />}
           {children}
-        </ClerkProvider>
+        </Providers>
         <Script id="votage-chat-widget" strategy="afterInteractive">{`
           (function () {
             const button = document.createElement("button");
