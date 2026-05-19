@@ -696,6 +696,36 @@ git commit -m "chore: remove remaining Clerk references"
 
 ---
 
+## Environment Variables
+
+Add the following to your `.env.local` file:
+
+```bash
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-random-secret-key-here
+
+# GitHub OAuth (create at https://github.com/settings/developers)
+GITHUB_ID=your-github-client-id
+GITHUB_SECRET=your-github-client-secret
+
+# Google OAuth (create at https://console.cloud.google.com)
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Admin Email Allowlist (comma-separated emails, leave empty for no restriction)
+ADMIN_EMAILS=admin@example.com,another@domain.com
+```
+
+### Setup Notes
+
+- **NEXTAUTH_SECRET**: Generate with `openssl rand -base64 32` or use any random string
+- **GitHub OAuth**: Create OAuth App at https://github.com/settings/developers - set callback to `http://localhost:3000/api/auth/callback/github`
+- **Google OAuth**: Create credentials at https://console.cloud.google.com/apis/credentials - set authorized redirect URI to `http://localhost:3000/api/auth/callback/google`
+- **ADMIN_EMAILS**: If empty, any authenticated user can access admin. If set, only those emails can access admin.
+
+---
+
 ## Plan Complete
 
 All tasks written and saved. Ready for execution.

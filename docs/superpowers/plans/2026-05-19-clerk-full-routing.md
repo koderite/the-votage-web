@@ -1,5 +1,7 @@
 # Full Clerk Routing Implementation Plan
 
+> ⚠️ **DEPRECATED/ARCHIVED** - This document describes an alternative Clerk-based approach that was **rejected in favor of NextAuth**. See [NextAuth Migration](./2026-05-19-nextauth-migration.md) for the active implementation.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace custom login page with full Clerk routing including sign-in, sign-up, SignOutButton, and UserButton while retaining email whitelist protection.

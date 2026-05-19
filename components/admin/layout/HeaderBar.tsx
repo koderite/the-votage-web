@@ -67,6 +67,7 @@ export function HeaderBar() {
 
         <button
           onClick={handleSignOut}
+          aria-label="Sign out"
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
           <LogOut size={20} className="text-[#6B7280]" />
@@ -75,6 +76,9 @@ export function HeaderBar() {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Account menu"
+            aria-haspopup="true"
+            aria-expanded={menuOpen}
             className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             {userImage ? (

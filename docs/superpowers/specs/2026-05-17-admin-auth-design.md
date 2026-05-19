@@ -1,7 +1,9 @@
 # Admin Dashboard Authentication Layer Design
 
+> ⚠️ **DEPRECATED/ARCHIVED** - This spec describes the legacy Clerk-based approach. The active implementation uses NextAuth - see [NextAuth Migration Plan](../plans/2026-05-19-nextauth-migration.md).
+
 **Date:** 2026-05-17
-**Status:** Approved
+**Status:** Superseded
 
 ## Overview
 

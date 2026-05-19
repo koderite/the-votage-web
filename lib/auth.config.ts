@@ -22,6 +22,17 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async redirect({ url, baseUrl }) {
+      try {
+        if (url.startsWith('/')) {
+          return url
+        }
+        const urlObj = new URL(url)
+        const baseUrlObj = new URL(baseUrl)
+        if (urlObj.origin === baseUrlObj.origin) {
+          return url
+        }
+      } catch {
+      }
       return baseUrl + '/admin/dashboard'
     },
   },
