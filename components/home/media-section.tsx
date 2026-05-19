@@ -32,7 +32,7 @@ const mediaItems: MediaItem[] = [
     contentTitle: 'Spirtuals Part 4',
     contentSubtitle: 'The Winlos',
     contentTag: 'Latest Video',
-    image: 'https://img.youtube.com/vi/y41jI31M-3Y/maxresdefault.jpg',
+    image: 'https://img.youtube.com/vi/y41jI31M-3Y/hqdefault.jpg',
     url: 'https://www.youtube.com/watch?v=y41jI31M-3Y',
   },
   {

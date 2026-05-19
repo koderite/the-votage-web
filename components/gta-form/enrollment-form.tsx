@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { MultiSelect } from "./multi-select";
 import { FormInput } from "./form-input";
