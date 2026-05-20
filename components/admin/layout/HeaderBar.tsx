@@ -4,11 +4,38 @@ import { useSession, signOut } from 'next-auth/react'
 import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
+import { usePathname } from 'next/navigation'
+
+const pageTitles: Record<string, string> = {
+  '/admin': 'Dashboard',
+  '/admin/dashboard': 'Dashboard',
+
+  '/admin/attendance/trend': 'Trend & Analytics',
+  '/admin/attendance/breakdown': 'Service Breakdown',
+  '/admin/attendance/checkin': 'Check-In Activity',
+
+  '/admin/members/insights': 'Member Insights',
+  '/admin/members/manage': 'Manage Members',
+
+  '/admin/visitors/tracking': 'Visitors Tracking',
+  '/admin/visitors/metrics': 'First-Timer Metrics',
+
+  '/admin/followup/onboarding': 'Onboarding',
+
+  '/admin/reports': 'Reports',
+
+  '/admin/administration/add-edit': 'Add/Edit Members',
+  '/admin/administration/departments': 'Assign Departments',
+  '/admin/administration/delete': 'Delete a Member',
+}
 import { useState, useRef, useEffect } from 'react'
 
 export function HeaderBar() {
   const { data: session, status } = useSession()
   const { collapsed, toggleMobile, toggleCollapse } = useSidebar()
+  const pathname = usePathname()
+
+  const title = pageTitles[pathname] || 'Dashboard'
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -42,6 +69,7 @@ export function HeaderBar() {
         >
           <Menu size={20} />
         </button>
+
         {collapsed && (
           <button
             onClick={toggleCollapse}
@@ -50,7 +78,10 @@ export function HeaderBar() {
             <Menu size={20} />
           </button>
         )}
-        <h1 className="text-xl font-bold text-[#111827]">DashBoard</h1>
+
+        <h1 className="text-xl font-bold text-[#111827]">
+          {title}
+        </h1>
       </div>
 
       <div className="flex items-center gap-2">
@@ -65,6 +96,19 @@ export function HeaderBar() {
           <Settings size={20} className="text-[#6B7280]" />
         </button>
 
+        <button className="flex items-center gap-2 pl-2 pr-1 py-1 hover:bg-gray-50 rounded-lg transition-colors">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="/avatar.jpg" alt="Admin" />
+            <AvatarFallback className="bg-[#3B82F6] text-white text-sm">
+              A
+            </AvatarFallback>
+          </Avatar>
+
+          <span className="text-sm font-medium text-[#111827] hidden sm:inline">
+            Admin
+          </span>
+
+          <ChevronDown size={16} className="text-[#6B7280]" />
         <button
           onClick={handleSignOut}
           aria-label="Sign out"
