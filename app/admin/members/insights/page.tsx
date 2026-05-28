@@ -103,7 +103,7 @@ export default function InsightsPage() {
       >
         <h3 className="text-[15px] font-semibold text-[#111827] mb-1">Department Breakdown</h3>
         <p className="text-[12px] text-[#9CA3AF] mb-6">Member count per ministry department</p>
-        <div className="h-[220px]">
+        <div className="h-55">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />

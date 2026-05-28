@@ -54,7 +54,7 @@ function FilterDropdown({ options, value, onChange }: { options: string[]; value
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] bg-white hover:bg-gray-50 transition-colors min-w-[140px]"
+        className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] bg-white hover:bg-gray-50 transition-colors min-w-35"
       >
         <span className="flex-1 text-left">{value}</span>
         <ChevronDown size={14} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -186,7 +186,7 @@ export default function ServiceBreakdownPage() {
             <h3 className="text-[15px] font-semibold text-[#111827]">Attendance Per Service</h3>
             <ChartDropdown value={chartPeriod} onChange={setChartPeriod} options={['Last 5 weeks', 'Last 4 weeks', 'Last 3 weeks']} />
           </div>
-          <div className="h-[260px]">
+          <div className="h-65">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={attendancePerService} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
