@@ -5,10 +5,31 @@ import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
 import { useState, useRef, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+
+const pageTitles: Record<string, string> = {
+  '/admin/dashboard':                  'DashBoard',
+  '/admin/attendance/trend':           'Trend & Analytics',
+  '/admin/attendance/breakdown':       'Service Breakdown',
+  '/admin/attendance/checkin':         'Check-In Activity',
+  '/admin/members':                    'All Members',
+  '/admin/members/insights':           'Member Insights',
+  '/admin/members/manage':             'Manage Members',
+  '/admin/visitors/tracking':          'Visitors Tracking',
+  '/admin/visitors/metrics':           'First-Timer Metrics',
+  '/admin/followup':                   'Follow-Up',
+  '/admin/followup/onboarding':        'Engagements',
+  '/admin/reports':                    'Reports and Data',
+  '/admin/administration/add-edit':    'Add / Edit Members',
+  '/admin/administration/departments': 'Assign Departments',
+  '/admin/administration/delete':      'Delete a Member',
+}
 
 export function HeaderBar() {
   const { data: session, status } = useSession()
   const { collapsed, toggleMobile, toggleCollapse } = useSidebar()
+  const pathname = usePathname()
+  const pageTitle = pageTitles[pathname] ?? 'DashBoard'
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -50,7 +71,7 @@ export function HeaderBar() {
             <Menu size={20} />
           </button>
         )}
-        <h1 className="text-xl font-bold text-[#111827]">DashBoard</h1>
+        <h1 className="text-xl font-bold text-[#111827]">{pageTitle}</h1>
       </div>
 
       <div className="flex items-center gap-2">
