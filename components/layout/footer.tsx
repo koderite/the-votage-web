@@ -1,5 +1,6 @@
 import { Logo } from '../ui/logo';
 import { Instagram, Youtube, Facebook } from 'lucide-react';
+import { TikTokIcon } from '../icons/tiktok-icon';
 import { Button } from '../ui/button';
 
 export const Footer = () => {
@@ -25,14 +26,17 @@ export const Footer = () => {
               On all our social media
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+              <a href="https://www.instagram.com/wearethevotage?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
                 <Instagram className="w-6 h-6" />
               </a>
-              <a href="#" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+              <a href="https://youtube.com/@thevotage?si=9FD0iPKjwzKgMybv" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
                 <Youtube className="w-6 h-6" />
               </a>
-              <a href="#" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+              <a href="https://www.facebook.com/share/17qGmvUop7/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
                 <Facebook className="w-6 h-6" />
+              </a>
+              <a href="https://www.tiktok.com/@thevotage?_r=1&_t=ZS-96qLSNdt3FE" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                <TikTokIcon className="w-6 h-6" />
               </a>
             </div>
           </div>
