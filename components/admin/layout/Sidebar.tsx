@@ -40,7 +40,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   const isActive = (href: string) => {
-    if (href === '/a/dashboard') return pathname === '/a' || pathname === '/a/dashboard'
+    if (href === '/admin/dashboard') return pathname === '/admin' || pathname === '/admin/dashboard'
     return pathname.startsWith(href)
   }
 
@@ -53,7 +53,10 @@ export function Sidebar() {
         {!collapsed ? (
           <>
             <div className="flex-1">
-              <h1 className="text-white font-bold text-sm tracking-wider uppercase leading-tight">
+              <h1
+                className="text-white text-sm tracking-wider uppercase leading-tight"
+                style={{ fontFamily: 'var(--font-copperplate-bold)' }}
+              >
                 THE VOTAGE<br />CHURCH
               </h1>
             </div>
@@ -75,37 +78,37 @@ export function Sidebar() {
         'flex-1 overflow-y-auto py-4 space-y-1',
         collapsed ? 'px-2' : 'px-3'
       )}>
-        <NavLink href="/a/dashboard" active={isActive('/a/dashboard')}>
-          <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/a/dashboard')} collapsed={collapsed} />
+        <NavLink href="/admin/dashboard" active={isActive('/admin/dashboard')}>
+          <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/admin/dashboard')} collapsed={collapsed} />
         </NavLink>
 
-        <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen collapsed={collapsed}>
-          <NavLink href="/a/attendance/trend" active={isActive('/a/attendance/trend')}>
-            <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/a/attendance/trend')} collapsed={collapsed} />
+        <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen={pathname.startsWith('/admin/attendance')} collapsed={collapsed}>
+          <NavLink href="/admin/attendance/trend" active={isActive('/admin/attendance/trend')}>
+            <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/admin/attendance/trend')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/attendance/breakdown" active={isActive('/a/attendance/breakdown')}>
-            <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/a/attendance/breakdown')} collapsed={collapsed} />
+          <NavLink href="/admin/attendance/breakdown" active={isActive('/admin/attendance/breakdown')}>
+            <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/admin/attendance/breakdown')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/attendance/checkin" active={isActive('/a/attendance/checkin')}>
-            <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/a/attendance/checkin')} collapsed={collapsed} />
+          <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
+            <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/admin/attendance/checkin')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>
 
         <SidebarGroup icon={Users} label="Members" collapsed={collapsed}>
-          <NavLink href="/a/members/insights" active={isActive('/a/members/insights')}>
-            <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/a/members/insights')} collapsed={collapsed} />
+          <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
+            <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/admin/members/insights')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/members/manage" active={isActive('/a/members/manage')}>
-            <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/a/members/manage')} collapsed={collapsed} />
+          <NavLink href="/admin/members/manage" active={isActive('/admin/members/manage')}>
+            <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/admin/members/manage')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>
 
         <SidebarGroup icon={UserPlus} label="Visitors Report" collapsed={collapsed}>
-          <NavLink href="/a/visitors/tracking" active={isActive('/a/visitors/tracking')}>
-            <SidebarItem icon={Eye} label="Visitors Tracking" active={isActive('/a/visitors/tracking')} collapsed={collapsed} />
+          <NavLink href="/admin/visitors/tracking" active={isActive('/admin/visitors/tracking')}>
+            <SidebarItem icon={Eye} label="Visitors Tracking" active={isActive('/admin/visitors/tracking')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/visitors/metrics" active={isActive('/a/visitors/metrics')}>
-            <SidebarItem icon={TrendingUp} label="First-Timer Metrics" active={isActive('/a/visitors/metrics')} collapsed={collapsed} />
+          <NavLink href="/admin/visitors/metrics" active={isActive('/admin/visitors/metrics')}>
+            <SidebarItem icon={TrendingUp} label="First-Timer Metrics" active={isActive('/admin/visitors/metrics')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>
 
@@ -119,24 +122,24 @@ export function Sidebar() {
         {collapsed && <div className="border-t border-white/10 my-3 mx-2" />}
 
         <SidebarGroup icon={Mail} label="Follow-Up" collapsed={collapsed}>
-          <NavLink href="/a/followup/onboarding" active={isActive('/a/followup/onboarding')}>
-            <SidebarItem icon={UserPlus2} label="Onboarding" active={isActive('/a/followup/onboarding')} collapsed={collapsed} />
+          <NavLink href="/admin/followup/onboarding" active={isActive('/admin/followup/onboarding')}>
+            <SidebarItem icon={UserPlus2} label="Onboarding" active={isActive('/admin/followup/onboarding')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>
 
-        <NavLink href="/a/reports" active={isActive('/a/reports')}>
-          <SidebarItem icon={FileText} label="Reports" active={isActive('/a/reports')} collapsed={collapsed} />
+        <NavLink href="/admin/reports" active={isActive('/admin/reports')}>
+          <SidebarItem icon={FileText} label="Reports" active={isActive('/admin/reports')} collapsed={collapsed} />
         </NavLink>
 
         <SidebarGroup icon={Settings} label="Administration" collapsed={collapsed}>
-          <NavLink href="/a/aistration/add-edit" active={isActive('/a/aistration/add-edit')}>
-            <SidebarItem icon={UserPlus2} label="Add/Edit members" active={isActive('/a/aistration/add-edit')} collapsed={collapsed} />
+          <NavLink href="/admin/administration/add-edit" active={isActive('/admin/administration/add-edit')}>
+            <SidebarItem icon={UserPlus2} label="Add/Edit members" active={isActive('/admin/administration/add-edit')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/aistration/departments" active={isActive('/a/aistration/departments')}>
-            <SidebarItem icon={Building2} label="Assign Departments" active={isActive('/a/aistration/departments')} collapsed={collapsed} />
+          <NavLink href="/admin/administration/departments" active={isActive('/admin/administration/departments')}>
+            <SidebarItem icon={Building2} label="Assign Departments" active={isActive('/admin/administration/departments')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/a/aistration/delete" active={isActive('/a/aistration/delete')}>
-            <SidebarItem icon={Trash2} label="Delete a member" active={isActive('/a/aistration/delete')} collapsed={collapsed} />
+          <NavLink href="/admin/administration/delete" active={isActive('/admin/administration/delete')}>
+            <SidebarItem icon={Trash2} label="Delete a member" active={isActive('/admin/administration/delete')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>
       </nav>
@@ -165,7 +168,10 @@ export function Sidebar() {
         className="fixed left-0 top-0 h-full w-[260px] bg-[#1A1D29] z-50 lg:hidden flex flex-col"
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-          <h1 className="text-white font-bold text-sm tracking-wider uppercase leading-tight">
+          <h1
+            className="text-white text-sm tracking-wider uppercase leading-tight"
+            style={{ fontFamily: 'var(--font-copperplate-bold)' }}
+          >
             THE VOTAGE<br />CHURCH
           </h1>
           <button onClick={closeMobile} className="text-white/50 hover:text-white">
@@ -173,34 +179,34 @@ export function Sidebar() {
           </button>
         </div>
         <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          <NavLink href="/a/dashboard" active={isActive('/a/dashboard')}>
-            <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/a/dashboard')} />
+          <NavLink href="/admin/dashboard" active={isActive('/admin/dashboard')}>
+            <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/admin/dashboard')} />
           </NavLink>
-          <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen>
-            <NavLink href="/a/attendance/trend" active={isActive('/a/attendance/trend')}>
-              <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/a/attendance/trend')} />
+          <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen={pathname.startsWith('/admin/attendance')}>
+            <NavLink href="/admin/attendance/trend" active={isActive('/admin/attendance/trend')}>
+              <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/admin/attendance/trend')} />
             </NavLink>
-            <NavLink href="/a/attendance/breakdown" active={isActive('/a/attendance/breakdown')}>
-              <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/a/attendance/breakdown')} />
+            <NavLink href="/admin/attendance/breakdown" active={isActive('/admin/attendance/breakdown')}>
+              <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/admin/attendance/breakdown')} />
             </NavLink>
-            <NavLink href="/a/attendance/checkin" active={isActive('/a/attendance/checkin')}>
-              <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/a/attendance/checkin')} />
+            <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
+              <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/admin/attendance/checkin')} />
             </NavLink>
           </SidebarGroup>
           <SidebarGroup icon={Users} label="Members">
-            <NavLink href="/a/members/insights" active={isActive('/a/members/insights')}>
-              <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/a/members/insights')} />
+            <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
+              <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/admin/members/insights')} />
             </NavLink>
-            <NavLink href="/a/members/manage" active={isActive('/a/members/manage')}>
-              <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/a/members/manage')} />
+            <NavLink href="/admin/members/manage" active={isActive('/admin/members/manage')}>
+              <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/admin/members/manage')} />
             </NavLink>
           </SidebarGroup>
           <SidebarGroup icon={UserPlus} label="Visitors Report">
-            <NavLink href="/a/visitors/tracking" active={isActive('/a/visitors/tracking')}>
-              <SidebarItem icon={Eye} label="Visitors Tracking" active={isActive('/a/visitors/tracking')} />
+            <NavLink href="/admin/visitors/tracking" active={isActive('/admin/visitors/tracking')}>
+              <SidebarItem icon={Eye} label="Visitors Tracking" active={isActive('/admin/visitors/tracking')} />
             </NavLink>
-            <NavLink href="/a/visitors/metrics" active={isActive('/a/visitors/metrics')}>
-              <SidebarItem icon={TrendingUp} label="First-Timer Metrics" active={isActive('/a/visitors/metrics')} />
+            <NavLink href="/admin/visitors/metrics" active={isActive('/admin/visitors/metrics')}>
+              <SidebarItem icon={TrendingUp} label="First-Timer Metrics" active={isActive('/admin/visitors/metrics')} />
             </NavLink>
           </SidebarGroup>
           <div className="px-3 pt-4 pb-2">
@@ -209,22 +215,22 @@ export function Sidebar() {
             </span>
           </div>
           <SidebarGroup icon={Mail} label="Follow-Up">
-            <NavLink href="/a/followup/onboarding" active={isActive('/a/followup/onboarding')}>
-              <SidebarItem icon={UserPlus2} label="Onboarding" active={isActive('/a/followup/onboarding')} />
+            <NavLink href="/admin/followup/onboarding" active={isActive('/admin/followup/onboarding')}>
+              <SidebarItem icon={UserPlus2} label="Onboarding" active={isActive('/admin/followup/onboarding')} />
             </NavLink>
           </SidebarGroup>
-          <NavLink href="/a/reports" active={isActive('/a/reports')}>
-            <SidebarItem icon={FileText} label="Reports" active={isActive('/a/reports')} />
+          <NavLink href="/admin/reports" active={isActive('/admin/reports')}>
+            <SidebarItem icon={FileText} label="Reports" active={isActive('/admin/reports')} />
           </NavLink>
           <SidebarGroup icon={Settings} label="Administration">
-            <NavLink href="/a/aistration/add-edit" active={isActive('/a/aistration/add-edit')}>
-              <SidebarItem icon={UserPlus2} label="Add/Edit members" active={isActive('/a/aistration/add-edit')} />
+            <NavLink href="/admin/administration/add-edit" active={isActive('/admin/administration/add-edit')}>
+              <SidebarItem icon={UserPlus2} label="Add/Edit members" active={isActive('/admin/administration/add-edit')} />
             </NavLink>
-            <NavLink href="/a/aistration/departments" active={isActive('/a/aistration/departments')}>
-              <SidebarItem icon={Building2} label="Assign Departments" active={isActive('/a/aistration/departments')} />
+            <NavLink href="/admin/administration/departments" active={isActive('/admin/administration/departments')}>
+              <SidebarItem icon={Building2} label="Assign Departments" active={isActive('/admin/administration/departments')} />
             </NavLink>
-            <NavLink href="/a/aistration/delete" active={isActive('/a/aistration/delete')}>
-              <SidebarItem icon={Trash2} label="Delete a member" active={isActive('/a/aistration/delete')} />
+            <NavLink href="/admin/administration/delete" active={isActive('/admin/administration/delete')}>
+              <SidebarItem icon={Trash2} label="Delete a member" active={isActive('/admin/administration/delete')} />
             </NavLink>
           </SidebarGroup>
         </nav>
