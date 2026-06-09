@@ -26,7 +26,7 @@ const infoCards = [
     title: 'Join A Connect',
     icon: <Users className="w-6 h-6 text-white" />,
     contentTitle: 'Tuesdays - Saturdays',
-    contentDetails: ['5:30 pm'],
+    contentDetails: ['5:00 pm'],
     isTime: false,
   },
 ];
