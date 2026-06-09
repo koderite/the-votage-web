@@ -17,14 +17,6 @@ const events = [
     date: 'Friday & Saturday, February 20th & 21st, 2026',
     time: '8:00PM (WAT) daily',
     image: '/img/night-of-favour.jpeg'
-  },
-  {
-    id: 3,
-    title: 'Refresh Tour 2026',
-    subtitle: 'Across the Globe',
-    date: 'Jan 31, 2026 - Jan 13, 2027',
-    time: null,
-    image: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://s3-alpha-sig.figma.com/img/ece2/98d0/ec2c16f10310d45724b276a6035cb503?Expires=1770595200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=PodbDqIAdI1sCaLk0uHqoJzCaoj~Glu3~yQzK7lwT2D6PLgp6TVTQeM~g48Uo~1Z27cbFtz6TrqROpt5jqvVVefnYADGoEPcN-tNT~A4xDILoYKhCSTT5L1e2jiHn6EYK58Acyt74H~8vR8ItgfaGGvSc6sx4TXntoRdWv7Ho0lqlJDd5DiGD~Yelv-Z3WetNWI7LflCGcTO0hor42a41Pn2oOOsVGZHLod8-QSetpfrp9vFwmtb1Uum8k6qyExmiogqJYgPfgEGL9uaUet1LlgK4pBx~idf16LRavTs33PIrqENPBvvAO6urT-W3cR1Lp0S5pE2ClDUHn4aBkEWog__'
   }
 ];
 
