@@ -1,3 +1,4 @@
+// TODO: verify bank details per currency
 export const transferData = {
   USD: {
     title: "USD TRANSFERS",

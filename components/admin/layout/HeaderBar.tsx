@@ -1,13 +1,13 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
+import { useAuth } from '@/lib/auth-context'
 import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
 import { useState, useRef, useEffect } from 'react'
 
 export function HeaderBar() {
-  const { data: session, status } = useSession()
+  const { user, isLoading, logout } = useAuth()
   const { collapsed, toggleMobile, toggleCollapse } = useSidebar()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -22,14 +22,10 @@ export function HeaderBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  async function handleSignOut() {
-    await signOut({ callbackUrl: '/sign-in' })
-  }
+  const userName = user?.username || user?.email || 'User'
+  const userEmail = user?.email || ''
 
-  const userName = session?.user?.name || session?.user?.email || 'User'
-  const userImage = session?.user?.image
-
-  if (status === 'loading') {
+  if (isLoading) {
     return null
   }
 
@@ -66,7 +62,7 @@ export function HeaderBar() {
         </button>
 
         <button
-          onClick={handleSignOut}
+          onClick={logout}
           aria-label="Sign out"
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
@@ -81,23 +77,21 @@ export function HeaderBar() {
             aria-expanded={menuOpen}
             className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            {userImage ? (
-              <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
-                {userName.charAt(0).toUpperCase()}
-              </div>
-            )}
+            <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </div>
           </button>
 
           {menuOpen && (
             <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
               <div className="px-4 py-2 border-b border-gray-100">
                 <p className="font-medium text-[#111827]">{userName}</p>
-                <p className="text-sm text-gray-500 truncate">{session?.user?.email}</p>
+                {userEmail && (
+                  <p className="text-sm text-gray-500 truncate">{userEmail}</p>
+                )}
               </div>
               <button
-                onClick={handleSignOut}
+                onClick={logout}
                 className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-[#DC2626] transition-colors"
               >
                 <LogOut size={18} />

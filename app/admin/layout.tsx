@@ -5,4 +5,4 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   await requireAdmin()
 
   return <AdminProviders>{children}</AdminProviders>
-}
+} 
