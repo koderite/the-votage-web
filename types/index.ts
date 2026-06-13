@@ -12,11 +12,16 @@ export interface ApiError {
 }
 
 export interface TransferData {
-  currency: string
-  bank: string
-  accountName: string
-  accountNumber: string
-  sortCode: string
+  title: string
+  beneficiaryAccountNumber: string
+  forFinalCredit: string
+  correspondentBank: string
+  swiftCode: string
+  creditOf: {
+    bankName: string
+    accessBankAccount: string
+    beneficiaryBankSwift: string
+  }
 }
 
 export interface PaystackPopConfig {
@@ -26,10 +31,11 @@ export interface PaystackPopConfig {
   currency?: string
   ref?: string
   metadata?: Record<string, unknown>
-  callback: (response: { reference: string; transaction: string; status: string }) => void
+  channels?: string[]
+  callback: (response: { reference: string; transaction?: string; status?: string }) => void
   onClose: () => void
 }
 
 export interface PaystackPop {
-  newTransaction(config: PaystackPopConfig): void
+  setup(config: PaystackPopConfig): { openIframe: () => void }
 }

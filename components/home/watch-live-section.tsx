@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Youtube } from "lucide-react";
+
 
 export const WatchLiveSection = () => {
   const videoId = "KC3-UJNrRY4";
@@ -32,14 +32,6 @@ export const WatchLiveSection = () => {
         >
           {/* Centered Watch Live content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            {/* YouTube Icon */}
-            <motion.div
-              className="w-30 h-30 rounded-full bg-brand-red flex items-center justify-center shadow-2xl mb-6"
-              variants={{ hover: { scale: 1.1 } }}
-            >
-              <Youtube className="lg:w-20 lg:h-20 size-12 sm:size-15 text-[#FF0000]" />
-            </motion.div>
-
             {/* Watch Live Text */}
             <motion.p
               className="text-white font-copperplate text-3xl lg:text-5xl uppercase tracking-wider"
