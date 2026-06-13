@@ -8,7 +8,7 @@ import { Footer } from "@/components/layout/footer";
 import { EnrollmentForm } from "@/components/gta-form/enrollment-form";
 
 export default function EnrollmentPage() {
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: Record<string, unknown>) => {
     // TODO: Implement actual API submission
     console.log("Form data:", data);
 

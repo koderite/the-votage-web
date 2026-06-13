@@ -30,6 +30,7 @@ export interface MonthlyData {
   months: string[];
   series1: number[];
   series2: number[];
+  series3: number[];
 }
 
 export interface ComparisonSeries {

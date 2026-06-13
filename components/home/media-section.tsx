@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { YouTubeIcon } from '@/components/icons/youtube-icon';
+import { Youtube } from 'lucide-react';
 
 function BlurPlaceholder() {
   return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
@@ -87,7 +87,7 @@ const TelegramIcon = () => (
 
 const YouTubeIconColored = () => (
   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[#FF0000] flex items-center justify-center flex-shrink-0">
-    <YouTubeIcon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
+    <Youtube className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
   </div>
 );
 

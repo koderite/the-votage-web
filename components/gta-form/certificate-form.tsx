@@ -2,6 +2,9 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { X } from "lucide-react";
 
 const svgPath =
@@ -47,18 +50,17 @@ function Frame() {
 function InputField({
   label,
   placeholder,
-  value,
-  onChange,
+  error,
   type = "text",
   delay = 0,
+  ...props
 }: {
   label: string;
   placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
+  error?: string;
   type?: string;
   delay?: number;
-}) {
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -82,16 +84,19 @@ function InputField({
           <div className="flex items-center px-4 py-2 relative size-full">
             <input
               type={type}
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
               onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              {...props}
+              onBlur={(e) => {
+                setIsFocused(false);
+                props.onBlur?.(e);
+              }}
               placeholder={placeholder}
               className="w-full h-full bg-transparent border-none outline-none font-['Arial',sans-serif] text-[16px] text-black placeholder:text-[#959595]"
             />
           </div>
         </div>
       </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </motion.div>
   );
 }
@@ -100,12 +105,14 @@ function DateInput({
   placeholder,
   value,
   onChange,
+  error,
   maxLength,
   delay = 0,
 }: {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
+  error?: string;
   maxLength?: number;
   delay?: number;
 }) {
@@ -113,9 +120,7 @@ function DateInput({
 
   const handleChange = (newValue: string) => {
     const numericValue = newValue.replace(/\D/g, "");
-    if (maxLength && numericValue.length <= maxLength) {
-      onChange(numericValue);
-    } else if (!maxLength) {
+    if (!maxLength || numericValue.length <= maxLength) {
       onChange(numericValue);
     }
   };
@@ -148,20 +153,21 @@ function DateInput({
           </div>
         </div>
       </div>
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
     </motion.div>
   );
 }
 
 function Box({
-  fullName,
-  setFullName,
-  phoneNumber,
-  setPhoneNumber,
+  fullNameProps,
+  phoneNumberProps,
+  fullNameError,
+  phoneNumberError,
 }: {
-  fullName: string;
-  setFullName: (value: string) => void;
-  phoneNumber: string;
-  setPhoneNumber: (value: string) => void;
+  fullNameProps: React.InputHTMLAttributes<HTMLInputElement>;
+  phoneNumberProps: React.InputHTMLAttributes<HTMLInputElement>;
+  fullNameError?: string;
+  phoneNumberError?: string;
 }) {
   return (
     <div
@@ -171,52 +177,51 @@ function Box({
       <InputField
         label="Full Name"
         placeholder="Anastasia"
-        value={fullName}
-        onChange={setFullName}
         delay={0.3}
+        error={fullNameError}
+        {...fullNameProps}
       />
       <InputField
         label="Phone Number"
         placeholder="09022**********"
-        value={phoneNumber}
-        onChange={setPhoneNumber}
         type="tel"
         delay={0.4}
+        error={phoneNumberError}
+        {...phoneNumberProps}
       />
     </div>
   );
 }
 
 function Frame2({
-  fullName,
-  setFullName,
-  phoneNumber,
-  setPhoneNumber,
+  fullNameProps,
+  phoneNumberProps,
+  fullNameError,
+  phoneNumberError,
 }: {
-  fullName: string;
-  setFullName: (value: string) => void;
-  phoneNumber: string;
-  setPhoneNumber: (value: string) => void;
+  fullNameProps: React.InputHTMLAttributes<HTMLInputElement>;
+  phoneNumberProps: React.InputHTMLAttributes<HTMLInputElement>;
+  fullNameError?: string;
+  phoneNumberError?: string;
 }) {
   return (
     <div className="flex flex-col items-start justify-center relative shrink-0 w-full">
       <Box
-        fullName={fullName}
-        setFullName={setFullName}
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
+        fullNameProps={fullNameProps}
+        phoneNumberProps={phoneNumberProps}
+        fullNameError={fullNameError}
+        phoneNumberError={phoneNumberError}
       />
     </div>
   );
 }
 
 function Container4({
-  email,
-  setEmail,
+  emailError,
+  ...emailProps
 }: {
-  email: string;
-  setEmail: (value: string) => void;
-}) {
+  emailError?: string;
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div
       className="flex flex-col items-start relative shrink-0 w-full"
@@ -225,10 +230,10 @@ function Container4({
       <InputField
         label="Email"
         placeholder="Anastasia@gmail.com"
-        value={email}
-        onChange={setEmail}
         type="email"
         delay={0.5}
+        error={emailError}
+        {...emailProps}
       />
     </div>
   );
@@ -260,6 +265,9 @@ function DateFields({
   setMonth,
   year,
   setYear,
+  dayError,
+  monthError,
+  yearError,
 }: {
   day: string;
   setDay: (value: string) => void;
@@ -267,6 +275,9 @@ function DateFields({
   setMonth: (value: string) => void;
   year: string;
   setYear: (value: string) => void;
+  dayError?: string;
+  monthError?: string;
+  yearError?: string;
 }) {
   return (
     <div className="flex gap-4 items-start relative shrink-0 w-full">
@@ -276,6 +287,7 @@ function DateFields({
         onChange={setDay}
         maxLength={2}
         delay={0.7}
+        error={dayError}
       />
       <DateInput
         placeholder="Month"
@@ -283,6 +295,7 @@ function DateFields({
         onChange={setMonth}
         maxLength={2}
         delay={0.8}
+        error={monthError}
       />
       <DateInput
         placeholder="Year"
@@ -290,6 +303,7 @@ function DateFields({
         onChange={setYear}
         maxLength={4}
         delay={0.9}
+        error={yearError}
       />
     </div>
   );
@@ -332,6 +346,26 @@ function Cta({
   );
 }
 
+const certificateSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email address"),
+  day: z.string().min(1, "Day is required").regex(/^\d+$/, "Must be a number"),
+  month: z.string().min(1, "Month is required").regex(/^\d+$/, "Must be a number"),
+  year: z.string().min(1, "Year is required").regex(/^\d+$/, "Must be a number"),
+}).refine((data) => {
+  const dayNum = parseInt(data.day);
+  return dayNum >= 1 && dayNum <= 31;
+}, { message: "Day must be between 1-31", path: ["day"] }).refine((data) => {
+  const monthNum = parseInt(data.month);
+  return monthNum >= 1 && monthNum <= 12;
+}, { message: "Month must be between 1-12", path: ["month"] }).refine((data) => {
+  const yearNum = parseInt(data.year);
+  return yearNum >= 1900 && yearNum <= 2026;
+}, { message: "Year must be between 1900-2026", path: ["year"] })
+
+type CertificateFormData = z.infer<typeof certificateSchema>
+
 function CertificateFormModal({
   isOpen,
   onClose,
@@ -339,61 +373,27 @@ function CertificateFormModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<CertificateFormData>({
+    resolver: zodResolver(certificateSchema),
+  })
   const [result, setResult] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateDate = () => {
-    const dayNum = parseInt(day);
-    const monthNum = parseInt(month);
-    const yearNum = parseInt(year);
-
-    if (!day || !month || !year) {
-      return "Please fill in the complete date";
-    }
-
-    if (dayNum < 1 || dayNum > 31) {
-      return "Please enter a valid day (1-31)";
-    }
-
-    if (monthNum < 1 || monthNum > 12) {
-      return "Please enter a valid month (1-12)";
-    }
-
-    if (yearNum < 1900 || yearNum > 2026) {
-      return "Please enter a valid year";
-    }
-
-    return null;
-  };
-
-  const handleSubmit = async () => {
-    if (!fullName || !phoneNumber || !email) {
-      setResult("Please fill in all fields");
-      return;
-    }
-
-    const dateError = validateDate();
-    if (dateError) {
-      setResult(dateError);
-      return;
-    }
-
-    setIsSubmitting(true);
+  const onSubmit = async (data: CertificateFormData) => {
     setResult("");
 
-    const completionDate = `${month}/${day}/${year}`;
+    const completionDate = `${data.month}/${data.day}/${data.year}`;
 
     const payload = {
-      FullName: fullName,
-      PhoneNumber: phoneNumber,
-      Email: email,
+      FullName: data.fullName,
+      PhoneNumber: data.phoneNumber,
+      Email: data.email,
       CompletionDate: completionDate,
       Timestamp: new Date().toISOString(),
       FormType: "claimcert",
@@ -448,21 +448,13 @@ function CertificateFormModal({
       }
 
       setTimeout(() => {
-        setFullName("");
-        setPhoneNumber("");
-        setEmail("");
-        setDay("");
-        setMonth("");
-        setYear("");
-        setIsSubmitted(false);
+        reset();
         setResult("");
         onClose();
       }, 1500);
     } catch (error) {
       console.error("ClaimCert form error:", error);
       setResult("An error occurred while submitting. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -499,29 +491,35 @@ function CertificateFormModal({
 
                 <div className="mt-8 space-y-6">
                   <Frame2
-                    fullName={fullName}
-                    setFullName={setFullName}
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
+                    fullNameProps={register("fullName")}
+                    phoneNumberProps={register("phoneNumber")}
+                    fullNameError={errors.fullName?.message}
+                    phoneNumberError={errors.phoneNumber?.message}
                   />
 
-                  <Container4 email={email} setEmail={setEmail} />
+                  <Container4
+                    {...register("email")}
+                    emailError={errors.email?.message}
+                  />
 
                   <Frame3 />
 
                   <DateFields
-                    day={day}
-                    setDay={setDay}
-                    month={month}
-                    setMonth={setMonth}
-                    year={year}
-                    setYear={setYear}
+                    day={watch("day")}
+                    setDay={(v: string) => setValue("day", v, { shouldValidate: true })}
+                    month={watch("month")}
+                    setMonth={(v: string) => setValue("month", v, { shouldValidate: true })}
+                    year={watch("year")}
+                    setYear={(v: string) => setValue("year", v, { shouldValidate: true })}
+                    dayError={errors.day?.message}
+                    monthError={errors.month?.message}
+                    yearError={errors.year?.message}
                   />
 
                   <div className="flex justify-center mt-8">
                     <Cta
-                      onClick={handleSubmit}
-                      disabled={isSubmitted || isSubmitting}
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={isSubmitting}
                       isLoading={isSubmitting}
                     />
                   </div>

@@ -2,6 +2,9 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { X } from "lucide-react";
 
 const svgPath =
@@ -47,18 +50,17 @@ function Frame() {
 function InputField({
   label,
   placeholder,
-  value,
-  onChange,
+  error,
   type = "text",
   delay = 0,
+  ...props
 }: {
   label: string;
   placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
+  error?: string;
   type?: string;
   delay?: number;
-}) {
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -88,30 +90,33 @@ function InputField({
           <div className="flex items-center px-4 py-2 relative size-full">
             <input
               type={type}
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
               onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              {...props}
+              onBlur={(e) => {
+                setIsFocused(false);
+                props.onBlur?.(e);
+              }}
               placeholder={placeholder}
               className="w-full h-full bg-transparent border-none outline-none font-['Arial',sans-serif] text-[16px] text-black placeholder:text-[#959595]"
             />
           </div>
         </div>
       </motion.div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </motion.div>
   );
 }
 
 function Box({
-  fullName,
-  setFullName,
-  phoneNumber,
-  setPhoneNumber,
+  fullNameProps,
+  phoneNumberProps,
+  fullNameError,
+  phoneNumberError,
 }: {
-  fullName: string;
-  setFullName: (value: string) => void;
-  phoneNumber: string;
-  setPhoneNumber: (value: string) => void;
+  fullNameProps: React.InputHTMLAttributes<HTMLInputElement>;
+  phoneNumberProps: React.InputHTMLAttributes<HTMLInputElement>;
+  fullNameError?: string;
+  phoneNumberError?: string;
 }) {
   return (
     <div
@@ -121,40 +126,40 @@ function Box({
       <InputField
         label="Full Name"
         placeholder="Anastasia"
-        value={fullName}
-        onChange={setFullName}
         delay={0.3}
+        error={fullNameError}
+        {...fullNameProps}
       />
       <InputField
         label="Phone Number"
         placeholder="09022**********"
-        value={phoneNumber}
-        onChange={setPhoneNumber}
         type="tel"
         delay={0.4}
+        error={phoneNumberError}
+        {...phoneNumberProps}
       />
     </div>
   );
 }
 
 function Frame2({
-  fullName,
-  setFullName,
-  phoneNumber,
-  setPhoneNumber,
+  fullNameProps,
+  phoneNumberProps,
+  fullNameError,
+  phoneNumberError,
 }: {
-  fullName: string;
-  setFullName: (value: string) => void;
-  phoneNumber: string;
-  setPhoneNumber: (value: string) => void;
+  fullNameProps: React.InputHTMLAttributes<HTMLInputElement>;
+  phoneNumberProps: React.InputHTMLAttributes<HTMLInputElement>;
+  fullNameError?: string;
+  phoneNumberError?: string;
 }) {
   return (
     <div className="flex flex-col items-start justify-center relative shrink-0 w-full">
       <Box
-        fullName={fullName}
-        setFullName={setFullName}
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
+        fullNameProps={fullNameProps}
+        phoneNumberProps={phoneNumberProps}
+        fullNameError={fullNameError}
+        phoneNumberError={phoneNumberError}
       />
     </div>
   );
@@ -180,12 +185,11 @@ function Frame3() {
 }
 
 function Container4({
-  email,
-  setEmail,
+  emailError,
+  ...emailProps
 }: {
-  email: string;
-  setEmail: (value: string) => void;
-}) {
+  emailError?: string;
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div
       className="flex flex-col items-start relative shrink-0 w-full"
@@ -194,10 +198,10 @@ function Container4({
       <InputField
         label="Email"
         placeholder="Anastasia@gmail.com"
-        value={email}
-        onChange={setEmail}
         type="email"
         delay={0.6}
+        error={emailError}
+        {...emailProps}
       />
     </div>
   );
@@ -240,6 +244,14 @@ function Cta({
   );
 }
 
+const makeupSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email address"),
+})
+
+type MakeupFormData = z.infer<typeof makeupSchema>
+
 function MakeUpFormModal({
   isOpen,
   onClose,
@@ -247,26 +259,23 @@ function MakeUpFormModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<MakeupFormData>({
+    resolver: zodResolver(makeupSchema),
+  })
   const [result, setResult] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!fullName || !phoneNumber || !email) {
-      setResult("Please fill in all fields");
-      return;
-    }
-
-    setIsSubmitting(true);
+  const onSubmit = async (data: MakeupFormData) => {
     setResult("");
 
     const payload = {
-      FullName: fullName,
-      PhoneNumber: phoneNumber,
-      Email: email,
+      FullName: data.fullName,
+      PhoneNumber: data.phoneNumber,
+      Email: data.email,
       Timestamp: new Date().toISOString(),
       FormType: "makeup",
     };
@@ -320,18 +329,13 @@ function MakeUpFormModal({
       }
 
       setTimeout(() => {
-        setFullName("");
-        setPhoneNumber("");
-        setEmail("");
-        setIsSubmitted(false);
+        reset();
         setResult("");
         onClose();
       }, 1500);
     } catch (error) {
       console.error("Makeup form error:", error);
       setResult("An error occurred while submitting. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -368,20 +372,23 @@ function MakeUpFormModal({
 
                 <div className="mt-8 space-y-8">
                   <Frame2
-                    fullName={fullName}
-                    setFullName={setFullName}
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
+                    fullNameProps={register("fullName")}
+                    phoneNumberProps={register("phoneNumber")}
+                    fullNameError={errors.fullName?.message}
+                    phoneNumberError={errors.phoneNumber?.message}
                   />
 
                   <Frame3 />
 
-                  <Container4 email={email} setEmail={setEmail} />
+                  <Container4
+                    {...register("email")}
+                    emailError={errors.email?.message}
+                  />
 
                   <div className="flex justify-center mt-8">
                     <Cta
-                      onClick={handleSubmit}
-                      disabled={isSubmitted || isSubmitting}
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={isSubmitting}
                       isLoading={isSubmitting}
                     />
                   </div>

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { YouTubeIcon } from "@/components/icons/youtube-icon";
+import { Youtube } from "lucide-react";
 
 export const WatchLiveSection = () => {
   const videoId = "KC3-UJNrRY4";
@@ -61,7 +61,7 @@ export const WatchLiveSection = () => {
               className="w-30 h-30 rounded-full bg-brand-red flex items-center justify-center shadow-2xl mb-6"
               variants={{ hover: { scale: 1.1 } }}
             >
-              <YouTubeIcon className="lg:w-20 lg:h-20 size-12 sm:size-15   text-[#FF0000]" />
+              <Youtube className="lg:w-20 lg:h-20 size-12 sm:size-15 text-[#FF0000]" />
             </motion.div>
 
             {/* Watch Live Text */}

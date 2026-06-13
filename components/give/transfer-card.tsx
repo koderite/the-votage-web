@@ -3,10 +3,10 @@
 import { Landmark } from "lucide-react";
 import { CopyField } from "./copy-field";
 import Image from "next/image";
-import { div } from "framer-motion/client";
+import type { TransferData } from '@/types'
 
 interface TransferCardProps {
-  data: any;
+  data: TransferData;
   accent?: string;
   bordercolor?: string;
 }
