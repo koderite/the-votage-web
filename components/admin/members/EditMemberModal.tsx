@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { X, ChevronDown } from 'lucide-react'
-import { DEPARTMENTS, type Member } from '@/components/admin/data/members'
+import { DEPARTMENTS, type Member, type Gender, type MaritalStatus, type Department } from '@/components/admin/data/members'
 
 interface EditMemberModalProps {
   member: Member
@@ -100,7 +100,7 @@ export function EditMemberModal({ member, onClose, onSave }: EditMemberModalProp
               <div className="relative">
                 <select
                   value={form.gender}
-                  onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                  onChange={(e) => setForm({ ...form, gender: e.target.value as Gender })}
                   className={`${inputClass} appearance-none pr-8`}
                 >
                   <option>Male</option>
@@ -114,7 +114,7 @@ export function EditMemberModal({ member, onClose, onSave }: EditMemberModalProp
               <div className="relative">
                 <select
                   value={form.maritalStatus}
-                  onChange={(e) => setForm({ ...form, maritalStatus: e.target.value })}
+                  onChange={(e) => setForm({ ...form, maritalStatus: e.target.value as MaritalStatus })}
                   className={`${inputClass} appearance-none pr-8`}
                 >
                   <option>Single</option>
@@ -129,10 +129,19 @@ export function EditMemberModal({ member, onClose, onSave }: EditMemberModalProp
               <div className="relative">
                 <select
                   value={form.department}
-                  onChange={(e) => setForm({ ...form, department: e.target.value })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      department: e.target.value as Department,
+                    })
+                  }
                   className={`${inputClass} appearance-none pr-8`}
                 >
-                  {DEPARTMENTS.map((d) => <option key={d}>{d}</option>)}
+                  {DEPARTMENTS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
                 </select>
                 <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               </div>
