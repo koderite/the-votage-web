@@ -52,7 +52,7 @@ const mediaItems: MediaItem[] = [
     icon: 'youtube',
     title: 'STREAM REFRESH PROGRAMS',
     subtitle: 'Every Last Saturday of the month',
-    description: 'Anwiii Ojeikere(THE WINLOS)',
+    description: 'Anwinli Ojeikere(THE WINLOS)',
     contentTitle: 'Stream Refresh Programs',
     contentSubtitle: 'Every Last Saturday',
     contentTag: 'Monthly Program',

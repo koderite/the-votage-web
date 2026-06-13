@@ -1,35 +1,59 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { YouTubeIcon } from "@/components/icons/youtube-icon";
 
 export const WatchLiveSection = () => {
   const videoId = "KC3-UJNrRY4";
-  const [showOverlay, setShowOverlay] = useState(true);
-
-  const handlePlay = () => {
-    setShowOverlay(false);
-  };
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [thumbnail, setThumbnail] = useState(
+    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+  );
 
   return (
-    <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
-      {/* YouTube iframe - always present */}
-      <iframe
-        key={showOverlay ? "no-autoplay" : "autoplay"}
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=${showOverlay ? 0 : 1}&modestbranding=1&rel=0&enablejsapi=1}`}
-        title="Watch Live Stream"
-        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
-        allowFullScreen
-        className="absolute inset-0 w-full h-full border-0"
-      />
-
-      {/* Transparent overlay with opacity - hides when clicked */}
-      {showOverlay && (
+    <section className="relative w-full aspect-video lg:aspect-auto lg:h-screen flex items-center justify-center overflow-hidden bg-black">
+      {isPlaying ? (
+        /* iframe is only mounted after the user clicks, so YouTube's native
+           play button never shows through the overlay */
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1`}
+          title="Watch Live Stream"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full border-0"
+        />
+      ) : (
         <motion.div
-          className="absolute inset-0 bg-black/60 cursor-pointer z-10"
-          onClick={handlePlay}
+          className="absolute inset-0 cursor-pointer"
+          onClick={() => setIsPlaying(true)}
           whileHover="hover"
+          role="button"
+          tabIndex={0}
+          aria-label="Play live stream"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setIsPlaying(true);
+            }
+          }}
         >
+          {/* Video thumbnail */}
+          <Image
+            src={thumbnail}
+            alt="Watch Live Stream"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            onError={() =>
+              setThumbnail(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`)
+            }
+          />
+
+          {/* Darkening layer */}
+          <div className="absolute inset-0 bg-black/60" />
+
           {/* Centered Watch Live content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             {/* YouTube Icon */}
@@ -49,15 +73,6 @@ export const WatchLiveSection = () => {
             >
               Watch Live
             </motion.p>
-
-            {/* <motion.p
-              className="text-white/70 font-poppins text-base mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              Click to play
-            </motion.p> */}
           </div>
         </motion.div>
       )}
