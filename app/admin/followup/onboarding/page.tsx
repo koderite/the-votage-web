@@ -2,18 +2,13 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
 import { Lightbulb, AlertTriangle, Leaf, Timer, ChevronDown, Phone, MessageSquare, Mail } from 'lucide-react'
+import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { FollowUpModal } from '@/components/admin/followup/FollowUpModal'
-
-const onboardingMembers = [
-  { name: 'Ana Goodness', percent: 50,  badges: ['New', 'In progress']    },
-  { name: 'Ana Goodness', percent: 80,  badges: ['New', 'In progress']    },
-  { name: 'Ana Goodness', percent: 20,  badges: ['New', 'Need attention'] },
-  { name: 'Ana Goodness', percent: 90,  badges: ['New', 'In progress']    },
-  { name: 'Ana Goodness', percent: 100, badges: ['New', 'Completed']      },
-  { name: 'Ana Goodness', percent: 70,  badges: ['New', 'In progress']    },
-]
+import {
+  getOnboardingMembers, getContactAttempts, getNeedAttentionCards, getBirthdays,
+  allMembers, computeStats, needsAttention, isNewThisMonth,
+} from '@/components/admin/data/members'
 
 const badgeStyle: Record<string, string> = {
   'New':            'bg-green-100 text-green-700',
@@ -30,35 +25,6 @@ const badgeIcon: Record<string, React.ReactNode> = {
 }
 
 type ContactType = 'call' | 'sms' | 'email' | 'prayer'
-
-const contactAttempts: { icon: ContactType; text: string; time: string }[] = [
-  { icon: 'call',   text: 'Called Ajoke Favour – No answer left 2 messages',  time: '2 hrs ago'  },
-  { icon: 'sms',    text: 'SMS sent to Joshua Olu – Check in after 3 week',    time: 'yesterday'  },
-  { icon: 'call',   text: 'Called Ajoke Favour – No answer left 2 messages',   time: '2 days ago' },
-  { icon: 'prayer', text: 'Pray for Nnekka family – logged in by Pastor Uju',  time: 'yesterday'  },
-  { icon: 'email',  text: 'Email sent to Mary Apkan – No answer left 2 messages', time: '3 days ago' },
-  { icon: 'call',   text: 'Called Ajoke Favour – No answer left 2 messages',   time: '2 days ago' },
-  { icon: 'sms',    text: 'SMS sent to Joshua Olu – Check in after 3 week',    time: 'yesterday'  },
-  { icon: 'email',  text: 'Email sent to Mary Apkan – No answer left 2 messages', time: '3 days ago' },
-  { icon: 'prayer', text: 'Pray for Nnekka family – logged in by Pastor Uju',  time: 'yesterday'  },
-]
-
-const needAttentionCards = [
-  { name: 'Ajoke Favour', lastSeen: 'Last seen, Connect meeting- 23 April', time: '2 wk' },
-  { name: 'Ajoke Favour', lastSeen: 'Last seen, Connect meeting- 23 April', time: '2 wk' },
-  { name: 'Ajoke Favour', lastSeen: 'Last seen, Connect meeting- 23 April', time: '2 wk' },
-  { name: 'Ajoke Favour', lastSeen: 'Last seen, Connect meeting- 23 April', time: '2 wk' },
-  { name: 'Ajoke Favour', lastSeen: 'Last seen, Connect meeting- 23 April', time: '2 wk' },
-]
-
-const birthdays = [
-  { name: 'Ajoke Favour',     note: 'birthday is tomorrow',         day: 'Tomorrow' },
-  { name: 'Mr and Mrs Eki',   note: 'celebrates 10 years – May 22', day: 'Mon'      },
-  { name: 'Scott Favour',     note: 'birthday is on – May 23',      day: 'Tue'      },
-  { name: 'Mr and Mrs Elijah',note: 'anniversary – May 24',         day: 'Wed'      },
-]
-
-const bdayIcon: Record<string, string> = { 'Ajoke Favour': '📞', 'Mr and Mrs Eki': '💬', 'Scott Favour': '📞', 'Mr and Mrs Elijah': '🙏' }
 
 function ContactIcon({ type }: { type: ContactType }) {
   const base = 'h-8 w-8 rounded-full flex items-center justify-center shrink-0'
@@ -78,10 +44,13 @@ function SectionDropdown({ label }: { label: string }) {
 }
 
 export default function EngagementsPage() {
-  const { data: session } = useSession()
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Admin'
-
   const [followUpMember, setFollowUpMember] = useState<{ name: string; context: string } | null>(null)
+
+  const stats = computeStats(allMembers)
+  const onboardingMembers = getOnboardingMembers()
+  const contactAttempts = getContactAttempts()
+  const needAttentionCards = getNeedAttentionCards()
+  const birthdays = getBirthdays()
 
   return (
     <>
@@ -90,30 +59,20 @@ export default function EngagementsPage() {
       )}
 
       {/* Greeting + status pills */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-        className="flex flex-wrap items-start justify-between gap-4"
-      >
-        <div>
-          <h2 className="text-xl font-semibold text-[#111827]">Welcome back, {firstName}!!</h2>
-          <p className="text-sm text-[#6B7280] mt-1">
-            Today: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
-        </div>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <AdminGreeting />
         <div className="flex items-center gap-3 flex-wrap">
           <span className="flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
-            <AlertTriangle size={14} /> Needs attention(9)
+            <AlertTriangle size={14} /> Needs attention({stats.needsAttention})
           </span>
           <span className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-            <Leaf size={14} /> New this month(22)
+            <Leaf size={14} /> New this month({stats.newThisMonth})
           </span>
           <span className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-            <Timer size={14} /> In progress(12)
+            <Timer size={14} /> In progress({stats.active})
           </span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Info row */}
       <motion.div
@@ -222,13 +181,13 @@ export default function EngagementsPage() {
                 onClick={() =>
                   setFollowUpMember({
                     name: card.name,
-                    context: 'Absent for 3 weeks. Last seen 30 May. Connect meeting',
+                    context: 'Absent for 3 weeks. Last seen 3 weeks ago. Needs follow-up.',
                   })
                 }
                 className="w-full flex items-start gap-3 text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
               >
                 <div className="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0 text-sm font-semibold text-[#374151]">
-                  AF
+                  {card.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-medium text-[#111827]">{card.name}</p>
@@ -260,7 +219,7 @@ export default function EngagementsPage() {
             {birthdays.map((b, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0 text-lg">
-                  {bdayIcon[b.name] ?? '🎂'}
+                  {b.icon}
                 </div>
                 <div className="flex-1">
                   <p className="text-[13px] font-medium text-[#111827]">{b.name}</p>

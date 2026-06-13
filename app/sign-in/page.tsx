@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
-import { useRouter } from 'next/navigation'
 
 const signInSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -16,9 +15,17 @@ const signInSchema = z.object({
 type SignInFormData = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
-  const { user, isLoading, login } = useAuth()
-  const router = useRouter()
+  const { isLoading, isAuthenticated, login } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      const id = setTimeout(() => {
+        window.location.href = '/admin/dashboard'
+      }, 100)
+      return () => clearTimeout(id)
+    }
+  }, [isLoading, isAuthenticated])
   const {
     register,
     handleSubmit,
@@ -27,12 +34,6 @@ export default function SignInPage() {
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   })
-
-  useEffect(() => {
-    if (user) {
-      router.push('/admin/dashboard')
-    }
-  }, [user, router])
 
   if (isLoading) {
     return (
@@ -45,7 +46,6 @@ export default function SignInPage() {
   async function onSubmit(data: SignInFormData) {
     try {
       await login(data.username, data.password)
-      router.push('/admin/dashboard')
     } catch (err) {
       setFormError('root', { message: err instanceof Error ? err.message : 'Login failed' })
     }

@@ -11,7 +11,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   login: (username: string, password: string) => Promise<void>
   logout: () => Promise<void>
-  refetch: () => Promise<void>
+  refetch: () => Promise<User | null>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,8 +25,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const user = await authApi.me()
       setUser(user)
+      return user
     } catch {
       setUser(null)
+      return null
     } finally {
       setIsLoading(false)
     }
@@ -48,8 +50,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(error.detail || 'Login failed')
     }
 
-    await refetch()
-  }, [refetch])
+    const { user } = await res.json()
+    if (user) {
+      setUser(user)
+    }
+  }, [setUser])
 
   const logout = useCallback(async () => {
     await authApi.logout()

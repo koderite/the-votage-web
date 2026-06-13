@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { X, Menu } from 'lucide-react'
+import { X, Menu, LayoutDashboard, TrendingUp, BarChart3, ClipboardCheck, Users, UserSearch, UserCog, UserPlus, Eye, Mail, UserPlus2, FileText, Settings, Building2, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { SidebarItem } from './SidebarItem'
 import { SidebarGroup } from './SidebarGroup'

@@ -1,79 +1,54 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
-import { Lightbulb, Search, SlidersHorizontal, Plus, BookUser, Users, Building2, ClipboardList, ChevronRight } from 'lucide-react'
+import { Lightbulb, Search, SlidersHorizontal, Plus, BookUser, Users, Building2, Sparkles, ChevronRight } from 'lucide-react'
+import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AddMemberModal } from '@/components/admin/members/AddMemberModal'
+import { allMembers, computeStats, isActive, type Department } from '@/components/admin/data/members'
 
-const topCards = [
-  { label: 'Total members',     value: 1640,  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'yellow' as const, icon: BookUser     },
-  { label: 'Active members',    value: 1640,  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'blue'   as const, icon: Users        },
-  { label: 'Returning Members', value: 1640,  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'green'  as const, icon: Building2    },
-  { label: 'Engagments',        value: '87%', change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'purple' as const, icon: ClipboardList },
-]
-
-type Status = 'Active' | 'Inactive'
-
-interface Member {
-  name: string
-  phone: string
-  email: string
-  gender: string
-  department: string
-  status: Status
-}
-
-const members: Member[] = [
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Choir',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'VIP',            status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Ushering',       status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'Choir',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Regular member', status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Media',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'Media',          status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Ushering',       status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'VIP',            status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Choir',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'Ushering',       status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Protocol',       status: 'Active'   },
+const topCardsMeta = [
+  { label: 'Total members',     color: 'yellow' as const, icon: BookUser   },
+  { label: 'Active members',    color: 'blue'   as const, icon: Users       },
+  { label: 'Returning Members', color: 'green'  as const, icon: Building2   },
+  { label: 'New This Month',    color: 'purple' as const, icon: Sparkles    },
 ]
 
 export default function MembersPage() {
-  const { data: session } = useSession()
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Admin'
-
   const [search, setSearch] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'All' | Status>('All')
+  const [deptFilter, setDeptFilter] = useState<string>('All')
+  const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Inactive'>('All')
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
 
-  const filtered = members.filter((m) => {
-    const matchesSearch =
-      search === '' ||
-      m.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.email.toLowerCase().includes(search.toLowerCase()) ||
-      m.department.toLowerCase().includes(search.toLowerCase())
-    const matchesStatus = statusFilter === 'All' || m.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+  const filtered = useMemo(() => {
+    return allMembers.filter((m) => {
+      const matchSearch =
+        search === '' ||
+        m.name.toLowerCase().includes(search.toLowerCase()) ||
+        m.email.toLowerCase().includes(search.toLowerCase()) ||
+        m.department.toLowerCase().includes(search.toLowerCase())
+      const matchDept = deptFilter === 'All' || m.department === deptFilter
+      const matchStatus =
+        statusFilter === 'All' ||
+        (statusFilter === 'Active' && isActive(m)) ||
+        (statusFilter === 'Inactive' && !isActive(m))
+      return matchSearch && matchDept && matchStatus
+    })
+  }, [search, deptFilter, statusFilter])
+
+  const stats = useMemo(() => computeStats(filtered), [filtered])
+
+  const departments = ['All', ...new Set(allMembers.map(m => m.department))] as (string | Department)[]
 
   return (
     <>
       {showAddModal && <AddMemberModal onClose={() => setShowAddModal(false)} />}
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-      >
-        <h2 className="text-xl font-semibold text-[#111827]">Welcome back, {firstName}!!</h2>
-        <p className="text-sm text-[#6B7280] mt-1">
-          Today: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-        </p>
-      </motion.div>
+      <AdminGreeting />
 
-      {/* Top stat cards */}
+      {/* Stat cards */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -100,8 +75,33 @@ export default function MembersPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          {topCards.map((card, i) => (
-            <ColoredStatCard key={card.label} {...card} index={i} />
+          {topCardsMeta.map((card, i) => (
+            <ColoredStatCard
+              key={card.label}
+              label={card.label}
+              value={
+                card.label === 'Total members' ? stats.total :
+                card.label === 'Active members' ? stats.active :
+                card.label === 'Returning Members' ? stats.returning :
+                stats.newThisMonth
+              }
+              change={
+                card.label === 'Total members' ? `${stats.active} active` :
+                card.label === 'Active members' ? `${Math.round(stats.active / (stats.total || 1) * 100)}%` :
+                card.label === 'Returning Members' ? `${stats.needsAttention} need attention` :
+                undefined
+              }
+              changeLabel={
+                card.label === 'Active members' ? 'of total' :
+                card.label === 'Total members' ? 'this month' :
+                card.label === 'Returning Members' ? 'to follow up' :
+                undefined
+              }
+              positive={card.label !== 'New This Month'}
+              color={card.color}
+              icon={card.icon}
+              index={i}
+            />
           ))}
         </div>
       </motion.div>
@@ -113,20 +113,18 @@ export default function MembersPage() {
         transition={{ duration: 0.5, delay: 0.25 }}
         className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
       >
-        {/* Table header row */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-yellow-50 rounded-lg shrink-0">
               <Lightbulb size={18} className="text-yellow-500" fill="currentColor" />
             </div>
             <p className="text-sm text-[#374151]">
-              <span className="font-semibold text-[#111827]">Members Insight</span>{' '}
-              <span className="text-[#6B7280]">– breakdown of departmental attendance</span>
+              <span className="font-semibold text-[#111827]">Members</span>{' '}
+              <span className="text-[#6B7280]">– {filtered.length} of {allMembers.length} members</span>
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Search */}
             <div className="relative">
               <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
               <input
@@ -137,60 +135,73 @@ export default function MembersPage() {
               />
             </div>
 
-            {/* Filter icon */}
-            <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`p-2 border rounded-lg hover:bg-gray-50 transition-colors ${showFilters ? 'border-blue-200 bg-blue-50' : 'border-gray-200'}`}
+            >
               <SlidersHorizontal size={15} className="text-[#6B7280]" />
             </button>
 
-            {/* Status filter */}
-            <button
-              onClick={() => setStatusFilter(statusFilter === 'All' ? 'Active' : statusFilter === 'Active' ? 'Inactive' : 'All')}
-              className="flex items-center gap-1 text-sm text-[#374151] hover:text-[#111827] transition-colors"
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm text-[#374151] bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 appearance-none cursor-pointer"
             >
-              {statusFilter === 'All' ? 'All status' : statusFilter}
-              <ChevronRight size={14} className="text-[#9CA3AF]" />
-            </button>
-
-            <button className="flex items-center gap-1 text-sm text-[#374151] hover:text-[#111827] transition-colors">
-              See all
-              <ChevronRight size={14} className="text-[#9CA3AF]" />
-            </button>
+              <option value="All">All status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
         </div>
 
-        {/* Table */}
+        {showFilters && (
+          <div className="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+            {departments.map((dept) => (
+              <button
+                key={dept}
+                onClick={() => setDeptFilter(dept)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  deptFilter === dept
+                    ? 'bg-[#111827] text-white'
+                    : 'bg-white text-[#6B7280] border border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                {dept}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-100">
-                {['Name', 'Phone No', 'Email', 'Gender', 'Department', 'Status'].map((col) => (
-                  <th key={col} className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">
-                    {col}
-                  </th>
+                {['Name', 'Phone', 'Email', 'Gender', 'Department', 'Marital Status', 'Status'].map((col) => (
+                  <th key={col} className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">{col}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((member, i) => (
-                <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                  <td className="py-3 px-4 text-sm text-[#374151]">{member.name}</td>
-                  <td className="py-3 px-4 text-sm text-[#374151]">{member.phone}</td>
-                  <td className="py-3 px-4 text-sm text-[#374151]">{member.email}</td>
-                  <td className="py-3 px-4 text-sm text-[#374151]">{member.gender}</td>
-                  <td className="py-3 px-4 text-sm text-[#374151]">{member.department}</td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${
-                        member.status === 'Active'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-pink-100 text-pink-600'
-                      }`}
-                    >
-                      {member.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((member, i) => {
+                const active = isActive(member)
+                return (
+                  <tr key={member.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.name}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.phone}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.email}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.gender}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.department}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{member.maritalStatus}</td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${
+                        active ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'
+                      }`}>
+                        {active ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

@@ -1,52 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
-import { Lightbulb, ChevronDown, BookUser, Users, Building2, ClipboardList, Search, SlidersHorizontal, Plus, TrendingUp } from 'lucide-react'
+import { Lightbulb, ChevronDown, BookUser, Users, Building2, ClipboardList, Search, Plus, TrendingUp } from 'lucide-react'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
+import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts'
 import { PieChart, Pie, Cell } from 'recharts'
+import {
+  allMembers, attendanceChartData, checkInMethodData, events as allEvents,
+  computeStats, type ServiceName,
+} from '@/components/admin/data/members'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const dateRangeOptions  = ['Last 4 weeks', 'Last 5 weeks', 'Last 3 months', 'Last 6 months', 'Last year']
-const serviceTypeOptions = ['First service', 'Second service', 'Third service', 'All services']
-const departmentOptions  = ['Kids church', 'Youth', 'Main hall', 'All departments']
+const serviceTypeOptions = ['All services', '1st Service', '2nd Service', '3rd Service']
+const departmentOptions  = ['All departments', 'RMG (Choir)', 'Ushering', 'Media', 'Protocol', 'VIP', 'Next (Youth)', 'Kids', 'Sanitation (Sanctuary)', 'Prayer']
 
-const statCards = [
-  { label: 'Total Attendance', value: 1640, subtitle: 'All service combined',  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'yellow' as const, icon: BookUser      },
-  { label: 'Physical meeting',  value: 1120, subtitle: 'In-person attendees',  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'blue'   as const, icon: Users          },
-  { label: 'Online',            value: 395,  subtitle: 'Live stream viewers',  change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'green'  as const, icon: Building2      },
-  { label: 'New Visitors',      value: 89,   subtitle: 'First-timer Visitors', change: '6.2%', changeLabel: 'vs lat year', positive: true, color: 'purple' as const, icon: ClipboardList  },
-]
-
-const attendancePerService = [
-  { date: '2026-05-23', s1: 220, s2: 310, s3: 180 },
-  { date: '2026-05-09', s1: 260, s2: 200, s3: 150 },
-  { date: '2026-04-19', s1: 310, s2: 492, s3: 220 },
-  { date: '2026-05-19', s1: 160, s2: 290, s3: 210 },
-  { date: '2026-05-27', s1: 200, s2: 260, s3: 195 },
-]
-
-const checkInMethodData = [
-  { name: 'Physical', value: 72, color: '#3B82F6' },
-  { name: 'Online',   value: 22, color: '#F43F5E' },
-  { name: 'Visitors', value: 6,  color: '#F59E0B' },
-]
-
-const events = [
-  { title: 'Men Conference',              date: 'May 20,2026', attendance: 547,  change: '6.2% vs prev'      },
-  { title: 'Benin Fire Cnference',        date: 'May 30,2026', attendance: 4875, change: '6.2% vs last year' },
-  { title: 'My 2 In 1 conference',        date: 'May 30,2026', attendance: 674,  change: '6.2% vs last year' },
-  { title: 'Easter Sunday',              date: 'May 30,2026', attendance: 89,   change: '6.2% vs last year' },
-  { title: 'VOTAGE Thanks-giving Service',date: 'May 30,2026', attendance: 89,   change: '6.2% vs last year' },
-  { title: 'Tribe Sunday',               date: 'May 30,2026', attendance: 89,   change: '6.2% vs last year' },
-]
-
-// ── Sub-components ────────────────────────────────────────────────────────────
+// ── Sub-components ─────────────────────────────────────────────────────────────
 
 function FilterDropdown({ options, value, onChange }: { options: string[]; value: string; onChange: (v: string) => void }) {
   const [open, setOpen] = useState(false)
@@ -107,32 +81,55 @@ function ChartDropdown({ value, onChange, options }: { value: string; onChange: 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ServiceBreakdownPage() {
-  const { data: session } = useSession()
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Admin'
 
   const [dateRange,    setDateRange]    = useState('Last 4 weeks')
-  const [serviceType,  setServiceType]  = useState('First service')
-  const [department,   setDepartment]   = useState('Kids church')
+  const [serviceType,  setServiceType]  = useState('All services')
+  const [department,   setDepartment]   = useState('All departments')
   const [chartPeriod,  setChartPeriod]  = useState('Last 5 weeks')
   const [eventSearch,  setEventSearch]  = useState('')
 
-  const filteredEvents = events.filter(e =>
+  const filteredEvents = allEvents.filter(e =>
     eventSearch === '' || e.title.toLowerCase().includes(eventSearch.toLowerCase())
   )
 
+  // Compute stat cards based on selected filters
+  const filteredMembersForStats = useMemo(() => {
+    if (department === 'All departments') return allMembers
+    return allMembers.filter(m => m.department === department)
+  }, [department])
+
+  const stats = useMemo(() => computeStats(filteredMembersForStats), [filteredMembersForStats])
+
+  // Total attendance ≈ membership + visitors (~7% buffer)
+  const totalAttendance = useMemo(() => {
+    const base = filteredMembersForStats.length
+    return base + Math.round(base * 0.07)
+  }, [filteredMembersForStats])
+
+  const attendancePerService = useMemo(() => {
+    let data = attendanceChartData
+
+    // Filter by service type
+    if (serviceType === '1st Service') {
+      data = data.map(d => ({ ...d, s2: 0, s3: 0 }))
+    } else if (serviceType === '2nd Service') {
+      data = data.map(d => ({ ...d, s1: 0, s3: 0 }))
+    } else if (serviceType === '3rd Service') {
+      data = data.map(d => ({ ...d, s1: 0, s2: 0 }))
+    }
+
+    // Filter by date range
+    const weeks = dateRange === 'Last 4 weeks' ? 4 : dateRange === 'Last 5 weeks' ? 5 : 8
+    return data.slice(-weeks)
+  }, [serviceType, dateRange])
+
+  // Filter chart period
+  const chartPeriodWeeks = chartPeriod === 'Last 5 weeks' ? 5 : chartPeriod === 'Last 4 weeks' ? 4 : 3
+  const chartData = attendancePerService.slice(-chartPeriodWeeks)
+
   return (
     <>
-      {/* Greeting */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-      >
-        <h2 className="text-xl font-semibold text-[#111827]">Welcome back, {firstName}!!</h2>
-        <p className="text-sm text-[#6B7280] mt-1">
-          Today: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-        </p>
-      </motion.div>
+      <AdminGreeting />
 
       {/* Top card: filters + stat cards */}
       <motion.div
@@ -167,9 +164,50 @@ export default function ServiceBreakdownPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          {statCards.map((card, i) => (
-            <ColoredStatCard key={card.label} {...card} index={i} />
-          ))}
+          <ColoredStatCard
+            label="Total Attendance"
+            value={totalAttendance.toLocaleString()}
+            subtitle="All service combined"
+            change={`${stats.active} active members`}
+            changeLabel="this period"
+            positive={true}
+            color="yellow"
+            icon={BookUser}
+            index={0}
+          />
+          <ColoredStatCard
+            label="Active Members"
+            value={stats.active}
+            subtitle="≥3 of last 4 Sundays"
+            change={`${Math.round(stats.active / (stats.total || 1) * 100)}%`}
+            changeLabel="of total"
+            positive={true}
+            color="blue"
+            icon={Users}
+            index={1}
+          />
+          <ColoredStatCard
+            label="Returning"
+            value={stats.returning}
+            subtitle="Back after absence"
+            change={`${stats.newThisMonth} new`}
+            changeLabel="this month"
+            positive={true}
+            color="green"
+            icon={Building2}
+            index={2}
+          />
+          <ColoredStatCard
+            label="New Visitors"
+            value={stats.newThisMonth}
+            subtitle="First-timer Visitors"
+            change={`${stats.needsAttention} need attention`}
+            changeLabel="to follow up"
+            positive={false}
+            color="purple"
+            icon={ClipboardList}
+            index={3}
+          />
         </div>
       </motion.div>
 
@@ -188,7 +226,7 @@ export default function ServiceBreakdownPage() {
           </div>
           <div className="h-65">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={attendancePerService} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
+              <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
@@ -265,7 +303,7 @@ export default function ServiceBreakdownPage() {
               />
             </div>
             <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <SlidersHorizontal size={14} className="text-[#6B7280]" />
+              <Plus size={14} className="text-[#6B7280]" />
             </button>
             <button className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors">
               <Plus size={14} />

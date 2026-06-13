@@ -4,10 +4,10 @@ import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, type LucideIcon } from 'lucide-react'
 
 const variants = {
-  yellow: { border: 'border-yellow-400', iconBg: 'bg-yellow-50', iconColor: 'text-yellow-500' },
-  blue:   { border: 'border-blue-400',   iconBg: 'bg-blue-50',   iconColor: 'text-blue-500'   },
-  green:  { border: 'border-green-400',  iconBg: 'bg-green-50',  iconColor: 'text-green-500'  },
-  purple: { border: 'border-purple-400', iconBg: 'bg-purple-50', iconColor: 'text-purple-500' },
+  yellow: { iconBg: 'bg-yellow-50', iconColor: 'text-yellow-500' },
+  blue:   { iconBg: 'bg-blue-50',   iconColor: 'text-blue-500'   },
+  green:  { iconBg: 'bg-green-50',  iconColor: 'text-green-500'  },
+  purple: { iconBg: 'bg-purple-50', iconColor: 'text-purple-500' },
 }
 
 interface ColoredStatCardProps {
@@ -40,7 +40,7 @@ export function ColoredStatCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1, ease: 'easeOut' }}
-      className={`bg-white rounded-xl p-5 border ${v.border} shadow-[0_1px_3px_rgba(0,0,0,0.06)]`}
+      className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
     >
       <div className="flex items-start justify-between mb-3">
         <p className="text-[13px] font-medium text-[#6B7280]">{label}</p>
@@ -58,7 +58,7 @@ export function ColoredStatCard({
             <TrendingDown size={13} className="text-[#EF4444]" />
           )}
           <span className={`text-[12px] font-medium ${positive ? 'text-[#22C55E]' : 'text-[#EF4444]'}`}>
-            {change} {changeLabel}
+            {change}{changeLabel ? ` ${changeLabel}` : ''}
           </span>
         </div>
       )}

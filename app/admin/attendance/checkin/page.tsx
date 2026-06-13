@@ -1,59 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
-import { Lightbulb, Search, SlidersHorizontal, ChevronRight, Video } from 'lucide-react'
+import { Lightbulb, Search, ChevronRight, Video } from 'lucide-react'
+import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts'
 import { PieChart, Pie, Cell } from 'recharts'
-
-const timelineData = [
-  { time: '7:30',  count: 120 },
-  { time: '7:45',  count: 200 },
-  { time: '8:00',  count: 280 },
-  { time: '8:15',  count: 380 },
-  { time: '8:30',  count: 480 },
-  { time: '8:45',  count: 560 },
-  { time: '9:00',  count: 700 },
-  { time: '9:15',  count: 820 },
-  { time: '9:30',  count: 960 },
-  { time: '9:32',  count: 1000 },
-  { time: '9:45',  count: 920 },
-  { time: '10:00', count: 860 },
-  { time: '10:15', count: 800 },
-  { time: '10:30', count: 720 },
-  { time: '10:45', count: 620 },
-  { time: '11:00', count: 520 },
-  { time: '11:15', count: 420 },
-  { time: '11:30', count: 300 },
-]
-
-const pieData = [
-  { name: 'QR/Scan',      value: 72, color: '#F43F5E' },
-  { name: 'Manual entry', value: 22, color: '#3B82F6' },
-  { name: 'Visual',       value: 6,  color: '#F59E0B' },
-]
-
-const services = [
-  { label: '1st', count: '346' },
-  { label: '2nd', count: '441' },
-  { label: '3rd', count: '-'   },
-]
+import { allMembers, isActive, checkInMethodData, checkinTimelines, defaultServiceCounts, type ServiceName } from '@/components/admin/data/members'
 
 const checkInRows = [
   { name: 'Favour Goodness', ministry: 'Choir',    arrived: '10:33 AM', lateBy: '23 min', flag: '+30 mins',  flagColor: 'bg-pink-100 text-pink-600'  },
-  { name: 'Favour Goodness', ministry: 'VIP',      arrived: '10:33 AM', lateBy: '23 min', flag: '+30 mins',  flagColor: 'bg-pink-100 text-pink-600'  },
-  { name: 'Favour Goodness', ministry: 'Ushering', arrived: '10:33 AM', lateBy: '23 min', flag: '15+ mins',  flagColor: 'bg-green-100 text-green-700' },
-  { name: 'Favour Goodness', ministry: 'Choir',    arrived: '10:33 AM', lateBy: '23 min', flag: '+ 22 mins', flagColor: 'bg-pink-100 text-pink-600'  },
+  { name: 'Emeka Nwosu',     ministry: 'VIP',      arrived: '10:33 AM', lateBy: '23 min', flag: '+30 mins',  flagColor: 'bg-pink-100 text-pink-600'  },
+  { name: 'Funke Adeyemi',   ministry: 'Ushering', arrived: '10:33 AM', lateBy: '23 min', flag: '15+ mins',  flagColor: 'bg-green-100 text-green-700' },
+  { name: 'Chioma Okafor',   ministry: 'Choir',    arrived: '10:33 AM', lateBy: '23 min', flag: '+ 22 mins', flagColor: 'bg-pink-100 text-pink-600'  },
+  { name: 'Temitope Balogun',ministry: 'Media',    arrived: '10:15 AM', lateBy: '8 min',  flag: '15+ mins',  flagColor: 'bg-green-100 text-green-700' },
+  { name: 'Kunle Adegoke',   ministry: 'Protocol', arrived: '10:45 AM', lateBy: '18 min', flag: '+30 mins',  flagColor: 'bg-pink-100 text-pink-600'  },
 ]
 
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ value: number }> }) {
@@ -68,21 +31,19 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
 }
 
 export default function CheckinPage() {
-  const { data: session } = useSession()
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Admin'
-  const [activeService, setActiveService] = useState('2nd')
+  const [activeService, setActiveService] = useState<ServiceName>('2nd')
   const [search, setSearch] = useState('')
+
+  const timelineData = useMemo(() => checkinTimelines[activeService], [activeService])
+  const serviceCount = defaultServiceCounts[activeService]
+
+  const activeCount = allMembers.filter(isActive).length
+  const peakTime = activeService === '1st' ? '7:45' : activeService === '2nd' ? '9:15' : '10:45'
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-      >
-        <h2 className="text-xl font-semibold text-[#111827]">Welcome back, {firstName}!!</h2>
-        <p className="text-sm text-[#6B7280] mt-1">Real time checking – Sunday service in progress</p>
-      </motion.div>
+      <AdminGreeting />
+      <p className="text-sm text-[#6B7280]">Real time checking – Sunday service in progress</p>
 
       {/* Top 3-card row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -94,21 +55,23 @@ export default function CheckinPage() {
           className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
         >
           <p className="text-sm text-[#6B7280] mb-2">Real -Time Check in</p>
-          <p className="text-[42px] font-bold text-[#111827] leading-tight mb-1">1,120</p>
+          <p className="text-[42px] font-bold text-[#111827] leading-tight mb-1">
+            {activeCount * 15 + 120}
+          </p>
           <p className="text-[12px] text-[#9CA3AF] mb-4">Checked in updates every minutes</p>
           <div className="flex items-center gap-2">
-            {services.map((s) => (
+            {(['1st', '2nd', '3rd'] as ServiceName[]).map((s) => (
               <button
-                key={s.label}
-                onClick={() => setActiveService(s.label)}
+                key={s}
+                onClick={() => setActiveService(s)}
                 className={`flex flex-col items-center px-4 py-2 rounded-full text-[12px] transition-colors ${
-                  activeService === s.label
+                  activeService === s
                     ? 'bg-pink-100 text-pink-600 font-semibold'
                     : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'
                 }`}
               >
-                <span>{s.label}</span>
-                <span className="font-bold text-[13px]">{s.count}</span>
+                <span>{s}</span>
+                <span className="font-bold text-[13px]">{serviceCount}</span>
               </button>
             ))}
           </div>
@@ -130,7 +93,7 @@ export default function CheckinPage() {
           <div className="flex items-center gap-4">
             <PieChart width={120} height={120}>
               <Pie
-                data={pieData}
+                data={checkInMethodData}
                 cx={55}
                 cy={55}
                 innerRadius={35}
@@ -138,13 +101,13 @@ export default function CheckinPage() {
                 dataKey="value"
                 strokeWidth={0}
               >
-                {pieData.map((entry, i) => (
+                {checkInMethodData.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
             <div className="space-y-2">
-              {pieData.map((item) => (
+              {checkInMethodData.map((item) => (
                 <div key={item.name} className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
                   <span className="text-[12px] text-[#374151] flex-1">{item.name}</span>
@@ -177,10 +140,10 @@ export default function CheckinPage() {
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-[15px] font-semibold text-[#111827]">Check-in Timeline</h3>
           <span className="px-3 py-1.5 bg-pink-100 text-pink-600 rounded-full text-[12px] font-medium">
-            Peak : 9:38 AM
+            Peak : {peakTime}
           </span>
         </div>
-        <div className="h-[220px]">
+        <div className="h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
@@ -200,10 +163,10 @@ export default function CheckinPage() {
               <YAxis hide />
               <Tooltip content={<CustomTooltip />} />
               <ReferenceLine
-                x="9:32"
+                x={peakTime}
                 stroke="#94A3B8"
                 strokeDasharray="4 4"
-                label={{ value: 'Peak 9:32', position: 'top', fill: '#6B7280', fontSize: 11 }}
+                label={{ value: `Peak ${peakTime}`, position: 'top', fill: '#6B7280', fontSize: 11 }}
               />
               <Area
                 type="monotone"
@@ -247,12 +210,6 @@ export default function CheckinPage() {
                 className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 w-40"
               />
             </div>
-            <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <SlidersHorizontal size={15} className="text-[#6B7280]" />
-            </button>
-            <button className="flex items-center gap-1 text-sm text-[#374151] hover:text-[#111827] transition-colors">
-              All status <ChevronRight size={14} className="text-[#9CA3AF]" />
-            </button>
             <button className="flex items-center gap-1 text-sm text-[#374151] hover:text-[#111827] transition-colors">
               See all <ChevronRight size={14} className="text-[#9CA3AF]" />
             </button>

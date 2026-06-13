@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
 import { Plus, ChevronDown, Download } from 'lucide-react'
+import { AdminGreeting } from '@/components/admin/AdminGreeting'
+import { getFilteredAttendanceRows, serviceMax, getReportMemberRows, monthlyData, yearData } from '@/components/admin/data/members'
 
 const reportCards = [
   {
@@ -50,30 +51,6 @@ const reportCards = [
   },
 ]
 
-const attendanceRows = [
-  { date: 'May 6, 2026',  s1: 567, s2: 541, s3: 601, online: 215 },
-  { date: 'May 13, 2026', s1: 676, s2: 341, s3: 441, online: 201 },
-  { date: 'May 22, 2026', s1: 236, s2: 661, s3: 598, online: 199 },
-  { date: 'May 22, 2026', s1: 236, s2: 661, s3: 598, online: 199 },
-  { date: 'May 22, 2026', s1: 236, s2: 661, s3: 598, online: 199 },
-  { date: 'May 22, 2026', s1: 236, s2: 661, s3: 598, online: 199 },
-  { date: 'May 22, 2026', s1: 236, s2: 661, s3: 598, online: 199 },
-]
-
-const memberRows = [
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Choir',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'VIP',            status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Ushering',       status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'Choir',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Regular member', status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Media',          status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'Media',          status: 'Inactive' },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Female', department: 'Ushering',       status: 'Active'   },
-  { name: 'Bisoye Micheal', phone: '09022174444', email: 'bisoye@micheal.gmail.com', gender: 'Male',   department: 'VIP',            status: 'Inactive' },
-]
-
-const serviceMax = { s1: 700, s2: 700, s3: 700, online: 300 }
-
 function ServiceBar({ value, max, color }: { value: number; max: number; color: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -81,7 +58,7 @@ function ServiceBar({ value, max, color }: { value: number; max: number; color: 
       <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full ${color}`}
-          style={{ width: `${Math.round((value / max) * 100)}%` }}
+          style={{ width: `${Math.min(100, Math.round((value / max) * 100))}%` }}
         />
       </div>
     </div>
@@ -118,30 +95,21 @@ function ServiceDropdown({ value, onChange }: { value: string; onChange: (v: str
 }
 
 export default function ReportsPage() {
-  const { data: session } = useSession()
-  const firstName = session?.user?.name?.split(' ')[0] ?? 'Admin'
   const [serviceFilter, setServiceFilter] = useState('All Services')
-  const [dataView, setDataView] = useState<'attendance' | 'members'>('attendance')
+  const [dataView, setDataView] = useState<'attendance' | 'members' | 'monthly' | 'yearly'>('attendance')
+
+  const attendanceRows = useMemo(() => getFilteredAttendanceRows(serviceFilter), [serviceFilter])
+  const memberRows = useMemo(() => getReportMemberRows(), [])
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-        className="flex items-start justify-between"
-      >
-        <div>
-          <h2 className="text-xl font-semibold text-[#111827]">Welcome back, {firstName}!!</h2>
-          <p className="text-sm text-[#6B7280] mt-1">
-            Today: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
-        </div>
+      <div className="flex items-start justify-between">
+        <AdminGreeting />
         <button className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors">
           <Plus size={15} />
           Export All Data
         </button>
-      </motion.div>
+      </div>
 
       {/* Report Cards */}
       <motion.div
@@ -187,20 +155,17 @@ export default function ReportsPage() {
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <h3 className="text-[16px] font-semibold text-[#111827]">Data Review – last 8 Sundays</h3>
+            <h3 className="text-[16px] font-semibold text-[#111827]">Data Review</h3>
             <div className="flex gap-2">
-              <button
-                onClick={() => setDataView('attendance')}
-                className={`px-3 py-1 rounded-full text-[12px] transition-colors ${dataView === 'attendance' ? 'bg-gray-900 text-white' : 'text-[#6B7280] hover:text-[#111827]'}`}
-              >
-                Attendance
-              </button>
-              <button
-                onClick={() => setDataView('members')}
-                className={`px-3 py-1 rounded-full text-[12px] transition-colors ${dataView === 'members' ? 'bg-gray-900 text-white' : 'text-[#6B7280] hover:text-[#111827]'}`}
-              >
-                Members
-              </button>
+              {(['attendance', 'members', 'monthly', 'yearly'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setDataView(tab)}
+                  className={`px-3 py-1 rounded-full text-[12px] transition-colors capitalize ${dataView === tab ? 'bg-gray-900 text-white' : 'text-[#6B7280] hover:text-[#111827]'}`}
+                >
+                  {tab === 'yearly' ? 'Year/Year' : tab}
+                </button>
+              ))}
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -212,7 +177,7 @@ export default function ReportsPage() {
           </div>
         </div>
 
-        {dataView === 'attendance' ? (
+        {dataView === 'attendance' && (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -237,7 +202,9 @@ export default function ReportsPage() {
               </tbody>
             </table>
           </div>
-        ) : (
+        )}
+
+        {dataView === 'members' && (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -245,25 +212,91 @@ export default function ReportsPage() {
                   <th className="py-3 px-4 w-8">
                     <input type="checkbox" className="rounded" />
                   </th>
-                  {['Name', 'Phone No', 'Email', 'Gender', 'Department', 'Status'].map((col) => (
+                  {['Name', 'Phone', 'Email', 'Gender', 'Department', 'Status'].map((col) => (
                     <th key={col} className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">{col}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {memberRows.map((m, i) => (
+                    <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-4">
+                        <input type="checkbox" className="rounded" />
+                      </td>
+                      <td className="py-3 px-4 text-sm text-[#374151]">{m.name}</td>
+                      <td className="py-3 px-4 text-sm text-[#374151]">{m.phone}</td>
+                      <td className="py-3 px-4 text-sm text-[#374151]">{m.email}</td>
+                      <td className="py-3 px-4 text-sm text-[#374151]">{m.gender}</td>
+                      <td className="py-3 px-4 text-sm text-[#374151]">{m.department}</td>
+                      <td className="py-3 px-4">
+                        <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${m.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'}`}>
+                          {m.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {dataView === 'monthly' && (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Month</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Total Attendance</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">New Members</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Avg / Service</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Growth</th>
+                </tr>
+              </thead>
+              <tbody>
+                {monthlyData.map((row, i) => (
                   <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4">
-                      <input type="checkbox" className="rounded" />
+                    <td className="py-4 px-4 text-sm font-medium text-[#111827]">{row.month}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.totalAttendance.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.newMembers}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.avgPerService}</td>
+                    <td className="py-4 px-4">
+                      <span className={`text-sm font-medium ${row.growth.startsWith('-') ? 'text-red-500' : row.growth === '-' ? 'text-gray-400' : 'text-green-600'}`}>
+                        {row.growth}
+                      </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.name}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.phone}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.email}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.gender}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.department}</td>
-                    <td className="py-3 px-4">
-                      <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${m.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'}`}>
-                        {m.status}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {dataView === 'yearly' && (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Year</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Q1</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Q2</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Q3</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Q4</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Total</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">Growth</th>
+                </tr>
+              </thead>
+              <tbody>
+                {yearData.map((row, i) => (
+                  <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-4 text-sm font-medium text-[#111827]">{row.year}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.q1.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.q2.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.q3.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm text-[#374151]">{row.q4.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm font-semibold text-[#111827]">{row.total.toLocaleString()}</td>
+                    <td className="py-4 px-4">
+                      <span className={`text-sm font-medium ${row.growth.startsWith('-') ? 'text-red-500' : row.growth === '-' ? 'text-gray-400' : 'text-green-600'}`}>
+                        {row.growth}
                       </span>
                     </td>
                   </tr>
