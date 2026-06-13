@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { X, ChevronDown } from 'lucide-react'
-import { DEPARTMENTS, type Member } from '@/components/admin/data/members'
+import { DEPARTMENTS, type Member, type Gender } from '@/components/admin/data/members'
 
 interface EditMemberModalProps {
   member: Member
@@ -100,7 +100,7 @@ export function EditMemberModal({ member, onClose, onSave }: EditMemberModalProp
               <div className="relative">
                 <select
                   value={form.gender}
-                  onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                  onChange={(e) => setForm({ ...form, gender: e.target.value as Gender })}
                   className={`${inputClass} appearance-none pr-8`}
                 >
                   <option>Male</option>
