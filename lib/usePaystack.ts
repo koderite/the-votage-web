@@ -4,6 +4,35 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import type {
   PaystackCurrency,
 } from "./paystack.types";
+import type { PaystackPop } from '@/types'
+
+declare global {
+  interface Window {
+    PaystackPop: PaystackPop
+  }
+}
+
+interface PaystackHandler {
+  openIframe(): void;
+}
+
+interface PaystackPopSetupConfig {
+  key: string;
+  email: string;
+  amount: number;
+  currency: PaystackCurrency;
+  ref: string;
+  metadata: {
+    custom_fields: Array<{
+      display_name: string;
+      variable_name: string;
+      value: string;
+    }>;
+  };
+  channels: string[];
+  callback: (response: { reference: string }) => void;
+  onClose: () => void;
+}
 
 interface UsePaystackConfig {
   email: string;
@@ -47,8 +76,7 @@ function loadPaystackScript(): Promise<void> {
     }
 
     // Check if already loaded
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).PaystackPop) {
+    if (window.PaystackPop) {
       paystackScriptLoaded = true;
       resolve();
       return;
@@ -162,8 +190,7 @@ export function usePaystack(config: UsePaystackConfig): UsePaystackReturn {
       const serverReference = data.data.reference;
 
       // Step 2: Open Paystack checkout popup
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const PaystackPop = (window as any).PaystackPop;
+      const PaystackPop = window.PaystackPop;
       if (!PaystackPop) {
         setError("Paystack is not available. Please refresh the page.");
         setIsLoading(false);

@@ -2,35 +2,44 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const contactSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  subject: z.string().min(1, 'Subject is required'),
+  message: z.string().min(1, 'Message is required'),
+})
+
+type ContactFormData = z.infer<typeof contactSchema>
 
 export function ContactForm() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
-
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  })
   const [result, setResult] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const onSubmit = async (data: ContactFormData) => {
     setResult('');
 
     const submitFormData = new FormData();
     submitFormData.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '');
-    submitFormData.append('firstName', formData.firstName);
-    submitFormData.append('lastName', formData.lastName);
-    submitFormData.append('email', formData.email);
-    submitFormData.append('phone', formData.phone);
-    submitFormData.append('subject', formData.subject);
-    submitFormData.append('message', formData.message);
-    submitFormData.append('from_name', `${formData.firstName} ${formData.lastName}`);
+    submitFormData.append('firstName', data.firstName);
+    submitFormData.append('lastName', data.lastName);
+    submitFormData.append('email', data.email);
+    submitFormData.append('phone', data.phone || '');
+    submitFormData.append('subject', data.subject);
+    submitFormData.append('message', data.message);
+    submitFormData.append('from_name', `${data.firstName} ${data.lastName}`);
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -38,38 +47,21 @@ export function ContactForm() {
         body: submitFormData
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
-      if (data.success) {
+      if (responseData.success) {
         setResult('Thank you! Your message has been sent successfully.');
-        // Clear form after successful submission
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
+        reset();
       } else {
         setResult('Something went wrong. Please try again later.');
       }
     } catch (error) {
       setResult('An error occurred. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   const handleCancel = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+    reset();
     setResult('');
   };
 
@@ -100,7 +92,7 @@ export function ContactForm() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-black/5"
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* First Name & Last Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div
@@ -113,18 +105,12 @@ export function ContactForm() {
                 <input
                   type="text"
                   id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  onFocus={() => setFocusedField('firstName')}
-                  onBlur={() => setFocusedField(null)}
-                  required
-                  className={`w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none ${
-                    focusedField === 'firstName'
-                      ? 'border-[#1a1a1a] shadow-md'
-                      : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  {...register('firstName')}
+                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
+                )}
               </motion.div>
 
               <motion.div
@@ -137,18 +123,12 @@ export function ContactForm() {
                 <input
                   type="text"
                   id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  onFocus={() => setFocusedField('lastName')}
-                  onBlur={() => setFocusedField(null)}
-                  required
-                  className={`w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none ${
-                    focusedField === 'lastName'
-                      ? 'border-[#1a1a1a] shadow-md'
-                      : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  {...register('lastName')}
+                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
+                )}
               </motion.div>
             </div>
 
@@ -164,18 +144,12 @@ export function ContactForm() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  onFocus={() => setFocusedField('email')}
-                  onBlur={() => setFocusedField(null)}
-                  required
-                  className={`w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none ${
-                    focusedField === 'email'
-                      ? 'border-[#1a1a1a] shadow-md'
-                      : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  {...register('email')}
+                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                )}
               </motion.div>
 
               <motion.div
@@ -188,16 +162,8 @@ export function ContactForm() {
                 <input
                   type="tel"
                   id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  onFocus={() => setFocusedField('phone')}
-                  onBlur={() => setFocusedField(null)}
-                  className={`w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none ${
-                    focusedField === 'phone'
-                      ? 'border-[#1a1a1a] shadow-md'
-                      : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  {...register('phone')}
+                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
               </motion.div>
             </div>
@@ -210,21 +176,15 @@ export function ContactForm() {
               <label htmlFor="subject" className="block text-sm font-medium text-[#1a1a1a] mb-2">
                 Subject
               </label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                onFocus={() => setFocusedField('subject')}
-                onBlur={() => setFocusedField(null)}
-                required
-                className={`w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none ${
-                  focusedField === 'subject'
-                    ? 'border-[#1a1a1a] shadow-md'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-              />
+                <input
+                  type="text"
+                  id="subject"
+                  {...register('subject')}
+                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                />
+                {errors.subject && (
+                  <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+                )}
             </motion.div>
 
             {/* Message */}
@@ -237,19 +197,13 @@ export function ContactForm() {
               </label>
               <textarea
                 id="message"
-                name="message"
                 rows={6}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                onFocus={() => setFocusedField('message')}
-                onBlur={() => setFocusedField(null)}
-                required
-                className={`w-full px-6 py-4 bg-white border-2 rounded-3xl transition-all duration-300 outline-none resize-none ${
-                  focusedField === 'message'
-                    ? 'border-[#1a1a1a] shadow-md'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
+                {...register('message')}
+                className="w-full px-6 py-4 bg-white border-2 rounded-3xl transition-all duration-300 outline-none resize-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
               />
+                {errors.message && (
+                  <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                )}
             </motion.div>
 
             {/* Result Message */}

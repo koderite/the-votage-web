@@ -2,47 +2,46 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const planVisitSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Valid email required"),
+  phone: z.string().optional(),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
+type PlanVisitFormData = z.infer<typeof planVisitSchema>;
 
 export function PlanYourVisitContactForm() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
+  const [result, setResult] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<PlanVisitFormData>({
+    resolver: zodResolver(planVisitSchema),
   });
 
-  const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [result, setResult] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const onSubmit = async (data: PlanVisitFormData) => {
     setResult("");
 
     const payload = {
-      FirstName: formData.firstName,
-      LastName: formData.lastName,
-      Email: formData.email,
-      Phone: formData.phone,
-      Subject: formData.subject,
-      Message: formData.message,
+      FirstName: data.firstName,
+      LastName: data.lastName,
+      Email: data.email,
+      Phone: data.phone,
+      Subject: data.subject,
+      Message: data.message,
       Timestamp: new Date().toISOString(),
     };
 
     try {
-      // Use local API route to proxy request to SpreadAPI
       const response = await fetch("/api/submit", {
         method: "POST",
         headers: {
@@ -51,35 +50,19 @@ export function PlanYourVisitContactForm() {
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
-      console.log("Response:", response);
-      console.log("Data:", data);
-      console.log("data.status:", data.status);
-      console.log("Type of data.status:", typeof data.status);
-
-      if (data.status === "success") {
-        // Change this line
+      if (responseData.status === "success") {
         setResult(
           "Thank you! Your visit request has been submitted successfully.",
         );
-        // Clear form after successful submission
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        });
+        reset();
       } else {
         setResult("Something went wrong. Please try again later.");
       }
     } catch (error) {
       console.error("SpreadAPI error:", error);
       setResult("An error occurred while submitting. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -125,7 +108,7 @@ export function PlanYourVisitContactForm() {
         </motion.div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* First Name & Last Name */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8"
@@ -141,17 +124,13 @@ export function PlanYourVisitContactForm() {
               <input
                 type="text"
                 id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                onFocus={() => setFocusedField("firstName")}
-                onBlur={() => setFocusedField(null)}
-                required
+                {...register("firstName")}
                 disabled={isSubmitting}
-                className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                  focusedField === "firstName" ? "text-black" : "text-black/50"
-                }`}
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
               />
+              {errors.firstName && (
+                <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
+              )}
             </div>
 
             <div>
@@ -164,17 +143,13 @@ export function PlanYourVisitContactForm() {
               <input
                 type="text"
                 id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                onFocus={() => setFocusedField("lastName")}
-                onBlur={() => setFocusedField(null)}
-                required
+                {...register("lastName")}
                 disabled={isSubmitting}
-                className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                  focusedField === "lastName" ? "text-black" : "text-black/50"
-                }`}
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
               />
+              {errors.lastName && (
+                <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
+              )}
             </div>
           </motion.div>
 
@@ -193,17 +168,13 @@ export function PlanYourVisitContactForm() {
               <input
                 type="email"
                 id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onFocus={() => setFocusedField("email")}
-                onBlur={() => setFocusedField(null)}
-                required
+                {...register("email")}
                 disabled={isSubmitting}
-                className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                  focusedField === "email" ? "text-black" : "text-black/50"
-                }`}
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
             </div>
 
             <div>
@@ -216,16 +187,13 @@ export function PlanYourVisitContactForm() {
               <input
                 type="tel"
                 id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                onFocus={() => setFocusedField("phone")}
-                onBlur={() => setFocusedField(null)}
+                {...register("phone")}
                 disabled={isSubmitting}
-                className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                  focusedField === "phone" ? "text-black" : "text-black/50"
-                }`}
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
               />
+              {errors.phone && (
+                <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+              )}
             </div>
           </motion.div>
 
@@ -240,17 +208,13 @@ export function PlanYourVisitContactForm() {
             <input
               type="text"
               id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              onFocus={() => setFocusedField("subject")}
-              onBlur={() => setFocusedField(null)}
-              required
+              {...register("subject")}
               disabled={isSubmitting}
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "subject" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
             />
+            {errors.subject && (
+              <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+            )}
           </motion.div>
 
           {/* Message */}
@@ -263,18 +227,14 @@ export function PlanYourVisitContactForm() {
             </label>
             <textarea
               id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              onFocus={() => setFocusedField("message")}
-              onBlur={() => setFocusedField(null)}
+              {...register("message")}
               rows={5}
-              required
               disabled={isSubmitting}
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "message" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
             />
+            {errors.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+            )}
           </motion.div>
 
           {/* Result Message */}

@@ -1,6 +1,6 @@
 "use client"
 import { Logo } from '../ui/logo';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -67,11 +67,6 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
     return 'text-white/90 hover:text-white';
   };
 
-  const getDropdownIconColor = () => {
-    if (darkText && !isScrolled) return 'text-black/80 group-hover:text-black';
-    return 'text-white/80 group-hover:text-white';
-  };
-
   return (
     <motion.nav
       initial={hasAnimated ? false : { y: -100 }}
@@ -112,9 +107,6 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
                 className="flex items-center gap-1.5"
               >
                 {link.name}
-                {link.hasDropdown && (
-                  <ChevronDown className={`w-4 h-4 ${getDropdownIconColor()} transition-transform group-hover:rotate-180`} />
-                )}
               </Link>
             </div>
           ))}
@@ -168,7 +160,6 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
                 >
                   <Link href={link.href || `/${link.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center gap-2">
                     {link.name}
-                    {link.hasDropdown && <ChevronDown className="w-4 h-4" />}
                   </Link>
                 </motion.div>
               ))}

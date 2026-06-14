@@ -39,11 +39,11 @@ function CustomLegend() {
       </div>
       <div className="flex items-center gap-1.5">
         <div className="w-2.5 h-2.5 rounded-sm bg-[#22C55E]" />
-        <span className="text-[13px] text-[#111827]">2024</span>
+        <span className="text-[13px] text-[#111827]">2025</span>
       </div>
       <div className="flex items-center gap-1.5">
         <div className="w-2.5 h-2.5 rounded-sm bg-[#8B5CF6]" />
-        <span className="text-[13px] text-[#111827]">2025</span>
+        <span className="text-[13px] text-[#111827]">2026</span>
       </div>
     </div>
   );
@@ -80,11 +80,9 @@ export function YearComparisonChart({ data }: YearComparisonChartProps) {
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#9CA3AF', fontSize: 12 }}
-              domain={[4000, 20000]}
-              ticks={[4000, 8000, 12000, 16000, 20000]}
-              tickFormatter={(value) =>
-                value >= 1000 ? `${(value / 1000).toFixed(0)}K` : String(value)
-              }
+              domain={[0, 1600]}
+              ticks={[0, 400, 800, 1200, 1600]}
+              tickFormatter={(value) => String(value)}
             />
             <Tooltip content={<CustomTooltip />} />
             <Line
@@ -99,7 +97,7 @@ export function YearComparisonChart({ data }: YearComparisonChartProps) {
             <Line
               type="monotone"
               dataKey="series2"
-              name="2024"
+              name="2025"
               stroke="#22C55E"
               strokeWidth={2.5}
               dot={{ fill: '#22C55E', r: 4, strokeWidth: 0 }}
@@ -108,7 +106,7 @@ export function YearComparisonChart({ data }: YearComparisonChartProps) {
             <Line
               type="monotone"
               dataKey="series3"
-              name="2025"
+              name="2026"
               stroke="#8B5CF6"
               strokeWidth={2.5}
               dot={{ fill: '#8B5CF6', r: 4, strokeWidth: 0 }}

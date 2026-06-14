@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
+import { useAuth } from '@/lib/auth-context'
 import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
@@ -29,13 +29,31 @@ const pageTitles: Record<string, string> = {
   '/admin/administration/delete': 'Delete a Member',
 }
 import { useState, useRef, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+
+const pageTitles: Record<string, string> = {
+  '/admin/dashboard':                  'DashBoard',
+  '/admin/attendance/trend':           'Trend & Analytics',
+  '/admin/attendance/breakdown':       'Service Breakdown',
+  '/admin/attendance/checkin':         'Check-In Activity',
+  '/admin/members':                    'All Members',
+  '/admin/members/insights':           'Member Insights',
+  '/admin/members/manage':             'Manage Members',
+  '/admin/visitors/tracking':          'Visitors Tracking',
+  '/admin/visitors/metrics':           'First-Timer Metrics',
+  '/admin/followup':                   'Follow-Up',
+  '/admin/followup/onboarding':        'Engagements',
+  '/admin/reports':                    'Reports and Data',
+  '/admin/administration/add-edit':    'Add / Edit Members',
+  '/admin/administration/departments': 'Assign Departments',
+  '/admin/administration/delete':      'Delete a Member',
+}
 
 export function HeaderBar() {
-  const { data: session, status } = useSession()
+  const { user, isLoading, logout } = useAuth()
   const { collapsed, toggleMobile, toggleCollapse } = useSidebar()
   const pathname = usePathname()
-
-  const title = pageTitles[pathname] || 'Dashboard'
+  const pageTitle = pageTitles[pathname] ?? 'DashBoard'
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -49,14 +67,10 @@ export function HeaderBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  async function handleSignOut() {
-    await signOut({ callbackUrl: '/sign-in' })
-  }
+  const userName = user?.username || user?.email || 'User'
+  const userEmail = user?.email || ''
 
-  const userName = session?.user?.name || session?.user?.email || 'User'
-  const userImage = session?.user?.image
-
-  if (status === 'loading') {
+  if (isLoading) {
     return null
   }
 
@@ -78,10 +92,7 @@ export function HeaderBar() {
             <Menu size={20} />
           </button>
         )}
-
-        <h1 className="text-xl font-bold text-[#111827]">
-          {title}
-        </h1>
+        <h1 className="text-xl font-bold text-[#111827]">{pageTitle}</h1>
       </div>
 
       <div className="flex items-center gap-2">
@@ -110,7 +121,7 @@ export function HeaderBar() {
 
           <ChevronDown size={16} className="text-[#6B7280]" />
         <button
-          onClick={handleSignOut}
+          onClick={logout}
           aria-label="Sign out"
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
@@ -125,23 +136,21 @@ export function HeaderBar() {
             aria-expanded={menuOpen}
             className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            {userImage ? (
-              <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
-                {userName.charAt(0).toUpperCase()}
-              </div>
-            )}
+            <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </div>
           </button>
 
           {menuOpen && (
             <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
               <div className="px-4 py-2 border-b border-gray-100">
                 <p className="font-medium text-[#111827]">{userName}</p>
-                <p className="text-sm text-gray-500 truncate">{session?.user?.email}</p>
+                {userEmail && (
+                  <p className="text-sm text-gray-500 truncate">{userEmail}</p>
+                )}
               </div>
               <button
-                onClick={handleSignOut}
+                onClick={logout}
                 className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-[#DC2626] transition-colors"
               >
                 <LogOut size={18} />

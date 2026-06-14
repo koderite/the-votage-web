@@ -14,6 +14,7 @@ interface MonthlyOverviewChartProps {
     months: string[];
     series1: number[];
     series2: number[];
+    series3: number[];
   };
 }
 
@@ -38,6 +39,7 @@ export function MonthlyOverviewChart({ data }: MonthlyOverviewChartProps) {
     month,
     series1: data.series1[index],
     series2: data.series2[index],
+    series3: data.series3[index],
   }));
 
   return (
@@ -62,11 +64,9 @@ export function MonthlyOverviewChart({ data }: MonthlyOverviewChartProps) {
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#9CA3AF', fontSize: 12 }}
-              domain={[0, 8000]}
-              ticks={[0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]}
-              tickFormatter={(value) =>
-                value >= 1000 ? `${(value / 1000).toFixed(1)}K` : String(value)
-              }
+              domain={[0, 1600]}
+              ticks={[0, 400, 800, 1200, 1600]}
+              tickFormatter={(value) => String(value)}
             />
             <Tooltip content={<CustomTooltip />} />
             <Bar
@@ -78,8 +78,15 @@ export function MonthlyOverviewChart({ data }: MonthlyOverviewChartProps) {
             />
             <Bar
               dataKey="series2"
-              name="2023"
+              name="2025"
               fill="#22C55E"
+              radius={[4, 4, 0, 0]}
+              barSize={10}
+            />
+            <Bar
+              dataKey="series3"
+              name="2026"
+              fill="#8B5CF6"
               radius={[4, 4, 0, 0]}
               barSize={10}
             />
