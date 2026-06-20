@@ -2,30 +2,13 @@
 
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import {
-  LayoutDashboard,
-  TrendingUp,
-  Users,
-  UserPlus,
-  Mail,
-  FileText,
-  Settings,
-  BarChart3,
-  ClipboardCheck,
-  UserSearch,
-  UserCog,
-  Eye,
-  UserPlus2,
-  Building2,
-  Trash2,
-  Menu,
-  X,
-} from 'lucide-react'
+import { X, Menu, LayoutDashboard, TrendingUp, BarChart3, ClipboardCheck, Users, UserSearch, UserCog, UserPlus, Eye, Mail, UserPlus2, FileText, Settings, Building2, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { SidebarItem } from './SidebarItem'
 import { SidebarGroup } from './SidebarGroup'
 import { useSidebar } from '../contexts/SidebarContext'
 import { cn } from '@/lib/utils'
+import { navEntries, type NavEntry, type NavItem, type NavGroup } from './nav-data'
 
 function NavLink({ href, children, active }: { href: string; children: React.ReactNode; active: boolean }) {
   return (
@@ -33,6 +16,51 @@ function NavLink({ href, children, active }: { href: string; children: React.Rea
       {children}
     </Link>
   )
+}
+
+function renderNavEntry(entry: NavEntry, collapsed: boolean, isActive: (href: string) => boolean) {
+  switch (entry.type) {
+    case 'item':
+      return (
+        <NavLink key={entry.data.href} href={entry.data.href} active={isActive(entry.data.href)}>
+          <SidebarItem
+            icon={entry.data.icon}
+            label={entry.data.label}
+            active={isActive(entry.data.href)}
+            collapsed={collapsed}
+          />
+        </NavLink>
+      )
+    case 'group':
+      return (
+        <SidebarGroup key={entry.data.label} icon={entry.data.icon} label={entry.data.label} collapsed={collapsed}>
+          {entry.data.items.map((item) => (
+            <NavLink key={item.href} href={item.href} active={isActive(item.href)}>
+              <SidebarItem
+                icon={item.icon}
+                label={item.label}
+                active={isActive(item.href)}
+                collapsed={collapsed}
+              />
+            </NavLink>
+          ))}
+        </SidebarGroup>
+      )
+    case 'separator':
+      return collapsed ? (
+        <div key="sep" className="border-t border-white/10 my-3 mx-2" />
+      ) : (
+        <div key="sep" className="px-3 pt-4 pb-2">
+          <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">
+            ENGAGEMENT
+          </span>
+        </div>
+      )
+  }
+}
+
+function renderNav(collapsed: boolean, isActive: (href: string) => boolean) {
+  return navEntries.map((entry) => renderNavEntry(entry, collapsed, isActive))
 }
 
 export function Sidebar() {
@@ -44,6 +72,8 @@ export function Sidebar() {
     return pathname.startsWith(href)
   }
 
+  const navContent = renderNav(collapsed, isActive)
+
   const sidebarContent = (
     <div className="flex flex-col h-full">
       <div className={cn(
@@ -53,7 +83,10 @@ export function Sidebar() {
         {!collapsed ? (
           <>
             <div className="flex-1">
-              <h1 className="text-white font-bold text-sm tracking-wider uppercase leading-tight">
+              <h1
+                className="text-white text-sm tracking-wider uppercase leading-tight"
+                style={{ fontFamily: 'var(--font-copperplate-bold)' }}
+              >
                 THE VOTAGE<br />CHURCH
               </h1>
             </div>
@@ -79,7 +112,7 @@ export function Sidebar() {
           <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/admin/dashboard')} collapsed={collapsed} />
         </NavLink>
 
-        <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen collapsed={collapsed}>
+        <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen={pathname.startsWith('/admin/attendance')} collapsed={collapsed}>
           <NavLink href="/admin/attendance/trend" active={isActive('/admin/attendance/trend')}>
             <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/admin/attendance/trend')} collapsed={collapsed} />
           </NavLink>
@@ -165,7 +198,10 @@ export function Sidebar() {
         className="fixed left-0 top-0 h-full w-[260px] bg-[#1A1D29] z-50 lg:hidden flex flex-col"
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-          <h1 className="text-white font-bold text-sm tracking-wider uppercase leading-tight">
+          <h1
+            className="text-white text-sm tracking-wider uppercase leading-tight"
+            style={{ fontFamily: 'var(--font-copperplate-bold)' }}
+          >
             THE VOTAGE<br />CHURCH
           </h1>
           <button onClick={closeMobile} className="text-white/50 hover:text-white">
@@ -176,7 +212,7 @@ export function Sidebar() {
           <NavLink href="/admin/dashboard" active={isActive('/admin/dashboard')}>
             <SidebarItem icon={LayoutDashboard} label="Dashboard" active={isActive('/admin/dashboard')} />
           </NavLink>
-          <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen>
+          <SidebarGroup icon={TrendingUp} label="Attendance" defaultOpen={pathname.startsWith('/admin/attendance')}>
             <NavLink href="/admin/attendance/trend" active={isActive('/admin/attendance/trend')}>
               <SidebarItem icon={TrendingUp} label="Trend & Analytics" active={isActive('/admin/attendance/trend')} />
             </NavLink>

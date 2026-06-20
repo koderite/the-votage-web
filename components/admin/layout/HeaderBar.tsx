@@ -1,39 +1,54 @@
 'use client'
 
-import { Bell, ChevronDown, Menu, Settings } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useAuth } from '@/lib/auth-context'
+import { Bell, Menu, Settings, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useSidebar } from '../contexts/SidebarContext'
+import { useState, useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 const pageTitles: Record<string, string> = {
-  '/admin': 'Dashboard',
-  '/admin/dashboard': 'Dashboard',
-
-  '/admin/attendance/trend': 'Trend & Analytics',
-  '/admin/attendance/breakdown': 'Service Breakdown',
-  '/admin/attendance/checkin': 'Check-In Activity',
-
-  '/admin/members/insights': 'Member Insights',
-  '/admin/members/manage': 'Manage Members',
-
-  '/admin/visitors/tracking': 'Visitors Tracking',
-  '/admin/visitors/metrics': 'First-Timer Metrics',
-
-  '/admin/followup/onboarding': 'Onboarding',
-
-  '/admin/reports': 'Reports',
-
-  '/admin/administration/add-edit': 'Add/Edit Members',
+  '/admin/dashboard':                  'DashBoard',
+  '/admin/attendance/trend':           'Trend & Analytics',
+  '/admin/attendance/breakdown':       'Service Breakdown',
+  '/admin/attendance/checkin':         'Check-In Activity',
+  '/admin/members':                    'All Members',
+  '/admin/members/insights':           'Member Insights',
+  '/admin/members/manage':             'Manage Members',
+  '/admin/visitors/tracking':          'Visitors Tracking',
+  '/admin/visitors/metrics':           'First-Timer Metrics',
+  '/admin/followup':                   'Follow-Up',
+  '/admin/followup/onboarding':        'Engagements',
+  '/admin/reports':                    'Reports and Data',
+  '/admin/administration/add-edit':    'Add / Edit Members',
   '/admin/administration/departments': 'Assign Departments',
-  '/admin/administration/delete': 'Delete a Member',
+  '/admin/administration/delete':      'Delete a Member',
 }
 
 export function HeaderBar() {
+  const { user, isLoading, logout } = useAuth()
   const { collapsed, toggleMobile, toggleCollapse } = useSidebar()
   const pathname = usePathname()
+  const pageTitle = pageTitles[pathname] ?? 'DashBoard'
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
-  const title = pageTitles[pathname] || 'Dashboard'
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const userName = user?.username || user?.email || 'User'
+  const userEmail = user?.email || ''
+
+  if (isLoading) {
+    return null
+  }
 
   return (
     <header className="flex items-center justify-between h-16 px-4 lg:px-6 bg-white border-b border-gray-100">
@@ -53,10 +68,7 @@ export function HeaderBar() {
             <Menu size={20} />
           </button>
         )}
-
-        <h1 className="text-xl font-bold text-[#111827]">
-          {title}
-        </h1>
+        <h1 className="text-xl font-bold text-[#111827]">{pageTitle}</h1>
       </div>
 
       <div className="flex items-center gap-2">
@@ -71,20 +83,45 @@ export function HeaderBar() {
           <Settings size={20} className="text-[#6B7280]" />
         </button>
 
-        <button className="flex items-center gap-2 pl-2 pr-1 py-1 hover:bg-gray-50 rounded-lg transition-colors">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatar.jpg" alt="Admin" />
-            <AvatarFallback className="bg-[#3B82F6] text-white text-sm">
-              A
-            </AvatarFallback>
-          </Avatar>
-
-          <span className="text-sm font-medium text-[#111827] hidden sm:inline">
-            Admin
-          </span>
-
-          <ChevronDown size={16} className="text-[#6B7280]" />
+        <button
+          onClick={logout}
+          aria-label="Sign out"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <LogOut size={20} className="text-[#6B7280]" />
         </button>
+
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Account menu"
+            aria-haspopup="true"
+            aria-expanded={menuOpen}
+            className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <div className="h-8 w-8 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-sm font-medium">
+              {userName.charAt(0).toUpperCase()}
+            </div>
+          </button>
+
+          {menuOpen && (
+            <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+              <div className="px-4 py-2 border-b border-gray-100">
+                <p className="font-medium text-[#111827]">{userName}</p>
+                {userEmail && (
+                  <p className="text-sm text-gray-500 truncate">{userEmail}</p>
+                )}
+              </div>
+              <button
+                onClick={logout}
+                className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-[#DC2626] transition-colors"
+              >
+                <LogOut size={18} />
+                <span>Sign out</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   )

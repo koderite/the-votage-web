@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   AreaChart,
@@ -10,14 +10,15 @@ import {
   ResponsiveContainer,
   ReferenceDot,
 } from 'recharts';
-import { Lightbulb, ChevronDown } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 import type { AttendanceDataPoint } from '../types/index';
 
 interface AttendanceChartProps {
   data: AttendanceDataPoint[];
 }
 
-const periods = ['Weekly', 'Monthly', 'Quarterly', 'Yearly'];
+const periods = ['Weekly', 'Monthly', 'Quarterly', 'Yearly'] as const;
+type Period = (typeof periods)[number];
 
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) {
   if (active && payload && payload.length) {
@@ -30,11 +31,31 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   return null;
 }
 
-export function AttendanceChart({ data }: AttendanceChartProps) {
-  const [selectedPeriod, setSelectedPeriod] = useState('Weekly');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+function aggregateData(data: AttendanceDataPoint[], period: Period): AttendanceDataPoint[] {
+  if (period === 'Weekly') return data;
 
-  const peakPoint = data.reduce((max, point) => (point.value > max.value ? point : max), data[0]);
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const quarterNames = ['Jan–Mar', 'Apr–Jun', 'Jul–Sep', 'Oct–Dec'];
+  const yearNames = ['2023', '2024', '2025', '2026'];
+
+  const groupSize = period === 'Monthly' ? 4 : period === 'Quarterly' ? 12 : 48;
+  const labels = period === 'Monthly' ? monthNames : period === 'Quarterly' ? quarterNames : yearNames;
+  const result: AttendanceDataPoint[] = [];
+
+  for (let i = 0; i < data.length && result.length < labels.length; i += groupSize) {
+    const chunk = data.slice(i, i + groupSize);
+    const sum = chunk.reduce((acc, d) => acc + d.value, 0);
+    const avg = Math.round(sum / chunk.length);
+    result.push({ time: labels[result.length], value: avg });
+  }
+  return result;
+}
+
+export function AttendanceChart({ data }: AttendanceChartProps) {
+  const [selectedPeriod, setSelectedPeriod] = useState<Period>('Weekly');
+
+  const chartData = useMemo(() => aggregateData(data, selectedPeriod), [data, selectedPeriod]);
+  const peakPoint = chartData.reduce((max, point) => (point.value > max.value ? point : max), chartData[0]);
 
   return (
     <motion.div
@@ -55,39 +76,27 @@ export function AttendanceChart({ data }: AttendanceChartProps) {
             </h3>
           </div>
         </div>
-        <div className="relative">
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] hover:bg-gray-50 transition-colors"
-          >
-            {selectedPeriod}
-            <ChevronDown size={16} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[120px]">
-              {periods.map((period) => (
-                <button
-                  key={period}
-                  onClick={() => {
-                    setSelectedPeriod(period);
-                    setIsDropdownOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                    period === selectedPeriod ? 'text-[#3B82F6] font-medium' : 'text-[#111827]'
-                  }`}
-                >
-                  {period}
-                </button>
-              ))}
-            </div>
-          )}
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          {periods.map((period) => (
+            <button
+              key={period}
+              onClick={() => setSelectedPeriod(period)}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                period === selectedPeriod
+                  ? 'bg-white text-[#111827] shadow-sm'
+                  : 'text-[#6B7280] hover:text-[#111827]'
+              }`}
+            >
+              {period}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Chart */}
       <div className="h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+          <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="attendanceGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.15} />

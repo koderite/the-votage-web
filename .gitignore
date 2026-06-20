@@ -40,8 +40,20 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# opencode
+opencode.json
+opencode.jsonc
+skills-lock.json
+.opencode/
+
 # superpowers
 .claude/
 .cache/opencode/
 
 
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+# docs
+/docs/

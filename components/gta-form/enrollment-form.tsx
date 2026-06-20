@@ -1,7 +1,10 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { MultiSelect } from "./multi-select";
 import { FormInput } from "./form-input";
 
@@ -207,45 +210,59 @@ const departmentOptions = [
   { value: "PRAYER", label: "Prayer Department" },
 ];
 
-export function EnrollmentForm() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    email: "",
-    howHeard: "",
-    studentType: "",
-    connectGroup: "",
-    departments: [] as string[],
-  });
+const enrollmentSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email address"),
+  howHeard: z.string().optional(),
+  studentType: z.string().min(1, "Please select an option"),
+  connectGroup: z.string().optional(),
+  departments: z.array(z.string()).optional(),
+})
 
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+type EnrollmentFormData = z.infer<typeof enrollmentSchema>
+
+export function EnrollmentForm() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<EnrollmentFormData>({
+    resolver: zodResolver(enrollmentSchema),
+    defaultValues: {
+      fullName: "",
+      phoneNumber: "",
+      email: "",
+      howHeard: "",
+      studentType: "",
+      connectGroup: "",
+      departments: [],
+    },
+  })
   const [result, setResult] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const departmentsValue = watch("departments") || [];
+
+  const handleMultiSelectChange = (value: string[]) => {
+    setValue("departments", value);
     if (result) setResult("");
   };
 
-  const handleMultiSelectChange = (field: string, value: string[]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (result) setResult("");
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const onSubmit = async (data: EnrollmentFormData) => {
     setResult("");
 
     const payload = {
-      FullName: formData.fullName,
-      PhoneNumber: formData.phoneNumber,
-      Email: formData.email,
-      HowHeardAboutChurch: formData.howHeard,
-      StudentType: formData.studentType,
-      ConnectGroup: formData.connectGroup,
-      Departments: formData.departments.join(", "),
+      FullName: data.fullName,
+      PhoneNumber: data.phoneNumber,
+      Email: data.email,
+      HowHeardAboutChurch: data.howHeard || "",
+      StudentType: data.studentType,
+      ConnectGroup: data.connectGroup || "",
+      Departments: (data.departments || []).join(", "),
       Timestamp: new Date().toISOString(),
       FormType: "cohort1",
     };
@@ -296,25 +313,14 @@ export function EnrollmentForm() {
       }
 
       if (apiData.status === "success") {
-        // Show success modal
         setShowSuccessModal(true);
-        setFormData({
-          fullName: "",
-          phoneNumber: "",
-          email: "",
-          howHeard: "",
-          studentType: "",
-          connectGroup: "",
-          departments: [],
-        });
+        reset();
       } else {
         throw new Error(apiData.message || "Submission failed");
       }
     } catch (error) {
       console.error("Enrollment error:", error);
       setResult("An error occurred while submitting. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -350,7 +356,7 @@ export function EnrollmentForm() {
       </motion.div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <AnimatePresence>
           <motion.div
             className="space-y-6"
@@ -366,17 +372,14 @@ export function EnrollmentForm() {
             </label>
             <input
               type="text"
-              value={formData.fullName}
-              onChange={(e) => handleChange("fullName", e.target.value)}
-              onFocus={() => setFocusedField("fullName")}
-              onBlur={() => setFocusedField(null)}
-              required
+              {...register("fullName")}
               disabled={isSubmitting}
               placeholder="Enter your full name"
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "fullName" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
+            {errors.fullName && (
+              <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>
+            )}
           </motion.div>
 
           {/* Phone Number */}
@@ -386,17 +389,14 @@ export function EnrollmentForm() {
             </label>
             <input
               type="tel"
-              value={formData.phoneNumber}
-              onChange={(e) => handleChange("phoneNumber", e.target.value)}
-              onFocus={() => setFocusedField("phoneNumber")}
-              onBlur={() => setFocusedField(null)}
-              required
+              {...register("phoneNumber")}
               disabled={isSubmitting}
               placeholder="Enter your phone number"
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "phoneNumber" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
+            {errors.phoneNumber && (
+              <p className="text-red-500 text-sm mt-1">{errors.phoneNumber.message}</p>
+            )}
           </motion.div>
 
           {/* Email */}
@@ -406,17 +406,14 @@ export function EnrollmentForm() {
             </label>
             <input
               type="email"
-              value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              onFocus={() => setFocusedField("email")}
-              onBlur={() => setFocusedField(null)}
-              required
+              {...register("email")}
               disabled={isSubmitting}
               placeholder="Enter your email"
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "email" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            )}
           </motion.div>
 
           {/* How did you hear about Church? */}
@@ -426,15 +423,10 @@ export function EnrollmentForm() {
             </label>
             <input
               type="text"
-              value={formData.howHeard}
-              onChange={(e) => handleChange("howHeard", e.target.value)}
-              onFocus={() => setFocusedField("howHeard")}
-              onBlur={() => setFocusedField(null)}
+              {...register("howHeard")}
               disabled={isSubmitting}
               placeholder="Tell us how you heard about us"
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "howHeard" ? "text-black" : "text-black"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
           </motion.div>
 
@@ -444,23 +436,21 @@ export function EnrollmentForm() {
               Are you a fresh or returning student?
             </label>
             <div className="flex gap-4">
-              {["Fresh", "Returning"].map((type) => (
+              {["Fresh", "Returning"].map((type) => {
+                const studentType = watch("studentType")
+                return (
                 <label
                   key={type}
                   className={`flex items-center gap-2 px-4 py-3 border-2 rounded-full cursor-pointer transition-all duration-200 ${
-                    formData.studentType === type
+                    studentType === type
                       ? "border-black bg-black text-white"
                       : "border-black/80 hover:border-black text-black"
                   }`}
                 >
                   <input
                     type="radio"
-                    name="studentType"
                     value={type}
-                    checked={formData.studentType === type}
-                    onChange={(e) =>
-                      handleChange("studentType", e.target.value)
-                    }
+                    {...register("studentType")}
                     disabled={isSubmitting}
                     className="sr-only"
                   />
@@ -468,8 +458,12 @@ export function EnrollmentForm() {
                     {type}
                   </span>
                 </label>
-              ))}
+                )
+              })}
             </div>
+            {errors.studentType && (
+              <p className="text-red-500 text-sm mt-1">{errors.studentType.message}</p>
+            )}
           </motion.div>
 
           {/* Connect Group */}
@@ -479,15 +473,10 @@ export function EnrollmentForm() {
             </label>
             <input
               type="text"
-              value={formData.connectGroup}
-              onChange={(e) => handleChange("connectGroup", e.target.value)}
-              onFocus={() => setFocusedField("connectGroup")}
-              onBlur={() => setFocusedField(null)}
+              {...register("connectGroup")}
               disabled={isSubmitting}
               placeholder="Enter your connect group"
-              className={`w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                focusedField === "connectGroup" ? "text-black" : "text-black/50"
-              }`}
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
           </motion.div>
 
@@ -496,10 +485,8 @@ export function EnrollmentForm() {
             <MultiSelect
               label="What department would you be interested in? (Select max 2)"
               options={departmentOptions}
-              selected={formData.departments}
-              onChange={(value) =>
-                handleMultiSelectChange("departments", value)
-              }
+              selected={departmentsValue}
+              onChange={handleMultiSelectChange}
               maxSelect={2}
               placeholder="Select departments..."
             />

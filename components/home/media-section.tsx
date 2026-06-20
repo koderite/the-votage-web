@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { YouTubeIcon } from '@/components/icons/youtube-icon';
+import { Youtube } from 'lucide-react';
 
 function BlurPlaceholder() {
   return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
@@ -32,7 +32,7 @@ const mediaItems: MediaItem[] = [
     contentTitle: 'Spirtuals Part 4',
     contentSubtitle: 'The Winlos',
     contentTag: 'Latest Video',
-    image: 'https://img.youtube.com/vi/y41jI31M-3Y/maxresdefault.jpg',
+    image: 'https://img.youtube.com/vi/y41jI31M-3Y/hqdefault.jpg',
     url: 'https://www.youtube.com/watch?v=y41jI31M-3Y',
   },
   {
@@ -52,7 +52,7 @@ const mediaItems: MediaItem[] = [
     icon: 'youtube',
     title: 'STREAM REFRESH PROGRAMS',
     subtitle: 'Every Last Saturday of the month',
-    description: 'Anwiii Ojeikere(THE WINLOS)',
+    description: 'Anwinli Ojeikere(THE WINLOS)',
     contentTitle: 'Stream Refresh Programs',
     contentSubtitle: 'Every Last Saturday',
     contentTag: 'Monthly Program',
@@ -87,7 +87,7 @@ const TelegramIcon = () => (
 
 const YouTubeIconColored = () => (
   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[#FF0000] flex items-center justify-center flex-shrink-0">
-    <YouTubeIcon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
+    <Youtube className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" />
   </div>
 );
 
