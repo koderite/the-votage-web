@@ -59,6 +59,7 @@ export function HeaderBar() {
         >
           <Menu size={20} />
         </button>
+
         {collapsed && (
           <button
             onClick={toggleCollapse}
