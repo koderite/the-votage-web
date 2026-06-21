@@ -11,26 +11,26 @@ import {
 } from '@/components/admin/data/members'
 
 const badgeStyle: Record<string, string> = {
-  'New':            'bg-green-100 text-green-700',
-  'In progress':    'bg-amber-100 text-amber-700',
+  'New': 'bg-green-100 text-green-700',
+  'In progress': 'bg-amber-100 text-amber-700',
   'Need attention': 'bg-orange-100 text-orange-700',
-  'Completed':      'bg-emerald-100 text-emerald-700',
+  'Completed': 'bg-emerald-100 text-emerald-700',
 }
 
 const badgeIcon: Record<string, React.ReactNode> = {
-  'New':            <Leaf size={11} />,
-  'In progress':    <Timer size={11} />,
+  'New': <Leaf size={11} />,
+  'In progress': <Timer size={11} />,
   'Need attention': <AlertTriangle size={11} />,
-  'Completed':      null,
+  'Completed': null,
 }
 
 type ContactType = 'call' | 'sms' | 'email' | 'prayer'
 
 function ContactIcon({ type }: { type: ContactType }) {
   const base = 'h-8 w-8 rounded-full flex items-center justify-center shrink-0'
-  if (type === 'call')   return <div className={`${base} bg-red-100`}><Phone   size={14} className="text-red-500"  /></div>
-  if (type === 'sms')    return <div className={`${base} bg-blue-100`}><MessageSquare size={14} className="text-blue-500" /></div>
-  if (type === 'email')  return <div className={`${base} bg-indigo-100`}><Mail size={14} className="text-indigo-500" /></div>
+  if (type === 'call') return <div className={`${base} bg-red-100`}><Phone size={14} className="text-red-500" /></div>
+  if (type === 'sms') return <div className={`${base} bg-blue-100`}><MessageSquare size={14} className="text-blue-500" /></div>
+  if (type === 'email') return <div className={`${base} bg-indigo-100`}><Mail size={14} className="text-indigo-500" /></div>
   return <div className={`${base} bg-amber-50`}><span className="text-sm">🙏</span></div>
 }
 
@@ -145,7 +145,7 @@ export default function EngagementsPage() {
           </div>
           <p className="text-[12px] text-[#9CA3AF] mb-5">Recent call, messages and visits</p>
 
-          <div className="space-y-4 overflow-y-auto max-h-[420px] pr-1">
+          <div className="space-y-4 overflow-y-auto max-h-105 pr-1">
             {contactAttempts.map((c, i) => (
               <div key={i} className="flex items-start gap-3">
                 <ContactIcon type={c.icon} />
