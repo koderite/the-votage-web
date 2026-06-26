@@ -30,7 +30,14 @@ export function PlanYourVisitHero() {
             </p>
 
             {/* CTA Button */}
-            <button className="bg-black font-copperplate text-white px-10 py-4 rounded-full text-[15px] font-semibold tracking-wide uppercase hover:bg-black/90 transition-all duration-300 cursor-pointer">
+            <button
+              onClick={() =>
+                document
+                  .getElementById("contact-form")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="bg-black font-copperplate text-white px-10 py-4 rounded-full text-[15px] font-semibold tracking-wide uppercase hover:bg-black/90 transition-all duration-300 cursor-pointer"
+            >
               I'M COMING
             </button>
           </motion.div>
