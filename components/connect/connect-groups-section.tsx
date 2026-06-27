@@ -139,7 +139,7 @@ export default function ConnectGroupsSection() {
   }, []);
 
   return (
-    <section className="bg-[#FFF8F0] py-16 lg:py-24 overflow-hidden">
+    <section id="connect-groups" className="bg-[#FFF8F0] py-16 lg:py-24 overflow-hidden">
       <div className="max-w-360 mx-auto px-6 lg:px-20">
         
         {/* Header with Navigation */}
