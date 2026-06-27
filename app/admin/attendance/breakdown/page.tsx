@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, ChevronDown, BookUser, Users, Building2, ClipboardList, Search, Plus, TrendingUp } from 'lucide-react'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
@@ -10,8 +10,8 @@ import {
 } from 'recharts'
 import { PieChart, Pie, Cell } from 'recharts'
 import {
-  allMembers, attendanceChartData, checkInMethodData, events as allEvents,
-  computeStats, type ServiceName,
+  attendanceChartData, checkInMethodData, events as allEvents,
+  type ServiceName,
 } from '@/components/admin/data/members'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -19,6 +19,23 @@ import {
 const dateRangeOptions  = ['Last 4 weeks', 'Last 5 weeks', 'Last 3 months', 'Last 6 months', 'Last year']
 const serviceTypeOptions = ['All services', '1st Service', '2nd Service', '3rd Service']
 const departmentOptions  = ['All departments', 'RMG (Choir)', 'Ushering', 'Media', 'Protocol', 'VIP', 'Next (Youth)', 'Kids', 'Sanitation (Sanctuary)', 'Prayer']
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface DashboardAttendanceData {
+  stats: {
+    total_attendance: number
+    active_members: number
+    returning_members: number
+    new_visitors: number
+  }
+  attendance_per_sunday_service_chart: Array<{
+    date: string
+    s1: number
+    s2: number
+    s3: number
+  }>
+}
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
@@ -78,6 +95,39 @@ function ChartDropdown({ value, onChange, options }: { value: string; onChange: 
   )
 }
 
+function StatCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] animate-pulse border border-gray-100">
+      <div className="flex items-start justify-between mb-3">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+        <div className="p-2 bg-gray-150 rounded-lg w-8 h-8"></div>
+      </div>
+      <div className="h-8 w-16 bg-gray-250 rounded mb-2"></div>
+      <div className="h-3 w-28 bg-gray-200 rounded mb-2"></div>
+      <div className="h-4 w-20 bg-gray-200 rounded"></div>
+    </div>
+  )
+}
+
+function ChartSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] animate-pulse h-[348px] flex flex-col justify-between border border-gray-100">
+      <div className="flex items-center justify-between">
+        <div className="h-5 w-36 bg-gray-200 rounded"></div>
+        <div className="h-8 w-24 bg-gray-100 rounded"></div>
+      </div>
+      <div className="flex items-end gap-6 h-48 px-4 mt-4">
+        <div className="w-full bg-gray-150 rounded-t h-[40%]"></div>
+        <div className="w-full bg-gray-150 rounded-t h-[75%]"></div>
+        <div className="w-full bg-gray-150 rounded-t h-[50%]"></div>
+        <div className="w-full bg-gray-150 rounded-t h-[65%]"></div>
+        <div className="w-full bg-gray-150 rounded-t h-[80%]"></div>
+      </div>
+      <div className="h-4 w-48 bg-gray-200 rounded self-center mt-4"></div>
+    </div>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ServiceBreakdownPage() {
@@ -88,44 +138,67 @@ export default function ServiceBreakdownPage() {
   const [chartPeriod,  setChartPeriod]  = useState('Last 5 weeks')
   const [eventSearch,  setEventSearch]  = useState('')
 
+  const [data, setData] = useState<DashboardAttendanceData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const queryParams = new URLSearchParams()
+      if (department !== 'All departments') queryParams.append('department', department)
+      if (serviceType !== 'All services') queryParams.append('serviceType', serviceType)
+      if (dateRange !== 'Last 4 weeks') queryParams.append('dateRange', dateRange)
+
+      const response = await fetch(`/api/dashboard/attendance?${queryParams.toString()}`)
+      if (!response.ok) {
+        let errMsg = `Failed to fetch attendance data: ${response.statusText}`
+        try {
+          const errData = await response.json()
+          if (errData?.detail) errMsg = errData.detail
+        } catch {}
+        throw new Error(errMsg)
+      }
+      const json = await response.json()
+      setData(json)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load dashboard data')
+    } finally {
+      setLoading(false)
+    }
+  }, [department, serviceType, dateRange])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
   const filteredEvents = allEvents.filter(e =>
     eventSearch === '' || e.title.toLowerCase().includes(eventSearch.toLowerCase())
   )
 
-  // Compute stat cards based on selected filters
-  const filteredMembersForStats = useMemo(() => {
-    if (department === 'All departments') return allMembers
-    return allMembers.filter(m => m.department === department)
-  }, [department])
+  const chartData = useMemo(() => {
+    let rawData = data?.attendance_per_sunday_service_chart
+    if (!rawData || rawData.length === 0) {
+      // Fallback to local mock data
+      rawData = attendanceChartData
+    }
 
-  const stats = useMemo(() => computeStats(filteredMembersForStats), [filteredMembersForStats])
-
-  // Total attendance ≈ membership + visitors (~7% buffer)
-  const totalAttendance = useMemo(() => {
-    const base = filteredMembersForStats.length
-    return base + Math.round(base * 0.07)
-  }, [filteredMembersForStats])
-
-  const attendancePerService = useMemo(() => {
-    let data = attendanceChartData
+    let filtered = rawData.map(d => ({ ...d }))
 
     // Filter by service type
     if (serviceType === '1st Service') {
-      data = data.map(d => ({ ...d, s2: 0, s3: 0 }))
+      filtered = filtered.map(d => ({ ...d, s2: 0, s3: 0 }))
     } else if (serviceType === '2nd Service') {
-      data = data.map(d => ({ ...d, s1: 0, s3: 0 }))
+      filtered = filtered.map(d => ({ ...d, s1: 0, s3: 0 }))
     } else if (serviceType === '3rd Service') {
-      data = data.map(d => ({ ...d, s1: 0, s2: 0 }))
+      filtered = filtered.map(d => ({ ...d, s1: 0, s2: 0 }))
     }
 
-    // Filter by date range
-    const weeks = dateRange === 'Last 4 weeks' ? 4 : dateRange === 'Last 5 weeks' ? 5 : 8
-    return data.slice(-weeks)
-  }, [serviceType, dateRange])
-
-  // Filter chart period
-  const chartPeriodWeeks = chartPeriod === 'Last 5 weeks' ? 5 : chartPeriod === 'Last 4 weeks' ? 4 : 3
-  const chartData = attendancePerService.slice(-chartPeriodWeeks)
+    // Filter chart period
+    const chartPeriodWeeks = chartPeriod === 'Last 5 weeks' ? 5 : chartPeriod === 'Last 4 weeks' ? 4 : 3
+    return filtered.slice(-chartPeriodWeeks)
+  }, [data, serviceType, chartPeriod])
 
   return (
     <>
@@ -163,90 +236,119 @@ export default function ServiceBreakdownPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          <ColoredStatCard
-            label="Total Attendance"
-            value={totalAttendance.toLocaleString()}
-            subtitle="All service combined"
-            change={`${stats.active} active members`}
-            changeLabel="this period"
-            positive={true}
-            color="yellow"
-            icon={BookUser}
-            index={0}
-          />
-          <ColoredStatCard
-            label="Active Members"
-            value={stats.active}
-            subtitle="≥3 of last 4 Sundays"
-            change={`${Math.round(stats.active / (stats.total || 1) * 100)}%`}
-            changeLabel="of total"
-            positive={true}
-            color="blue"
-            icon={Users}
-            index={1}
-          />
-          <ColoredStatCard
-            label="Returning"
-            value={stats.returning}
-            subtitle="Back after absence"
-            change={`${stats.newThisMonth} new`}
-            changeLabel="this month"
-            positive={true}
-            color="green"
-            icon={Building2}
-            index={2}
-          />
-          <ColoredStatCard
-            label="New Visitors"
-            value={stats.newThisMonth}
-            subtitle="First-timer Visitors"
-            change={`${stats.needsAttention} need attention`}
-            changeLabel="to follow up"
-            positive={false}
-            color="purple"
-            icon={ClipboardList}
-            index={3}
-          />
-        </div>
+        {error ? (
+          <div className="bg-red-50 border border-red-100 rounded-xl p-6 text-center">
+            <p className="text-sm text-red-600 font-medium mb-3">Error loading dashboard: {error}</p>
+            <button
+              onClick={fetchData}
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors inline-flex items-center gap-2"
+            >
+              Retry
+            </button>
+          </div>
+        ) : loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+            <ColoredStatCard
+              label="Total Attendance"
+              value={(data?.stats?.total_attendance ?? 0).toLocaleString()}
+              subtitle="All service combined"
+              change={`${data?.stats?.active_members ?? 0} active members`}
+              changeLabel="this period"
+              positive={true}
+              color="yellow"
+              icon={BookUser}
+              index={0}
+            />
+            <ColoredStatCard
+              label="Active Members"
+              value={data?.stats?.active_members ?? 0}
+              subtitle="≥3 of last 4 Sundays"
+              change={`${Math.round((data?.stats?.active_members ?? 0) / (data?.stats?.total_attendance || 1) * 100)}%`}
+              changeLabel="of total"
+              positive={true}
+              color="blue"
+              icon={Users}
+              index={1}
+            />
+            <ColoredStatCard
+              label="Returning"
+              value={data?.stats?.returning_members ?? 0}
+              subtitle="Back after absence"
+              change={`${data?.stats?.new_visitors ?? 0} new`}
+              changeLabel="this month"
+              positive={true}
+              color="green"
+              icon={Building2}
+              index={2}
+            />
+            <ColoredStatCard
+              label="New Visitors"
+              value={data?.stats?.new_visitors ?? 0}
+              subtitle="First-timer Visitors"
+              change="Requires follow up"
+              changeLabel=""
+              positive={false}
+              color="purple"
+              icon={ClipboardList}
+              index={3}
+            />
+          </div>
+        )}
       </motion.div>
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         {/* Attendance Per Service – stacked bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-[15px] font-semibold text-[#111827]">Attendance Per Service</h3>
-            <ChartDropdown value={chartPeriod} onChange={setChartPeriod} options={['Last 5 weeks', 'Last 4 weeks', 'Last 3 weeks']} />
+        {loading ? (
+          <div className="lg:col-span-3">
+            <ChartSkeleton />
           </div>
-          <div className="h-65">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
-                <Tooltip
-                  contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
-                  cursor={{ fill: 'rgba(0,0,0,0.04)' }}
-                />
-                <Legend
-                  iconType="circle"
-                  iconSize={8}
-                  wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
-                  formatter={(value) => <span style={{ color: '#6B7280' }}>{value}</span>}
-                />
-                <Bar dataKey="s1" name="1st Service" stackId="a" fill="#F87171" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="s2" name="2nd Service" stackId="a" fill="#2DD4BF" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="s3" name="3rd Service" stackId="a" fill="#818CF8" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+        ) : error ? (
+          <div className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center h-[348px] border border-gray-100">
+            <p className="text-sm text-red-500 font-medium">Failed to load chart data.</p>
           </div>
-        </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-[15px] font-semibold text-[#111827]">Attendance Per Service</h3>
+              <ChartDropdown value={chartPeriod} onChange={setChartPeriod} options={['Last 5 weeks', 'Last 4 weeks', 'Last 3 weeks']} />
+            </div>
+            <div className="h-65">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
+                  <Tooltip
+                    contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                    cursor={{ fill: 'rgba(0,0,0,0.04)' }}
+                  />
+                  <Legend
+                    iconType="circle"
+                    iconSize={8}
+                    wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+                    formatter={(value) => <span style={{ color: '#6B7280' }}>{value}</span>}
+                  />
+                  <Bar dataKey="s1" name="1st Service" stackId="a" fill="#F87171" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="s2" name="2nd Service" stackId="a" fill="#2DD4BF" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="s3" name="3rd Service" stackId="a" fill="#818CF8" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+        )}
 
         {/* Check In Method – donut */}
         <motion.div
