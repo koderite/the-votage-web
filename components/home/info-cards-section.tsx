@@ -18,7 +18,7 @@ const infoCards = [
     title: 'Location',
     icon: <MapPin className="w-6 h-6 text-white" />,
     contentTitle: 'Benin City',
-    contentDetails: ['No. 144 Airport Road, Opposite DVD filling station'],
+    contentDetails: ['The Winlos/Votage center, by ascend school, airport road extension, Benin city'],
     isTime: false,
   },
   {

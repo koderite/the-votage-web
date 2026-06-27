@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -40,7 +42,14 @@ export default function ConnectHero() {
           </p>
 
           {/* CTA Button */}
-          <Button className="font-copperplate bg-white text-black hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base rounded-full transition-colors">
+          <Button
+            className="font-copperplate bg-white text-black hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base rounded-full transition-colors"
+            onClick={() =>
+              document
+                .getElementById("connect-groups")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
             JOIN A CONNECT
           </Button>
         </div>

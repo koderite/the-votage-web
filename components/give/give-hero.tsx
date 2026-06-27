@@ -48,6 +48,11 @@ export const GiveHero = () => {
           <Button
             variant="black"
             className="w-44 h-14 text-lg font-bold font-body"
+            onClick={() =>
+              document
+                .getElementById("online-giving")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
           >
             Online Giving
           </Button>
@@ -55,6 +60,11 @@ export const GiveHero = () => {
           <Button
             variant="primary"
             className="w-44 h-14 text-lg font-bold font-body"
+            onClick={() =>
+              document
+                .getElementById("give-options")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
           >
             Bank Transfer
           </Button>
