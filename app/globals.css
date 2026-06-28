@@ -120,43 +120,53 @@
 
   /* body text - destop (lg:) */
   --text-body-text-lg: 18px;
+  --text-body-text-lg--line-height: 1.6;
   --leading-body-text-lg: 1.6;
   /* body txt - tablet (sm:) */
   --text-body-text: 16px;
+  --text-body-text--line-height: 1.6;
   --text-body-text-small: 15px;
+  --text-body-text-small--line-height: 1.6;
   --leading-body-text: 1.6;
   /* body text mobile */
   --text-text-sm: 14px;
+  --text-text-sm--line-height: 1.5;
   --leading-text-sm: 1.5;
   /* quote text */
   --text-quote-text: 18px;
+  --text-quote-text--line-height: 1.6;
   --leading-quote-text: 1.6;
-  --font-quote-text: italic;
   /* minor heading text destop */
   --text-minor-heading-lg: 20px;
-  --leading-minor-heading: 1.4;
-  --font-minor-heading: 600;
+  --text-minor-heading-lg--line-height: 1.4;
+  --text-minor-heading-lg--font-weight: 600;
   /* minor heading text mobile */
   --text-minor-heading: 18px;
-  --leading-minor-heading: ;
+  --text-minor-heading--line-height: 1.4;
+  --text-minor-heading--font-weight: 600;
+  --leading-minor-heading: 1.4;
   /* sub-heading text destop */
   --text-sub-heading: 24px;
+  --text-sub-heading--line-height: 1.4;
+  --text-sub-heading--font-weight: 600;
   --leading-sub-heading: 1.4;
-  --font-sub-heading: 600;
   /* section-heading  destop */
   --text-section-heading: 40px;
+  --text-section-heading--line-height: 1.3;
+  --text-section-heading--font-weight: 600;
   --leading-section-heading: 1.3;
-  --font-section-heading: 600;
 
   /* page-heading destop*/
   --text-page-heading: 40px;
+  --text-page-heading--line-height: 1.2;
+  --text-page-heading--font-weight: 700;
   --leading-page-heading: 1.2;
-  --font-page-heading: 700;
   /* hero heading destop */
   --text-hero-heading: 65px;
+  --text-hero-heading--line-height: 1.1;
+  --text-hero-heading--font-weight: 700;
+  --text-hero-heading--letter-spacing: 0.02em;
   --leading-hero-heading: 1.1;
-  --font-hero-heading: 700;
-  --tracking-hero-heading: 0.02em;
   
   /* Tablet text sizes (sm: 640px) - Use with sm:text-* */
   --text-hero-heading-sm: 96px;
