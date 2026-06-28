@@ -31,38 +31,32 @@ export function PlanYourVisitContactForm() {
   const onSubmit = async (data: PlanVisitFormData) => {
     setResult("");
 
-    const payload = {
-      FirstName: data.firstName,
-      LastName: data.lastName,
-      Email: data.email,
-      Phone: data.phone,
-      Subject: data.subject,
-      Message: data.message,
-      Timestamp: new Date().toISOString(),
-    };
+    const submitFormData = new FormData();
+    submitFormData.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '');
+    submitFormData.append('firstName', data.firstName);
+    submitFormData.append('lastName', data.lastName);
+    submitFormData.append('email', data.email);
+    submitFormData.append('phone', data.phone || '');
+    submitFormData.append('subject', data.subject);
+    submitFormData.append('message', data.message);
+    submitFormData.append('from_name', `${data.firstName} ${data.lastName}`);
 
     try {
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: submitFormData
       });
 
       const responseData = await response.json();
 
-      if (responseData.status === "success") {
-        setResult(
-          "Thank you! Your visit request has been submitted successfully.",
-        );
+      if (responseData.success) {
+        setResult('Thank you! Your visit request has been submitted successfully.');
         reset();
       } else {
-        setResult("Something went wrong. Please try again later.");
+        setResult('Something went wrong. Please try again later.');
       }
     } catch (error) {
-      console.error("SpreadAPI error:", error);
-      setResult("An error occurred while submitting. Please try again later.");
+      setResult('An error occurred. Please try again later.');
     }
   };
 

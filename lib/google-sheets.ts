@@ -10,9 +10,9 @@ export async function submitToGoogleSheets(
 ): Promise<GoogleSheetsResult> {
   const scriptUrl = formType
     ? process.env.GOOGLE_GTA_SCRIPT_URL
-    : " "
+    : process.env.GOOGLE_SCRIPT_URL
 
-  if (!scriptUrl) {
+  if (!scriptUrl?.trim()) {
     return {
       status: 'error',
       message: 'Server configuration error: Missing GOOGLE_SCRIPT_URL',

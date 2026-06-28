@@ -460,8 +460,7 @@ export function needsAttention(member: Member): boolean {
 }
 
 export function isNewThisMonth(member: Member): boolean {
-  const now = new Date()
-  const currentMonth = now.toLocaleString('en-US', { month: 'short', year: 'numeric' })
+  const currentMonth = joinDates[joinDates.length - 1]
   return member.joined === currentMonth
 }
 
