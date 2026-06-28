@@ -114,8 +114,19 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
 
         {/* CTA Button */}
         <div
-          className="hidden lg:block"
+          className="hidden lg:flex gap-4 items-center"
         >
+          <Button 
+            variant="nav-cta" 
+            className={`font-body text-lg px-8 py-3 rounded-full border-opacity-60 transition-all duration-300 ${
+              darkText && !isScrolled 
+                ? 'text-black border-black hover:bg-black hover:text-white' 
+                : 'text-white border-white hover:bg-white hover:text-black'
+            }`}
+            onClick={() => router.push('/register')}
+          >
+            Register
+          </Button>
           <Button 
             variant="nav-cta" 
             className={`font-body text-lg px-8 py-3 rounded-full border-opacity-60 transition-all duration-300 ${
@@ -163,6 +174,23 @@ export const Navbar = ({ darkText = false }: NavbarProps) => {
                   </Link>
                 </motion.div>
               ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                <Button 
+                  variant="nav-cta" 
+                  className="w-full max-w-xs mt-4"
+                  onClick={() => {
+                    router.push('/register');
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Register
+                </Button>
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
