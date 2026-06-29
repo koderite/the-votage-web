@@ -8,12 +8,35 @@ import { StatsRow } from '@/components/admin/dashboard/StatsRow'
 import { AttendanceChart } from '@/components/admin/dashboard/AttendanceChart'
 import { MonthlyOverviewChart } from '@/components/admin/dashboard/MonthlyOverviewChart'
 import { YearComparisonChart } from '@/components/admin/dashboard/YearComparisonChart'
-import { precomputedStats, getYearlyMonthlyData, getYearlyComparisonData } from '@/components/admin/data/members'
+import { getYearlyMonthlyData, getYearlyComparisonData } from '@/components/admin/data/members'
 import { statCardsData, attendanceData } from '@/components/admin/data/dashboardData'
 import { toast } from 'sonner'
 
+function StatCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] animate-pulse border border-gray-100 h-[146px] flex flex-col justify-between">
+      <div className="flex items-start justify-between">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+        <div className="p-2 bg-gray-100 rounded-lg w-8 h-8"></div>
+      </div>
+      <div>
+        <div className="h-8 w-16 bg-gray-200 rounded mb-2"></div>
+        <div className="h-4 w-32 bg-gray-100 rounded"></div>
+      </div>
+    </div>
+  )
+}
+
+interface DashboardStats {
+  total: number
+  active: number
+  returning: number
+  newThisMonth: number
+  needsAttention: number
+}
+
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState(precomputedStats)
+  const [stats, setStats] = useState<DashboardStats | null>(null)
   const [downloading, setDownloading] = useState(false)
   const monthlyMembership = getYearlyMonthlyData()
   const comparison = getYearlyComparisonData()
@@ -89,11 +112,11 @@ export default function AdminDashboardPage() {
           console.log('[Dashboard] /api/dashboard/summary response loaded:', data)
           if (data.stats) {
             setStats({
-              total: data.stats.total_members ?? precomputedStats.total,
-              active: data.stats.active_members ?? precomputedStats.active,
-              returning: data.stats.returning_members ?? precomputedStats.returning,
-              newThisMonth: Math.round((data.stats.total_members ?? precomputedStats.total) * 0.05),
-              needsAttention: Math.round((data.stats.total_members ?? precomputedStats.total) * 0.08),
+              total: data.stats.total_members || 0,
+              active: data.stats.active_members || 0,
+              returning: data.stats.returning_members || 0,
+              newThisMonth: Math.round((data.stats.total_members || 0) * 0.05),
+              needsAttention: Math.round((data.stats.total_members || 0) * 0.08),
             })
           }
         } else {
@@ -141,12 +164,12 @@ export default function AdminDashboardPage() {
     fetchHomeStats()
   }, [])
 
-  const topCards = [
+  const topCards = stats ? [
     { label: 'Total members',      value: stats.total,       change: `${stats.active} active`, changeLabel: 'this month', positive: true,  color: 'yellow' as const, icon: BookUser     },
     { label: 'Active members',     value: stats.active,      change: `${Math.round(stats.active / (stats.total || 1) * 100)}%`, changeLabel: 'of total', positive: true,  color: 'blue'   as const, icon: Users        },
     { label: 'Returning Members',  value: stats.returning,   change: `${stats.newThisMonth} new`, changeLabel: 'this month', positive: true,  color: 'green'  as const, icon: Building2    },
     { label: 'New This Month',     value: stats.newThisMonth, change: `${stats.needsAttention} need attention`, changeLabel: '', positive: false, color: 'purple' as const, icon: Sparkles      },
-  ]
+  ] : []
 
   return (
     <>
@@ -166,11 +189,20 @@ export default function AdminDashboardPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        {topCards.map((card, i) => (
-          <ColoredStatCard key={card.label} {...card} index={i} />
-        ))}
-      </div>
+      {!stats ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          {topCards.map((card, i) => (
+            <ColoredStatCard key={card.label} {...card} index={i} />
+          ))}
+        </div>
+      )}
 
       <AttendanceChart data={attendanceData} />
 

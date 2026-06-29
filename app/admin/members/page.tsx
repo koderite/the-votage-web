@@ -11,6 +11,21 @@ import {
 } from 'recharts'
 import { memberApi, type ApiMember } from '@/lib/member-api'
 
+function StatCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] animate-pulse border border-gray-100 h-[146px] flex flex-col justify-between">
+      <div className="flex items-start justify-between">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+        <div className="p-2 bg-gray-100 rounded-lg w-8 h-8"></div>
+      </div>
+      <div>
+        <div className="h-8 w-16 bg-gray-200 rounded mb-2"></div>
+        <div className="h-4 w-32 bg-gray-100 rounded"></div>
+      </div>
+    </div>
+  )
+}
+
 const topCardsMeta = [
   { label: 'Total members',     color: 'yellow' as const, icon: BookUser   },
   { label: 'Active members',    color: 'blue'   as const, icon: Users       },
@@ -63,13 +78,7 @@ export default function MembersPage() {
         needsAttention: Math.round(dashboardStats.total_members * 0.08) || 0,
       }
     }
-    return {
-      total: 1053,
-      active: 842,
-      returning: 124,
-      newThisMonth: 53,
-      needsAttention: 84,
-    }
+    return null
   }, [dashboardStats])
 
   const departmentData = useMemo(() => getDepartmentDistribution(), [])
@@ -98,41 +107,50 @@ export default function MembersPage() {
       <AdminGreeting />
 
       {/* Stat cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
-      >
-        {topCardsMeta.map((card, i) => (
-          <ColoredStatCard
-            key={card.label}
-            label={card.label}
-            value={
-              card.label === 'Total members' ? stats.total :
-              card.label === 'Active members' ? stats.active :
-              card.label === 'Returning Members' ? stats.returning :
-              stats.newThisMonth
-            }
-            change={
-              card.label === 'Total members' ? `${stats.active} active` :
-              card.label === 'Active members' ? `${Math.round(stats.active / (stats.total || 1) * 100)}%` :
-              card.label === 'Returning Members' ? `${stats.needsAttention} need attention` :
-              undefined
-            }
-            changeLabel={
-              card.label === 'Active members' ? 'of total' :
-              card.label === 'Total members' ? 'this month' :
-              card.label === 'Returning Members' ? 'to follow up' :
-              undefined
-            }
-            positive={card.label !== 'New This Month'}
-            color={card.color}
-            icon={card.icon}
-            index={i}
-          />
-        ))}
-      </motion.div>
+      {!stats ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
+        >
+          {topCardsMeta.map((card, i) => (
+            <ColoredStatCard
+              key={card.label}
+              label={card.label}
+              value={
+                card.label === 'Total members' ? stats.total :
+                card.label === 'Active members' ? stats.active :
+                card.label === 'Returning Members' ? stats.returning :
+                stats.newThisMonth
+              }
+              change={
+                card.label === 'Total members' ? `${stats.active} active` :
+                card.label === 'Active members' ? `${Math.round(stats.active / (stats.total || 1) * 100)}%` :
+                card.label === 'Returning Members' ? `${stats.needsAttention} need attention` :
+                undefined
+              }
+              changeLabel={
+                card.label === 'Active members' ? 'of total' :
+                card.label === 'Total members' ? 'this month' :
+                card.label === 'Returning Members' ? 'to follow up' :
+                undefined
+              }
+              positive={card.label !== 'New This Month'}
+              color={card.color}
+              icon={card.icon}
+              index={i}
+            />
+          ))}
+        </motion.div>
+      )}
 
       {/* Department filter pills */}
       <motion.div
