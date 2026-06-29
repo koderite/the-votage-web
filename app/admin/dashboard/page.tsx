@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { BookUser, Users, Building2, Sparkles } from 'lucide-react'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AdminGreeting } from '@/components/admin/AdminGreeting'
@@ -11,13 +12,76 @@ import { precomputedStats, getYearlyMonthlyData, getYearlyComparisonData } from 
 import { statCardsData, attendanceData } from '@/components/admin/data/dashboardData'
 
 export default function AdminDashboardPage() {
-  const stats = precomputedStats
+  const [stats, setStats] = useState(precomputedStats)
   const monthlyMembership = getYearlyMonthlyData()
   const comparison = getYearlyComparisonData()
 
+  useEffect(() => {
+    // 1. Fetch and log dashboard summary
+    async function fetchDashboardSummary() {
+      try {
+        console.log('[Dashboard] Fetching /api/dashboard/summary...');
+        const res = await fetch('/api/dashboard/summary')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/dashboard/summary response loaded:', data)
+          if (data.stats) {
+            setStats({
+              total: data.stats.total_members ?? precomputedStats.total,
+              active: data.stats.active_members ?? precomputedStats.active,
+              returning: data.stats.returning_members ?? precomputedStats.returning,
+              newThisMonth: Math.round((data.stats.total_members ?? precomputedStats.total) * 0.05),
+              needsAttention: Math.round((data.stats.total_members ?? precomputedStats.total) * 0.08),
+            })
+          }
+        } else {
+          console.error('[Dashboard] /api/dashboard/summary fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/dashboard/summary exception:', err)
+      }
+    }
+
+    // 2. Fetch and log /api/home/
+    async function fetchHomeOverview() {
+      try {
+        console.log('[Dashboard] Fetching /api/home...');
+        const res = await fetch('/api/home')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/home response loaded:', data)
+        } else {
+          console.error('[Dashboard] /api/home fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/home exception:', err)
+      }
+    }
+
+    // 3. Fetch and log /api/home/stats
+    async function fetchHomeStats() {
+      try {
+        console.log('[Dashboard] Fetching /api/home/stats...');
+        const res = await fetch('/api/home/stats')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/home/stats response loaded:', data)
+        } else {
+          console.error('[Dashboard] /api/home/stats fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/home/stats exception:', err)
+      }
+    }
+
+    fetchDashboardSummary()
+    fetchHomeOverview()
+    fetchHomeStats()
+  }, [])
+
   const topCards = [
     { label: 'Total members',      value: stats.total,       change: `${stats.active} active`, changeLabel: 'this month', positive: true,  color: 'yellow' as const, icon: BookUser     },
-    { label: 'Active members',     value: stats.active,      change: `${Math.round(stats.active / stats.total * 100)}%`, changeLabel: 'of total', positive: true,  color: 'blue'   as const, icon: Users        },
+    { label: 'Active members',     value: stats.active,      change: `${Math.round(stats.active / (stats.total || 1) * 100)}%`, changeLabel: 'of total', positive: true,  color: 'blue'   as const, icon: Users        },
     { label: 'Returning Members',  value: stats.returning,   change: `${stats.newThisMonth} new`, changeLabel: 'this month', positive: true,  color: 'green'  as const, icon: Building2    },
     { label: 'New This Month',     value: stats.newThisMonth, change: `${stats.needsAttention} need attention`, changeLabel: '', positive: false, color: 'purple' as const, icon: Sparkles      },
   ]
@@ -47,3 +111,4 @@ export default function AdminDashboardPage() {
     </>
   )
 }
+

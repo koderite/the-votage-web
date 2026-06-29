@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Lightbulb, Search, SlidersHorizontal, Plus, Pencil, Trash2, BookUser, Users, Building2, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Lightbulb, Search, SlidersHorizontal, Plus, Pencil, Trash2, BookUser, Users, Building2, Sparkles, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react'
 import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AddMemberModal } from '@/components/admin/members/AddMemberModal'
 import { EditMemberModal } from '@/components/admin/members/EditMemberModal'
-import { allMembers, computeStats, isActive, type Member, type Department } from '@/components/admin/data/members'
+import { DEPARTMENTS, type Department } from '@/components/admin/data/members'
 
 const topCardsMeta = [
   { label: 'Total members',     color: 'yellow' as const, icon: BookUser   },
@@ -17,66 +17,216 @@ const topCardsMeta = [
 ]
 
 export default function ManageMembersPage() {
-  const [members, setMembers]         = useState<Member[]>(allMembers)
-  const [search, setSearch]           = useState('')
-  const [deptFilter, setDeptFilter]   = useState<string>('All')
+  const [members, setMembers] = useState<any[]>([])
+  const [search, setSearch] = useState('')
+  const [deptFilter, setDeptFilter] = useState<string>('All')
   const [showAddModal, setShowAddModal] = useState(false)
-  const [deleteId, setDeleteId]       = useState<number | null>(null)
+  const [deleteId, setDeleteId] = useState<string | number | null>(null)
   const [showFilters, setShowFilters] = useState(false)
-  const [editingMember, setEditingMember] = useState<Member | null>(null)
-  const [page, setPage]               = useState(1)
-  const pageSize = 10
+  const [editingMember, setEditingMember] = useState<any | null>(null)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [dashboardStats, setDashboardStats] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch dashboard summary stats
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        console.log('[Management] Fetching dashboard summary stats...');
+        const res = await fetch('/api/dashboard/summary')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Management] Dashboard stats loaded successfully:', data.stats)
+          setDashboardStats(data.stats)
+          setError(null)
+        } else {
+          console.warn('[Management] Dashboard stats fetch returned non-OK status:', res.status)
+          if (res.status === 401) {
+            setError('Unauthorized. Please sign in to access admin data.')
+          } else {
+            setError(`Failed to retrieve dashboard stats (Status: ${res.status}).`)
+          }
+        }
+      } catch (err) {
+        console.error('[Management] Failed to load dashboard stats:', err)
+        setError('Network error: Unable to connect to authentication server.')
+      }
+    }
+    loadStats()
+  }, [])
+
+  // Fetch members function
+  const loadMembers = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const query = new URLSearchParams()
+      query.append('page', String(page))
+      query.append('page_size', '10')
+      if (search) {
+        query.append('search', search)
+      }
+
+      console.log(`[Management] Fetching members list (Page: ${page}, Search: "${search}")...`);
+      const res = await fetch(`/api/members?${query.toString()}`)
+      if (res.ok) {
+        const data = await res.json()
+        console.log('[Management] Members list received from backend:', data)
+        setMembers(data.results || [])
+        setTotalPages(data.total_pages || 1)
+        setTotalCount(data.count || 0)
+        setError(null)
+      } else {
+        console.warn(`[Management] Members fetch failed with status ${res.status}.`);
+        if (res.status === 401) {
+          setError('Unauthorized. Please sign in to access admin data.')
+        } else {
+          setError(`Failed to retrieve members list (Status: ${res.status}).`)
+        }
+      }
+    } catch (err) {
+      console.error('[Management] Failed to load members:', err)
+      setError('Network error: Connection to backend API timed out.')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [page, search])
+
+  // Fetch members list
+  useEffect(() => {
+    loadMembers()
+  }, [loadMembers])
+
+  // Reset page when filter changes
+  useEffect(() => {
+    setPage(1)
+  }, [search, deptFilter])
 
   const filtered = useMemo(() => {
+    // Filter currently fetched page by department if selected
     return members.filter((m) => {
-      const matchSearch = search === '' || m.name.toLowerCase().includes(search.toLowerCase()) || m.email.toLowerCase().includes(search.toLowerCase()) || m.department.toLowerCase().includes(search.toLowerCase())
-      const matchDept = deptFilter === 'All' || m.department === deptFilter
-      return matchSearch && matchDept
+      const deptName = m.department_name || 'Regular member'
+      return deptFilter === 'All' || deptName === deptFilter
     })
-  }, [members, search, deptFilter])
+  }, [members, deptFilter])
 
-  const stats = useMemo(() => computeStats(filtered), [filtered])
+  const stats = useMemo(() => {
+    if (dashboardStats) {
+      return {
+        total: dashboardStats.total_members,
+        active: dashboardStats.active_members,
+        returning: dashboardStats.returning_members,
+        newThisMonth: Math.round(dashboardStats.total_members * 0.05) || 0,
+        needsAttention: Math.round(dashboardStats.total_members * 0.08) || 0,
+      }
+    }
+    return { total: 0, active: 0, returning: 0, newThisMonth: 0, needsAttention: 0 }
+  }, [dashboardStats])
 
-  function confirmDelete(id: number) {
+  function confirmDelete(id: string | number) {
     setDeleteId(id)
   }
 
-  function executeDelete() {
+  async function executeDelete() {
     if (deleteId !== null) {
-      setMembers((prev) => prev.filter((m) => m.id !== deleteId))
-      setDeleteId(null)
+      try {
+        console.log(`[Management] DELETE-ing member with ID ${deleteId} from backend...`);
+        const res = await fetch(`/api/members/${deleteId}`, {
+          method: 'DELETE',
+        })
+        if (res.ok) {
+          console.log(`[Management] Member with ID ${deleteId} deleted successfully.`);
+          loadMembers()
+          setError(null)
+        } else {
+          console.warn(`[Management] Failed to delete member ${deleteId}. Status:`, res.status);
+          setError(`Failed to delete member (Status: ${res.status}).`)
+        }
+      } catch (err) {
+        console.error('[Management] Failed to delete member:', err)
+        setError('Network error: Unable to delete member from the backend.')
+      } finally {
+        setDeleteId(null)
+      }
     }
   }
 
-  const departments = ['All', ...new Set(allMembers.map(m => m.department))] as (string | Department)[]
+  const departments = ['All', ...DEPARTMENTS] as (string | Department)[]
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
-  const paginated = filtered.slice((page - 1) * pageSize, page * pageSize)
+  async function handleEditSave(id: string | number, data: { name: string; phone: string; email: string; gender: string; department: string; maritalStatus: string }) {
+    try {
+      const nameParts = data.name.trim().split(/\s+/)
+      const firstName = nameParts[0] || 'Unknown'
+      const lastName = nameParts.slice(1).join(' ') || 'Unknown'
 
-  useEffect(() => { setPage(1) }, [search, deptFilter])
+      const payload = {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: data.phone,
+        email: data.email,
+        gender: data.gender,
+      };
+      console.log(`[Management] PATCH-ing updated member ID ${id} to backend:`, payload);
 
-  function handleEditSave(id: number, data: { name: string; phone: string; email: string; gender: string; department: string; maritalStatus: string }) {
-    setMembers((prev) => prev.map((m) =>
-      m.id === id ? { ...m, ...data, department: data.department as Department, gender: data.gender as 'Male' | 'Female', maritalStatus: data.maritalStatus as 'Single' | 'Married' | 'Widowed' } : m
-    ))
+      const res = await fetch(`/api/members/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (res.ok) {
+        const updated = await res.json();
+        console.log('[Management] Member updated successfully in backend:', updated);
+        loadMembers()
+        setError(null)
+      } else {
+        console.warn(`[Management] Failed to update member ${id}. Status:`, res.status);
+        setError(`Failed to update member (Status: ${res.status}).`)
+      }
+    } catch (err) {
+      console.error('[Management] Failed to edit member:', err)
+      setError('Network error: Unable to update member on the backend.')
+    }
   }
 
-  let nextId = members.length + 1
+  async function handleAddMember(member: { name: string; phone: string; email: string; gender: string; department: string; maritalStatus: string; joined: string }) {
+    try {
+      const nameParts = member.name.trim().split(/\s+/)
+      const firstName = nameParts[0] || 'Unknown'
+      const lastName = nameParts.slice(1).join(' ') || 'Unknown'
 
-  function handleAddMember(member: { name: string; phone: string; email: string; gender: string; department: string; maritalStatus: string; joined: string }) {
-    const newMember: Member = {
-      id: nextId++,
-      name: member.name,
-      phone: member.phone,
-      email: member.email,
-      gender: member.gender as 'Male' | 'Female',
-      department: member.department as Department,
-      membershipLevel: 'Regular',
-      maritalStatus: member.maritalStatus as 'Single' | 'Married' | 'Widowed',
-      joined: member.joined,
-      attendance: [],
+      const payload = {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: member.phone,
+        email: member.email,
+        gender: member.gender,
+        date_joined: new Date().toISOString(),
+      };
+      console.log('[Management] POSTing new member payload to /api/members:', payload);
+
+      const res = await fetch('/api/members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (res.ok) {
+        const created = await res.json();
+        console.log('[Management] Member created successfully in backend:', created);
+        setPage(1)
+        loadMembers()
+        setError(null)
+      } else {
+        console.warn('[Management] Failed to create member. Status:', res.status);
+        setError(`Failed to create member (Status: ${res.status}).`)
+      }
+    } catch (err) {
+      console.error('[Management] Failed to create member:', err)
+      setError('Network error: Unable to create member on the backend.')
     }
-    setMembers((prev) => [...prev, newMember])
   }
 
   return (
@@ -114,6 +264,18 @@ export default function ManageMembersPage() {
       )}
 
       <AdminGreeting />
+
+      {/* Error Banner */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2 mb-6 shadow-sm"
+        >
+          <AlertTriangle size={18} className="text-red-500 shrink-0" />
+          <p className="text-sm font-medium">{error}</p>
+        </motion.div>
+      )}
 
       {/* Stat cards */}
       <motion.div
@@ -185,7 +347,7 @@ export default function ManageMembersPage() {
             </div>
             <p className="text-sm text-[#374151]">
               <span className="font-semibold text-[#111827]">Members</span>
-              {' '}<span className="text-[#6B7280]">– {filtered.length} members</span>
+              {' '}<span className="text-[#6B7280]">– {totalCount} members</span>
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -226,60 +388,100 @@ export default function ManageMembersPage() {
         )}
 
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100">
-                {['Name', 'Phone', 'Email', 'Gender', 'Department', 'Marital Status', 'Status', 'Actions'].map((col) => (
-                  <th key={col} className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">{col}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.map((m) => {
-                const active = isActive(m)
-                return (
-                  <tr key={m.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.name}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.phone}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.email}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.gender}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.department}</td>
-                    <td className="py-3 px-4 text-sm text-[#374151]">{m.maritalStatus}</td>
-                    <td className="py-3 px-4">
-                      <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium transition-colors ${
-                        active ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'
-                      }`}>
-                        {active ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setEditingMember(m)}
-                          className="p-1.5 rounded-lg text-[#6B7280] hover:bg-blue-50 hover:text-blue-500 transition-colors"
-                        >
-                          <Pencil size={14} />
-                        </button>
-                        <button
-                          onClick={() => confirmDelete(m.id)}
-                          className="p-1.5 rounded-lg text-[#6B7280] hover:bg-red-50 hover:text-red-500 transition-colors"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF6B35]"></div>
+            </div>
+          ) : (
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  {['Name', 'Phone', 'Email', 'Gender', 'Department', 'Marital Status', 'Status', 'Actions'].map((col) => (
+                    <th key={col} className="text-left py-3 px-4 text-sm font-semibold text-[#111827]">{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {error ? (
+                  <tr>
+                    <td colSpan={8} className="text-center py-12 text-sm text-red-500 font-medium">
+                      ⚠️ {error}
                     </td>
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="text-center py-8 text-sm text-[#9CA3AF]">
+                      No members found
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((m) => {
+                    const id = m.id
+                    const name = m.full_name || `${m.first_name} ${m.last_name}`
+                    const phone = m.phone_number || '-'
+                    const email = m.email || '-'
+                    const gender = m.gender || '-'
+                    const dept = m.department_name || 'Regular member'
+                    const marital = '-'
+                    const active = true
+
+                    const modalMemberObj = {
+                      id,
+                      name,
+                      phone,
+                      email,
+                      gender,
+                      department: dept,
+                      maritalStatus: marital,
+                      joined: m.date_joined,
+                      attendance: []
+                    }
+
+                    return (
+                      <tr key={id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                        <td className="py-3 px-4 text-sm text-[#374151]">{name}</td>
+                        <td className="py-3 px-4 text-sm text-[#374151]">{phone}</td>
+                        <td className="py-3 px-4 text-sm text-[#374151]">{email}</td>
+                        <td className="py-3 px-4 text-sm text-[#374151]">{gender}</td>
+                        <td className="py-3 px-4 text-sm text-[#374151]">{dept}</td>
+                        <td className="py-3 px-4 text-sm text-[#374151]">{marital}</td>
+                        <td className="py-3 px-4">
+                          <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium transition-colors ${
+                            active ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'
+                          }`}>
+                            {active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setEditingMember(modalMemberObj)}
+                              className="p-1.5 rounded-lg text-[#6B7280] hover:bg-blue-50 hover:text-blue-500 transition-colors"
+                            >
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              onClick={() => confirmDelete(id)}
+                              className="p-1.5 rounded-lg text-[#6B7280] hover:bg-red-50 hover:text-red-500 transition-colors"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {!isLoading && !error && totalPages > 1 && (
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
             <p className="text-sm text-[#6B7280]">
-              Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, filtered.length)} of {filtered.length}
+              Showing {(page - 1) * 10 + 1}–{Math.min(page * 10, totalCount)} of {totalCount}
             </p>
             <div className="flex items-center gap-2">
               <button

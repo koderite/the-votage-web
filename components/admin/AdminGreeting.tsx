@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/auth-context'
+import { useEffect, useState } from 'react'
 
 function timeBasedGreeting(): string {
   const hour = new Date().getHours()
@@ -13,6 +14,11 @@ function timeBasedGreeting(): string {
 export function AdminGreeting() {
   const { user } = useAuth()
   const name = user?.username ?? 'Admin'
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <motion.div
@@ -21,11 +27,12 @@ export function AdminGreeting() {
       transition={{ duration: 0.4, delay: 0.05 }}
     >
       <h2 className="text-xl font-semibold text-[#111827]">
-        {timeBasedGreeting()}, {name}!
+        {mounted ? timeBasedGreeting() : 'Welcome'}, {name}!
       </h2>
-      <p className="text-sm text-[#6B7280] mt-1">
-        Today: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+      <p className="text-sm text-[#6B7280] mt-1" suppressHydrationWarning>
+        Today: {mounted ? new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''}
       </p>
     </motion.div>
   )
 }
+

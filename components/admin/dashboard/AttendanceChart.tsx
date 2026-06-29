@@ -55,7 +55,12 @@ export function AttendanceChart({ data }: AttendanceChartProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('Weekly');
 
   const chartData = useMemo(() => aggregateData(data, selectedPeriod), [data, selectedPeriod]);
-  const peakPoint = chartData.reduce((max, point) => (point.value > max.value ? point : max), chartData[0]);
+  const peakPoint = useMemo(() => {
+    if (!chartData || chartData.length === 0) {
+      return { time: '', value: 0 };
+    }
+    return chartData.reduce((max, point) => (point.value > max.value ? point : max), chartData[0]);
+  }, [chartData]);
 
   return (
     <motion.div
@@ -131,29 +136,33 @@ export function AttendanceChart({ data }: AttendanceChartProps) {
               dot={false}
               activeDot={{ r: 4, fill: '#3B82F6', stroke: '#fff', strokeWidth: 2 }}
             />
-            <ReferenceDot
-              x={peakPoint.time}
-              y={peakPoint.value}
-              r={4}
-              fill="#3B82F6"
-              stroke="#fff"
-              strokeWidth={2}
-              label={{
-                value: peakPoint.value.toLocaleString(),
-                position: 'top',
-                fill: '#fff',
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-            />
-            <text
-              x={peakPoint.time}
-              y={peakPoint.value - 15}
-              textAnchor="middle"
-              fill="#fff"
-              fontSize={12}
-              fontWeight={500}
-            />
+            {chartData.length > 0 && peakPoint.time && (
+              <>
+                <ReferenceDot
+                  x={peakPoint.time}
+                  y={peakPoint.value}
+                  r={4}
+                  fill="#3B82F6"
+                  stroke="#fff"
+                  strokeWidth={2}
+                  label={{
+                    value: peakPoint.value.toLocaleString(),
+                    position: 'top',
+                    fill: '#fff',
+                    fontSize: 12,
+                    fontWeight: 500,
+                  }}
+                />
+                <text
+                  x={peakPoint.time}
+                  y={peakPoint.value - 15}
+                  textAnchor="middle"
+                  fill="#fff"
+                  fontSize={12}
+                  fontWeight={500}
+                />
+              </>
+            )}
           </AreaChart>
         </ResponsiveContainer>
       </div>
