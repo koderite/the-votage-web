@@ -12,7 +12,7 @@ interface EditMemberModalProps {
 
 export function EditMemberModal({ member, onClose, onSave }: EditMemberModalProps) {
   const inputClass =
-    'w-full px-3 py-3 bg-gray-50 rounded-lg text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 border border-transparent'
+    'w-full px-3 py-3 bg-gray-50 rounded-lg text-sm text-black placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 border border-transparent'
   const nameParts = member.name.split(' ')
   const [form, setForm] = useState({
     firstName: nameParts[0] || '',

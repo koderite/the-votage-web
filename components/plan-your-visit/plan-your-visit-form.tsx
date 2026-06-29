@@ -120,7 +120,7 @@ export function PlanYourVisitContactForm() {
                 id="firstName"
                 {...register("firstName")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.firstName && (
                 <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
@@ -139,7 +139,7 @@ export function PlanYourVisitContactForm() {
                 id="lastName"
                 {...register("lastName")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.lastName && (
                 <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
@@ -164,7 +164,7 @@ export function PlanYourVisitContactForm() {
                 id="email"
                 {...register("email")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -183,7 +183,7 @@ export function PlanYourVisitContactForm() {
                 id="phone"
                 {...register("phone")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.phone && (
                 <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
@@ -204,7 +204,7 @@ export function PlanYourVisitContactForm() {
               id="subject"
               {...register("subject")}
               disabled={isSubmitting}
-              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
             {errors.subject && (
               <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
@@ -224,7 +224,7 @@ export function PlanYourVisitContactForm() {
               {...register("message")}
               rows={5}
               disabled={isSubmitting}
-              className="w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
             {errors.message && (
               <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
