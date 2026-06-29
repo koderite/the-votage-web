@@ -57,3 +57,6 @@ skills-lock.json
 
 # docs
 /docs/
+
+# gstack workflow reference
+/gstack-workflow.md

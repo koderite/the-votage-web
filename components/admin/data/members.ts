@@ -397,9 +397,8 @@ export function needsAttention(member: Member): boolean {
 }
 
 export function isNewThisMonth(member: Member): boolean {
-  // Use a fixed month 'Jun 2026' to align with the mock data's June 2026 anchor date
-  // and prevent server/client hydration mismatches due to system time/locale
-  return member.joined === 'Jun 2026'
+  const currentMonth = joinDates[joinDates.length - 1]
+  return member.joined === currentMonth
 }
 
 export interface MemberStats {

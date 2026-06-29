@@ -75,7 +75,7 @@ export default function SignInPage() {
               id="username"
               type="text"
               {...register('username')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
               placeholder="Enter your username"
             />
             {errors.username && (
@@ -91,7 +91,7 @@ export default function SignInPage() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 {...register('password')}
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
                 placeholder="••••••••"
               />
               <button

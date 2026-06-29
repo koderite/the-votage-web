@@ -97,7 +97,7 @@ export default function JoinMission() {
   };
 
   return (
-    <section className="w-full py-16 md:py-24 px-4 bg-gray-50 lg:px-30 lg:pt-35 lg:pb-30 transition-colors duration-300">
+    <section id="give-options" className="w-full py-16 md:py-24 px-4 bg-gray-50 lg:px-30 lg:pt-35 lg:pb-30 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="mb-12 text-center">
@@ -244,7 +244,7 @@ export default function JoinMission() {
                 </div>
 
                 {/* PayPal Container */}
-                <div className={`rounded-2xl border flex flex-col justify-between overflow-hidden ${nairaDetails.paypal.accentBg} ${nairaDetails.paypal.borderColor} shadow-sm hover:shadow-md transition-all`}>
+                <div id="online-giving" className={`rounded-2xl border flex flex-col justify-between overflow-hidden ${nairaDetails.paypal.accentBg} ${nairaDetails.paypal.borderColor} shadow-sm hover:shadow-md transition-all`}>
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       {renderBankLogo("paypal")}

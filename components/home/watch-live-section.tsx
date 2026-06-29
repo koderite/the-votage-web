@@ -1,15 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+// Shown only until the latest video is fetched, or if the fetch fails.
+const FALLBACK_VIDEO_ID = "KC3-UJNrRY4";
 
 export const WatchLiveSection = () => {
-  const videoId = "KC3-UJNrRY4";
+  const [videoId, setVideoId] = useState(FALLBACK_VIDEO_ID);
   const [isPlaying, setIsPlaying] = useState(false);
   const [thumbnail, setThumbnail] = useState(
-    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    `https://img.youtube.com/vi/${FALLBACK_VIDEO_ID}/maxresdefault.jpg`
   );
+
+  // Pull the channel's most recent upload/stream so this always reflects the
+  // latest service instead of a hardcoded video.
+  useEffect(() => {
+    let active = true;
+    fetch("/api/latest-video")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active && data?.videoId) {
+          setVideoId(data.videoId);
+          setThumbnail(
+            `https://img.youtube.com/vi/${data.videoId}/maxresdefault.jpg`
+          );
+        }
+      })
+      .catch(() => {
+        /* keep fallback video on error */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <section className="relative w-full aspect-video lg:aspect-auto lg:h-screen flex items-center justify-center overflow-hidden bg-black">

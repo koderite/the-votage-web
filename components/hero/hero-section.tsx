@@ -61,12 +61,14 @@ export const HeroSection = () => {
             </Button>
           </Link>
 
-          <Button
-            variant="outline"
-            className="w-44 h-14 text-lg font-bold font-body"
-          >
-            Get inspired
-          </Button>
+          <Link href="/sermons">
+            <Button
+              variant="outline"
+              className="w-44 h-14 text-lg font-bold font-body"
+            >
+              Get inspired
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </div>
