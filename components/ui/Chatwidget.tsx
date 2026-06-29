@@ -216,7 +216,7 @@ export default function ChatWidget({
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%)",
-        padding: 16,
+        padding: 10,
         boxSizing: "border-box",
         ...containerStyle,
       }}
