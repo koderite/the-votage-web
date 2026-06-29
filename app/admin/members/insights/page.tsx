@@ -1,5 +1,8 @@
 'use client'
 
+// Note: This page/route is currently deactivated and hidden from the admin sidebar navigation,
+// as the Department Breakdown card has been integrated directly into the Manage Members page.
+
 import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, Search, ChevronRight, ChevronLeft, BookUser, Users, Building2, Sparkles } from 'lucide-react'

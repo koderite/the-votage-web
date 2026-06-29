@@ -119,15 +119,15 @@ export function Sidebar() {
           <NavLink href="/admin/attendance/breakdown" active={isActive('/admin/attendance/breakdown')}>
             <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/admin/attendance/breakdown')} collapsed={collapsed} />
           </NavLink>
-          <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
+          {/* <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
             <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/admin/attendance/checkin')} collapsed={collapsed} />
-          </NavLink>
+          </NavLink> */}
         </SidebarGroup>
 
         <SidebarGroup icon={Users} label="Members" collapsed={collapsed}>
-          <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
+          {/* <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
             <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/admin/members/insights')} collapsed={collapsed} />
-          </NavLink>
+          </NavLink> */}
           <NavLink href="/admin/members/manage" active={isActive('/admin/members/manage')}>
             <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/admin/members/manage')} collapsed={collapsed} />
           </NavLink>
@@ -219,14 +219,14 @@ export function Sidebar() {
             <NavLink href="/admin/attendance/breakdown" active={isActive('/admin/attendance/breakdown')}>
               <SidebarItem icon={BarChart3} label="Service Breakdown" active={isActive('/admin/attendance/breakdown')} />
             </NavLink>
-            <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
+            {/* <NavLink href="/admin/attendance/checkin" active={isActive('/admin/attendance/checkin')}>
               <SidebarItem icon={ClipboardCheck} label="Check-In Activity" active={isActive('/admin/attendance/checkin')} />
-            </NavLink>
+            </NavLink> */}
           </SidebarGroup>
           <SidebarGroup icon={Users} label="Members">
-            <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
+            {/* <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
               <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/admin/members/insights')} />
-            </NavLink>
+            </NavLink> */}
             <NavLink href="/admin/members/manage" active={isActive('/admin/members/manage')}>
               <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/admin/members/manage')} />
             </NavLink>

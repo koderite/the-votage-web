@@ -1,5 +1,15 @@
 'use client'
 
+export default function EngagementsPage() {
+  return (
+    <div className="space-y-6">
+      <h1 className="text-xl font-semibold text-[#111827]">Onboarding</h1>
+      <p className="text-[#6B7280]">Coming soon.</p>
+    </div>
+  )
+}
+
+/*
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, AlertTriangle, Leaf, Timer, ChevronDown, Phone, MessageSquare, Mail } from 'lucide-react'
@@ -43,7 +53,7 @@ function SectionDropdown({ label }: { label: string }) {
   )
 }
 
-export default function EngagementsPage() {
+function OriginalEngagementsPage() {
   const [followUpMember, setFollowUpMember] = useState<{ name: string; context: string } | null>(null)
 
   const stats = computeStats(allMembers)
@@ -58,7 +68,7 @@ export default function EngagementsPage() {
         <FollowUpModal member={followUpMember} onClose={() => setFollowUpMember(null)} />
       )}
 
-      {/* Greeting + status pills */}
+      // Greeting + status pills
       <div className="flex flex-wrap items-start justify-between gap-4">
         <AdminGreeting />
         <div className="flex items-center gap-3 flex-wrap">
@@ -74,7 +84,7 @@ export default function EngagementsPage() {
         </div>
       </div>
 
-      {/* Info row */}
+      // Info row
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -91,9 +101,9 @@ export default function EngagementsPage() {
         </p>
       </motion.div>
 
-      {/* Top 2-panel row */}
+      // Top 2-panel row
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* New members onboarding */}
+        // New members onboarding
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -132,7 +142,7 @@ export default function EngagementsPage() {
           </div>
         </motion.div>
 
-        {/* Contacts attempts - right */}
+        // Contacts attempts - right
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -159,9 +169,9 @@ export default function EngagementsPage() {
         </motion.div>
       </div>
 
-      {/* Bottom 2-panel row */}
+      // Bottom 2-panel row
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Contacts attempts – need attention */}
+        // Contacts attempts – need attention
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,7 +212,7 @@ export default function EngagementsPage() {
           </div>
         </motion.div>
 
-        {/* Birth Day & Anniversaries */}
+        // Birth Day & Anniversaries
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -234,3 +244,4 @@ export default function EngagementsPage() {
     </>
   )
 }
+*/

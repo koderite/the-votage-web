@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Lightbulb, ChevronDown, BookUser, Users, Building2, ClipboardList, Search, Plus, TrendingUp } from 'lucide-react'
+import { ChevronDown, BookUser, Users, Building2, ClipboardList, Search, Plus, TrendingUp } from 'lucide-react'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import {
@@ -11,7 +11,6 @@ import {
 import { PieChart, Pie, Cell } from 'recharts'
 import {
   attendanceChartData, checkInMethodData, events as allEvents,
-  type ServiceName,
 } from '@/components/admin/data/members'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -204,24 +203,14 @@ export default function ServiceBreakdownPage() {
     <>
       <AdminGreeting />
 
-      {/* Top card: filters + stat cards */}
+      {/* Filters card */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+        transition={{ duration: 0.4, delay: 0.05 }}
+        className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-yellow-50 rounded-lg shrink-0">
-            <Lightbulb size={18} className="text-yellow-500" fill="currentColor" />
-          </div>
-          <p className="text-sm text-[#374151]">
-            Service performance, program events and attendance breakdown –{' '}
-            <span className="text-[#3B82F6] cursor-pointer hover:underline">todays evaluation metrics</span>
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-4 mb-8">
+        <div className="flex flex-wrap items-center gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-xs text-[#6B7280] font-medium">Data Range</label>
             <FilterDropdown options={dateRangeOptions}   value={dateRange}   onChange={setDateRange}   />
@@ -235,73 +224,79 @@ export default function ServiceBreakdownPage() {
             <FilterDropdown options={departmentOptions}  value={department}  onChange={setDepartment}  />
           </div>
         </div>
-
-        {error ? (
-          <div className="bg-red-50 border border-red-100 rounded-xl p-6 text-center">
-            <p className="text-sm text-red-600 font-medium mb-3">Error loading dashboard: {error}</p>
-            <button
-              onClick={fetchData}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors inline-flex items-center gap-2"
-            >
-              Retry
-            </button>
-          </div>
-        ) : loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-            <ColoredStatCard
-              label="Total Attendance"
-              value={(data?.stats?.total_attendance ?? 0).toLocaleString()}
-              subtitle="All service combined"
-              change={`${data?.stats?.active_members ?? 0} active members`}
-              changeLabel="this period"
-              positive={true}
-              color="yellow"
-              icon={BookUser}
-              index={0}
-            />
-            <ColoredStatCard
-              label="Active Members"
-              value={data?.stats?.active_members ?? 0}
-              subtitle="≥3 of last 4 Sundays"
-              change={`${Math.round((data?.stats?.active_members ?? 0) / (data?.stats?.total_attendance || 1) * 100)}%`}
-              changeLabel="of total"
-              positive={true}
-              color="blue"
-              icon={Users}
-              index={1}
-            />
-            <ColoredStatCard
-              label="Returning"
-              value={data?.stats?.returning_members ?? 0}
-              subtitle="Back after absence"
-              change={`${data?.stats?.new_visitors ?? 0} new`}
-              changeLabel="this month"
-              positive={true}
-              color="green"
-              icon={Building2}
-              index={2}
-            />
-            <ColoredStatCard
-              label="New Visitors"
-              value={data?.stats?.new_visitors ?? 0}
-              subtitle="First-timer Visitors"
-              change="Requires follow up"
-              changeLabel=""
-              positive={false}
-              color="purple"
-              icon={ClipboardList}
-              index={3}
-            />
-          </div>
-        )}
       </motion.div>
+
+      {/* Stat cards */}
+      {error ? (
+        <div className="bg-red-50 border border-red-100 rounded-xl p-6 text-center shadow-sm">
+          <p className="text-sm text-red-600 font-medium mb-3">Error loading dashboard: {error}</p>
+          <button
+            onClick={fetchData}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors inline-flex items-center gap-2"
+          >
+            Retry
+          </button>
+        </div>
+      ) : loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
+        >
+          <ColoredStatCard
+            label="Total Attendance"
+            value={(data?.stats?.total_attendance ?? 0).toLocaleString()}
+            subtitle="All service combined"
+            change={`${data?.stats?.active_members ?? 0} active members`}
+            changeLabel="this period"
+            positive={true}
+            color="yellow"
+            icon={BookUser}
+            index={0}
+          />
+          <ColoredStatCard
+            label="Active Members"
+            value={data?.stats?.active_members ?? 0}
+            subtitle="≥3 of last 4 Sundays"
+            change={`${Math.round((data?.stats?.active_members ?? 0) / (data?.stats?.total_attendance || 1) * 100)}%`}
+            changeLabel="of total"
+            positive={true}
+            color="blue"
+            icon={Users}
+            index={1}
+          />
+          <ColoredStatCard
+            label="Returning"
+            value={data?.stats?.returning_members ?? 0}
+            subtitle="Back after absence"
+            change={`${data?.stats?.new_visitors ?? 0} new`}
+            changeLabel="this month"
+            positive={true}
+            color="green"
+            icon={Building2}
+            index={2}
+          />
+          <ColoredStatCard
+            label="New Visitors"
+            value={data?.stats?.new_visitors ?? 0}
+            subtitle="First-timer Visitors"
+            change="Requires follow up"
+            changeLabel=""
+            positive={false}
+            color="purple"
+            icon={ClipboardList}
+            index={3}
+          />
+        </motion.div>
+      )}
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">

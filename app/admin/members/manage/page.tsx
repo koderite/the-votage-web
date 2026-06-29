@@ -7,7 +7,10 @@ import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AddMemberModal } from '@/components/admin/members/AddMemberModal'
 import { EditMemberModal } from '@/components/admin/members/EditMemberModal'
-import { DEPARTMENTS, type Department } from '@/components/admin/data/members'
+import { DEPARTMENTS, getDepartmentDistribution, type Department } from '@/components/admin/data/members'
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+} from 'recharts'
 
 const topCardsMeta = [
   { label: 'Total members',     color: 'yellow' as const, icon: BookUser   },
@@ -124,6 +127,8 @@ export default function ManageMembersPage() {
     }
     return { total: 0, active: 0, returning: 0, newThisMonth: 0, needsAttention: 0 }
   }, [dashboardStats])
+
+  const departmentData = useMemo(() => getDepartmentDistribution(), [])
 
   function confirmDelete(id: string | number) {
     setDeleteId(id)
@@ -263,7 +268,15 @@ export default function ManageMembersPage() {
         </div>
       )}
 
-      <AdminGreeting />
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <AdminGreeting />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors self-start sm:self-auto shadow-sm"
+        >
+          Add member <Plus size={15} />
+        </button>
+      </div>
 
       {/* Error Banner */}
       {error && (
@@ -282,54 +295,64 @@ export default function ManageMembersPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
+        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
+      >
+        {topCardsMeta.map((card, i) => (
+          <ColoredStatCard
+            key={card.label}
+            label={card.label}
+            value={
+              card.label === 'Total members' ? stats.total :
+              card.label === 'Active members' ? stats.active :
+              card.label === 'Returning Members' ? stats.returning :
+              stats.newThisMonth
+            }
+            change={
+              card.label === 'Total members' ? `${stats.active} active` :
+              card.label === 'Active members' ? `${Math.round(stats.active / (stats.total || 1) * 100)}%` :
+              card.label === 'Returning Members' ? `${stats.needsAttention} need attention` :
+              undefined
+            }
+            changeLabel={
+              card.label === 'Active members' ? 'of total' :
+              card.label === 'Total members' ? 'this month' :
+              card.label === 'Returning Members' ? 'to follow up' :
+              undefined
+            }
+            positive={card.label !== 'New This Month'}
+            color={card.color}
+            icon={card.icon}
+            index={i}
+          />
+        ))}
+      </motion.div>
+
+      {/* Department breakdown chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
         className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-yellow-50 rounded-lg shrink-0">
-              <Lightbulb size={18} className="text-yellow-500" fill="currentColor" />
-            </div>
-            <p className="text-sm text-[#374151]">
-              Manage members, track and view insight{' '}
-              <span className="text-[#3B82F6] cursor-pointer hover:underline">todays evaluation metrix</span>
-            </p>
-          </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors"
-          >
-            Add member <Plus size={15} />
-          </button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          {topCardsMeta.map((card, i) => (
-            <ColoredStatCard
-              key={card.label}
-              label={card.label}
-              value={
-                card.label === 'Total members' ? stats.total :
-                card.label === 'Active members' ? stats.active :
-                card.label === 'Returning Members' ? stats.returning :
-                stats.newThisMonth
-              }
-              change={
-                card.label === 'Total members' ? `${stats.active} active` :
-                card.label === 'Active members' ? `${Math.round(stats.active / (stats.total || 1) * 100)}%` :
-                card.label === 'Returning Members' ? `${stats.needsAttention} need attention` :
-                undefined
-              }
-              changeLabel={
-                card.label === 'Active members' ? 'of total' :
-                card.label === 'Total members' ? 'this month' :
-                card.label === 'Returning Members' ? 'to follow up' :
-                undefined
-              }
-              positive={card.label !== 'New This Month'}
-              color={card.color}
-              icon={card.icon}
-              index={i}
-            />
-          ))}
+        <h3 className="text-[15px] font-semibold text-[#111827] mb-1">Department Breakdown</h3>
+        <p className="text-[12px] text-[#9CA3AF] mb-6">Member count per ministry department</p>
+        <div className="h-55">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+              <XAxis dataKey="dept" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+              <Tooltip
+                contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                cursor={{ fill: 'rgba(0,0,0,0.04)' }}
+              />
+              <Bar dataKey="count" name="Members" radius={[6, 6, 0, 0]}>
+                {departmentData.map((entry, i) => (
+                  <Cell key={i} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </motion.div>
 

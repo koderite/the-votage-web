@@ -177,7 +177,16 @@ export default function MembersPage() {
         />
       )}
 
-      <AdminGreeting />
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <AdminGreeting />
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors self-start sm:self-auto shadow-sm"
+        >
+          Add member
+          <Plus size={15} />
+        </button>
+      </div>
 
       {/* Error Banner */}
       {error && (
@@ -196,57 +205,36 @@ export default function MembersPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-yellow-50 rounded-lg shrink-0">
-              <Lightbulb size={18} className="text-yellow-500" fill="currentColor" />
-            </div>
-            <p className="text-sm text-[#374151]">
-              Manage members, track and view insight{' '}
-              <span className="text-[#3B82F6] cursor-pointer hover:underline">todays evaluation metrix</span>
-            </p>
-          </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] transition-colors"
-          >
-            Add member
-            <Plus size={15} />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-          {topCardsMeta.map((card, i) => (
-            <ColoredStatCard
-              key={card.label}
-              label={card.label}
-              value={
-                card.label === 'Total members' ? displayStats.total :
-                card.label === 'Active members' ? displayStats.active :
-                card.label === 'Returning Members' ? displayStats.returning :
-                displayStats.newThisMonth
-              }
-              change={
-                card.label === 'Total members' ? `${displayStats.active} active` :
-                card.label === 'Active members' ? `${Math.round(displayStats.active / (displayStats.total || 1) * 100)}%` :
-                card.label === 'Returning Members' ? `${displayStats.needsAttention} need attention` :
-                undefined
-              }
-              changeLabel={
-                card.label === 'Active members' ? 'of total' :
-                card.label === 'Total members' ? 'this month' :
-                card.label === 'Returning Members' ? 'to follow up' :
-                undefined
-              }
-              positive={card.label !== 'New This Month'}
-              color={card.color}
-              icon={card.icon}
-              index={i}
-            />
-          ))}
-        </div>
+        {topCardsMeta.map((card, i) => (
+          <ColoredStatCard
+            key={card.label}
+            label={card.label}
+            value={
+              card.label === 'Total members' ? displayStats.total :
+              card.label === 'Active members' ? displayStats.active :
+              card.label === 'Returning Members' ? displayStats.returning :
+              displayStats.newThisMonth
+            }
+            change={
+              card.label === 'Total members' ? `${displayStats.active} active` :
+              card.label === 'Active members' ? `${Math.round(displayStats.active / (displayStats.total || 1) * 100)}%` :
+              card.label === 'Returning Members' ? `${displayStats.needsAttention} need attention` :
+              undefined
+            }
+            changeLabel={
+              card.label === 'Active members' ? 'of total' :
+              card.label === 'Total members' ? 'this month' :
+              card.label === 'Returning Members' ? 'to follow up' :
+              undefined
+            }
+            positive={card.label !== 'New This Month'}
+            color={card.color}
+            icon={card.icon}
+            index={i}
+          />
+        ))}
       </motion.div>
 
       {/* Members table */}
@@ -343,7 +331,7 @@ export default function MembersPage() {
                     </td>
                   </tr>
                 ) : (
-                  displayedMembers.map((member, i) => {
+                  displayedMembers.map((member) => {
                     const id = member.id
                     const name = member.full_name || `${member.first_name} ${member.last_name}`
                     const phone = member.phone_number || '-'
