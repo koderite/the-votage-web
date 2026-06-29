@@ -6,9 +6,10 @@ export function ContactInfo() {
   const router = useRouter();
 
   const handleGetDirections = () => {
-    const latitude = 6.2937194;
-    const longitude = 5.5880919;
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    const destination = encodeURIComponent(
+      "The Winlos Center, Ascend School, Airport Road Extension, Benin City, Edo State, Nigeria"
+    );
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
     window.open(googleMapsUrl, '_blank');
   };
 

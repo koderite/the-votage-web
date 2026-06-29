@@ -9,8 +9,8 @@ const infoCards = [
     id: 1,
     title: 'Service Time',
     icon: <Clock className="w-6 h-6 text-white" />,
-    contentTitle: 'Our Three Services',
-    contentDetails: ['7:00 am', '8:30 am', '10:00 am'],
+    contentTitle: 'Sunday Service',
+    contentDetails: ['8:00 am'],
     isTime: true,
   },
   {
