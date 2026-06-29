@@ -125,10 +125,10 @@ export function Sidebar() {
         </SidebarGroup>
 
         <SidebarGroup icon={Users} label="Members" collapsed={collapsed}>
-          <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
+          {/* <NavLink href="/admin/members/insights" active={isActive('/admin/members/insights')}>
             <SidebarItem icon={UserSearch} label="Member Insights" active={isActive('/admin/members/insights')} collapsed={collapsed} />
-          </NavLink>
-          <NavLink href="/admin/members/manage" active={isActive('/admin/members/manage')}>
+          </NavLink> */}
+          <NavLink href="/admin/members" active={isActive('/admin/members/manage')}>
             <SidebarItem icon={UserCog} label="Manage Members" active={isActive('/admin/members/manage')} collapsed={collapsed} />
           </NavLink>
         </SidebarGroup>

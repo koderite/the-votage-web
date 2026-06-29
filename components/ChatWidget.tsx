@@ -12,11 +12,13 @@ const Agentation = dynamic(
 export function ChatWidget() {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith('/admin')
+  const isRegister = pathname?.startsWith('/register')
+  const shouldShowWidget = !isAdmin && !isRegister
 
   return (
     <>
       {process.env.NODE_ENV === 'development' && <Agentation />}
-      {!isAdmin && <Script id="votage-chat-widget" strategy="afterInteractive">{`
+      {shouldShowWidget && <Script id="votage-chat-widget" strategy="afterInteractive">{`
         (function () {
           const button = document.createElement("button");
           button.innerHTML = "\u{1F4AC} Chat";
@@ -34,8 +36,8 @@ export function ChatWidget() {
           const iframe = document.createElement("iframe");
           iframe.src = "https://votage-ai-assistant.vercel.app/";
           iframe.style.position = "fixed";
-          iframe.style.bottom = "60px";
-          iframe.style.right = "0px";
+          iframe.style.bottom = "80px";
+          iframe.style.right = "5px";
           iframe.style.width = "320px";
           iframe.style.height = "550px";
           iframe.style.border = "none";
@@ -44,10 +46,25 @@ export function ChatWidget() {
           iframe.style.boxShadow = "0 15px 40px rgba(0,0,0,0.3)";
           iframe.style.zIndex = "9999";
 
-          button.onclick = () => {
-            iframe.style.display =
-              iframe.style.display === "none" ? "block" : "none";
+
+          const toggleWidget = (e) => {
+            if (e) e.stopPropagation();
+            if (iframe.style.display === "none") {
+              iframe.style.display = "block";
+              button.innerHTML = "\u2715 Close";
+            } else {
+              iframe.style.display = "none";
+              button.innerHTML = "\u{1F4AC} Chat";
+            }
           };
+
+          button.onclick = toggleWidget;
+
+          document.addEventListener("click", (e) => {
+            if (iframe.style.display === "block" && !button.contains(e.target)) {
+              toggleWidget();
+            }
+          });
 
           document.body.appendChild(button);
           document.body.appendChild(iframe);
