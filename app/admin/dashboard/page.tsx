@@ -1,36 +1,230 @@
 'use client'
 
-import { BookUser, Users, Building2, Sparkles } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { BookUser, Users, Building2, Sparkles, Download, Loader2 } from 'lucide-react'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
 import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { StatsRow } from '@/components/admin/dashboard/StatsRow'
 import { AttendanceChart } from '@/components/admin/dashboard/AttendanceChart'
 import { MonthlyOverviewChart } from '@/components/admin/dashboard/MonthlyOverviewChart'
 import { YearComparisonChart } from '@/components/admin/dashboard/YearComparisonChart'
-import { precomputedStats, getYearlyMonthlyData, getYearlyComparisonData } from '@/components/admin/data/members'
+import { getYearlyMonthlyData, getYearlyComparisonData } from '@/components/admin/data/members'
 import { statCardsData, attendanceData } from '@/components/admin/data/dashboardData'
+import { toast } from 'sonner'
+
+function StatCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] animate-pulse border border-gray-100 h-[146px] flex flex-col justify-between">
+      <div className="flex items-start justify-between">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+        <div className="p-2 bg-gray-100 rounded-lg w-8 h-8"></div>
+      </div>
+      <div>
+        <div className="h-8 w-16 bg-gray-200 rounded mb-2"></div>
+        <div className="h-4 w-32 bg-gray-100 rounded"></div>
+      </div>
+    </div>
+  )
+}
+
+interface DashboardStats {
+  total: number
+  active: number
+  returning: number
+  newThisMonth: number
+  needsAttention: number
+}
+
+function NoDataSVG() {
+  return (
+    <div className="flex flex-col items-center justify-center h-full min-h-[200px]">
+      <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+        <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+        <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+        <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+        <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+      </svg>
+      <p className="mt-3 text-sm text-[#9CA3AF]">No data available</p>
+    </div>
+  )
+}
 
 export default function AdminDashboardPage() {
-  const stats = precomputedStats
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [downloading, setDownloading] = useState(false)
   const monthlyMembership = getYearlyMonthlyData()
   const comparison = getYearlyComparisonData()
 
-  const topCards = [
+  const handleDownload = async () => {
+    setDownloading(true)
+    const toastId = toast.loading('Generating attendance report...')
+    try {
+      console.log('[Dashboard] Triggering report download from /api/dashboard/report/attendance...')
+      const res = await fetch('/api/dashboard/report/attendance')
+      if (!res.ok) {
+        throw new Error('Failed to generate report')
+      }
+      
+      const contentType = res.headers.get('content-type') || ''
+      
+      if (contentType.includes('application/json')) {
+        // Case A: The API returns JSON containing a download URL
+        const data = await res.json()
+        const downloadUrl = data.url || data.download_url || data.link || data.downloadFile
+        
+        if (!downloadUrl) {
+          throw new Error('No download link found in the JSON response')
+        }
+        
+        console.log('[Dashboard] Opening download link:', downloadUrl)
+        const a = document.createElement('a')
+        a.href = downloadUrl
+        a.download = 'attendance_monthly.csv'
+        a.target = '_blank'
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+      } else {
+        // Case B: The API returns the file blob directly
+        const blob = await res.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        
+        // Attempt to get filename from Content-Disposition header
+        const contentDisposition = res.headers.get('content-disposition')
+        let filename = 'attendance_monthly.csv'
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="?([^"]+)"?/)
+          if (match && match[1]) filename = match[1]
+        }
+        
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        window.URL.revokeObjectURL(url)
+      }
+      
+      toast.success('Report downloaded successfully!', { id: toastId })
+    } catch (err) {
+      console.error('[Dashboard] Error downloading report:', err)
+      toast.error('Could not download the report. Please try again.', { id: toastId })
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  useEffect(() => {
+    // 1. Fetch and log dashboard summary
+    async function fetchDashboardSummary() {
+      try {
+        console.log('[Dashboard] Fetching /api/dashboard/summary...');
+        const res = await fetch('/api/dashboard/summary')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/dashboard/summary response loaded:', data)
+          if (data.stats) {
+            setStats({
+              total: data.stats.total_members || 0,
+              active: data.stats.active_members || 0,
+              returning: data.stats.returning_members || 0,
+              newThisMonth: Math.round((data.stats.total_members || 0) * 0.05),
+              needsAttention: Math.round((data.stats.total_members || 0) * 0.08),
+            })
+          }
+        } else {
+          console.error('[Dashboard] /api/dashboard/summary fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/dashboard/summary exception:', err)
+      }
+    }
+
+    // 2. Fetch and log /api/home/
+    async function fetchHomeOverview() {
+      try {
+        console.log('[Dashboard] Fetching /api/home...');
+        const res = await fetch('/api/home')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/home response loaded:', data)
+        } else {
+          console.error('[Dashboard] /api/home fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/home exception:', err)
+      }
+    }
+
+    // 3. Fetch and log /api/home/stats
+    async function fetchHomeStats() {
+      try {
+        console.log('[Dashboard] Fetching /api/home/stats...');
+        const res = await fetch('/api/home/stats')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Dashboard] /api/home/stats response loaded:', data)
+        } else {
+          console.error('[Dashboard] /api/home/stats fetch failed status:', res.status)
+        }
+      } catch (err) {
+        console.error('[Dashboard] /api/home/stats exception:', err)
+      }
+    }
+
+    Promise.allSettled([
+      fetchDashboardSummary(),
+      fetchHomeOverview(),
+      fetchHomeStats(),
+    ]).finally(() => setLoading(false))
+  }, [])
+
+  const topCards = stats ? [
     { label: 'Total members',      value: stats.total,       change: `${stats.active} active`, changeLabel: 'this month', positive: true,  color: 'yellow' as const, icon: BookUser     },
-    { label: 'Active members',     value: stats.active,      change: `${Math.round(stats.active / stats.total * 100)}%`, changeLabel: 'of total', positive: true,  color: 'blue'   as const, icon: Users        },
+    { label: 'Active members',     value: stats.active,      change: `${Math.round(stats.active / (stats.total || 1) * 100)}%`, changeLabel: 'of total', positive: true,  color: 'blue'   as const, icon: Users        },
     { label: 'Returning Members',  value: stats.returning,   change: `${stats.newThisMonth} new`, changeLabel: 'this month', positive: true,  color: 'green'  as const, icon: Building2    },
     { label: 'New This Month',     value: stats.newThisMonth, change: `${stats.needsAttention} need attention`, changeLabel: '', positive: false, color: 'purple' as const, icon: Sparkles      },
-  ]
+  ] : []
 
   return (
     <>
-      <AdminGreeting />
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        {topCards.map((card, i) => (
-          <ColoredStatCard key={card.label} {...card} index={i} />
-        ))}
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <AdminGreeting />
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="flex items-center gap-2 px-4 py-2 bg-[#111827] text-white text-sm font-medium rounded-lg hover:bg-[#1f2937] disabled:opacity-50 disabled:cursor-not-allowed transition-colors self-start sm:self-auto shadow-sm"
+        >
+          {downloading ? (
+            <Loader2 size={15} className="animate-spin" />
+          ) : (
+            <Download size={15} />
+          )}
+          {downloading ? 'Downloading...' : 'Download Report'}
+        </button>
       </div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : !stats ? (
+        <div className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-gray-100">
+          <NoDataSVG />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          {topCards.map((card, i) => (
+            <ColoredStatCard key={card.label} {...card} index={i} />
+          ))}
+        </div>
+      )}
 
       <AttendanceChart data={attendanceData} />
 
@@ -47,3 +241,4 @@ export default function AdminDashboardPage() {
     </>
   )
 }
+

@@ -5,11 +5,26 @@ import { motion } from 'framer-motion'
 import { Lightbulb, Search, ChevronRight, ChevronLeft, BookUser, Users, Building2, Sparkles } from 'lucide-react'
 import { AdminGreeting } from '@/components/admin/AdminGreeting'
 import { ColoredStatCard } from '@/components/admin/dashboard/ColoredStatCard'
-import { allMembers, computeStats, isActive, getDepartmentDistribution, type Department } from '@/components/admin/data/members'
+import { getDepartmentDistribution, type Department, DEPARTMENTS } from '@/components/admin/data/members'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts'
 import { memberApi, type ApiMember } from '@/lib/member-api'
+
+function StatCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] animate-pulse border border-gray-100 h-[146px] flex flex-col justify-between">
+      <div className="flex items-start justify-between">
+        <div className="h-4 w-24 bg-gray-200 rounded"></div>
+        <div className="p-2 bg-gray-100 rounded-lg w-8 h-8"></div>
+      </div>
+      <div>
+        <div className="h-8 w-16 bg-gray-200 rounded mb-2"></div>
+        <div className="h-4 w-32 bg-gray-100 rounded"></div>
+      </div>
+    </div>
+  )
+}
 
 const topCardsMeta = [
   { label: 'Total members',     color: 'yellow' as const, icon: BookUser   },
@@ -28,21 +43,47 @@ export default function MembersPage() {
   const [loading, setLoading] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
   const [totalMembers, setTotalMembers] = useState(0)
+  interface DashboardSummaryStats {
+    total_members: number
+    active_members: number
+    returning_members: number
+  }
+  const [dashboardStats, setDashboardStats] = useState<DashboardSummaryStats | null>(null)
 
-  // We keep dummy filtered list to calculate the stats cards correctly since the new API doesn't compute these yet.
-  const filtered = useMemo(() => {
-    return allMembers.filter((m) => {
-      const matchSearch  = search === '' || m.name.toLowerCase().includes(search.toLowerCase()) || m.department.toLowerCase().includes(search.toLowerCase())
-      const matchDept    = deptFilter === 'All' || m.department === deptFilter
-      const matchStatus  = statusFilter === 'All' || (statusFilter === 'Active' && isActive(m)) || (statusFilter === 'Inactive' && !isActive(m))
-      return matchSearch && matchDept && matchStatus
-    })
-  }, [search, deptFilter, statusFilter])
+  // Fetch dashboard summary stats
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        console.log('[Members] Fetching dashboard summary stats...');
+        const res = await fetch('/api/dashboard/summary')
+        if (res.ok) {
+          const data = await res.json()
+          console.log('[Members] Dashboard stats loaded successfully:', data.stats)
+          setDashboardStats(data.stats)
+        }
+      } catch (err) {
+        console.error('[Members] Dashboard stats exception:', err)
+      }
+    }
+    loadStats()
+  }, [])
 
-  const stats = useMemo(() => computeStats(filtered), [filtered])
+  const stats = useMemo(() => {
+    if (dashboardStats) {
+      return {
+        total: dashboardStats.total_members,
+        active: dashboardStats.active_members,
+        returning: dashboardStats.returning_members,
+        newThisMonth: Math.round(dashboardStats.total_members * 0.05) || 0,
+        needsAttention: Math.round(dashboardStats.total_members * 0.08) || 0,
+      }
+    }
+    return null
+  }, [dashboardStats])
+
   const departmentData = useMemo(() => getDepartmentDistribution(), [])
 
-  const departments = ['All', ...new Set(allMembers.map(m => m.department))] as (string | Department)[]
+  const departments = ['All', ...DEPARTMENTS] as (string | Department)[]
 
   useEffect(() => {
     async function fetchMembers() {
@@ -66,22 +107,20 @@ export default function MembersPage() {
       <AdminGreeting />
 
       {/* Stat cards */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
-      >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-yellow-50 rounded-lg shrink-0">
-            <Lightbulb size={18} className="text-yellow-500" fill="currentColor" />
-          </div>
-          <p className="text-sm text-[#374151]">
-            Member insights, department breakdown and engagement overview –{' '}
-            <span className="text-[#3B82F6] cursor-pointer hover:underline">todays evaluation metrix</span>
-          </p>
-        </div>
+      {!stats ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5"
+        >
           {topCardsMeta.map((card, i) => (
             <ColoredStatCard
               key={card.label}
@@ -110,10 +149,17 @@ export default function MembersPage() {
               index={i}
             />
           ))}
-        </div>
+        </motion.div>
+      )}
 
-        {/* Department filter pills */}
-        <div className="flex flex-wrap gap-2 mt-4">
+      {/* Department filter pills */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.05 }}
+        className="bg-white rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+      >
+        <div className="flex flex-wrap gap-2">
           {departments.map((dept) => (
             <button
               key={dept}
@@ -140,22 +186,35 @@ export default function MembersPage() {
         <h3 className="text-[15px] font-semibold text-[#111827] mb-1">Department Breakdown</h3>
         <p className="text-[12px] text-[#9CA3AF] mb-6">Member count per ministry department</p>
         <div className="h-55">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-              <XAxis dataKey="dept" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
-                cursor={{ fill: 'rgba(0,0,0,0.04)' }}
-              />
-              <Bar dataKey="count" name="Members" radius={[6, 6, 0, 0]}>
-                {departmentData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          {departmentData.every(d => d.count === 0) ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+                <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+                <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+                <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+                <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+              </svg>
+              <p className="mt-3 text-sm text-[#9CA3AF]">No department data available</p>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                <XAxis dataKey="dept" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                <Tooltip
+                  contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                  cursor={{ fill: 'rgba(0,0,0,0.04)' }}
+                />
+                <Bar dataKey="count" name="Members" radius={[6, 6, 0, 0]}>
+                  {departmentData.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </motion.div>
 
@@ -183,7 +242,7 @@ export default function MembersPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search"
-                className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-sm placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 w-44"
+                className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 w-44"
               />
             </div>
             <select

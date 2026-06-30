@@ -1,5 +1,7 @@
 'use client'
 
+// Note: This page/route is currently deactivated and hidden from the admin sidebar navigation.
+
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, Search, ChevronRight, Video } from 'lucide-react'

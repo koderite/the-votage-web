@@ -41,7 +41,7 @@ export const navEntries: NavEntry[] = [
       items: [
         { href: '/a/attendance/trend', label: 'Trend & Analytics', icon: TrendingUp },
         { href: '/a/attendance/breakdown', label: 'Service Breakdown', icon: BarChart3 },
-        { href: '/a/attendance/checkin', label: 'Check-In Activity', icon: ClipboardCheck },
+        // { href: '/a/attendance/checkin', label: 'Check-In Activity', icon: ClipboardCheck },
       ],
     },
   },
@@ -51,7 +51,7 @@ export const navEntries: NavEntry[] = [
       label: 'Members',
       icon: Users,
       items: [
-        { href: '/a/members/insights', label: 'Member Insights', icon: UserSearch },
+        // { href: '/a/members/insights', label: 'Member Insights', icon: UserSearch },
         { href: '/a/members/manage', label: 'Manage Members', icon: UserCog },
       ],
     },
