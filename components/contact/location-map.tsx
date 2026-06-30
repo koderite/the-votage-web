@@ -5,22 +5,23 @@ import { MapPin, Navigation, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 export function LocationMap() {
-  // Coordinates for Airport Road, Benin City, Edo State, Nigeria
-  const latitude = 6.2937194;
-  const longitude = 5.5880919;
+  // The Winlos Center, by Ascend School, Airport Road Extension, Benin City
   const address =
-    "144, Ogba–Airport Road, Opposite DVD Filling Station, Benin City, Edo State, Nigeria";
+    "The Winlos Center, By Ascend School, Airport Road Extension, Benin City";
+  const mapQuery = encodeURIComponent(
+    "The Winlos Center, Ascend School, Airport Road Extension, Benin City, Edo State, Nigeria"
+  );
   const locationName = "Votage Church";
 
   const [mapKey, setMapKey] = useState(0);
 
   const handleGetDirections = () => {
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`;
     window.open(googleMapsUrl, "_blank");
   };
 
   const handleViewOnMap = () => {
-    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
     window.open(googleMapsUrl, "_blank");
   };
 
@@ -140,7 +141,7 @@ export function LocationMap() {
                 frameBorder="0"
                 style={{ border: 0, display: "block" }}
                 referrerPolicy="no-referrer-when-downgrade"
-                src={`https://maps.google.com/maps?q=${latitude},${longitude}&t=m&z=17&output=embed`}
+                src={`https://maps.google.com/maps?q=${mapQuery}&t=m&z=17&output=embed`}
                 allowFullScreen
                 loading="lazy"
                 title="Votage Church Location Map"
@@ -165,7 +166,7 @@ export function LocationMap() {
                       {locationName}
                     </h4>
                     <p className="text-xs text-[#1a1a1a]/60">
-                      Click to recenter • Airport Road, Benin City
+                      Click to recenter • Airport Road Extension, Benin City
                     </p>
                   </div>
                 </div>

@@ -4,74 +4,39 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Youtube } from 'lucide-react';
+import { defaultMediaItems, type MediaItem } from '@/lib/media-data';
 
 function BlurPlaceholder() {
-  return <div className="absolute inset-0 bg-gray-200 animate-pulse" />;
+  // Solid dark backdrop. Doubles as a clean letterbox behind images shown with
+  // object-contain (movie posters, square Spotify art) so nothing is cropped.
+  return <div className="absolute inset-0 bg-black" />;
 }
 
-interface MediaItem {
-  id: string;
-  icon: 'telegram' | 'youtube' | 'spotify';
-  title: string;
-  subtitle: string;
-  description: string;
-  contentTitle: string;
-  contentSubtitle: string;
-  contentTag: string;
-  image: string;
-  url: string;
-}
+// Renders the active media thumbnail. YouTube's maxresdefault image is sharp
+// (1280x720) but doesn't exist for every video, so we fall back to hqdefault if
+// it fails to load. Square artwork (Spotify) is shown with object-contain so it
+// isn't cropped; wide video thumbnails fill the frame with object-cover.
+function MediaImage({ src, alt, fit }: { src: string; alt: string; fit: string }) {
+  const [imgSrc, setImgSrc] = useState(src);
 
-const mediaItems: MediaItem[] = [
-  {
-    id: '0',
-    icon: 'youtube',
-    title: 'WATCH OUR MOVIES AND SHORT SKITS',
-    subtitle: 'Lessons and stories that will impact your life',
-    description: 'The Winlos',
-    contentTitle: 'Spirtuals Part 4',
-    contentSubtitle: 'The Winlos',
-    contentTag: 'Latest Video',
-    image: 'https://img.youtube.com/vi/y41jI31M-3Y/hqdefault.jpg',
-    url: 'https://www.youtube.com/watch?v=y41jI31M-3Y',
-  },
-  {
-    id: '1',
-    icon: 'telegram',
-    title: 'SUNDAY SERMONS',
-    subtitle: 'REV. OHIS',
-    description: 'Breaking patterns & generational strong hold',
-    contentTitle: 'Grace Called Work',
-    contentSubtitle: '',
-    contentTag: 'Latest Sermon',
-    image: 'https://img.youtube.com/vi/KC3-UJNrRY4/sddefault.jpg',
-    url: 't.me/AAAAAEZ6sbhFRtY4ERUROA',
-  },
-  {
-    id: '2',
-    icon: 'youtube',
-    title: 'STREAM REFRESH PROGRAMS',
-    subtitle: 'Every Last Saturday of the month',
-    description: 'Anwinli Ojeikere(THE WINLOS)',
-    contentTitle: 'Stream Refresh Programs',
-    contentSubtitle: 'Every Last Saturday',
-    contentTag: 'Monthly Program',
-    image: '/img/stream-refresh.jpg',
-    url: 'https://www.youtube.com/@AnwinliOjeikere',
-  },
-  {
-    id: '3',
-    icon: 'spotify',
-    title: 'SUNDAY SERMONS',
-    subtitle: 'Pastor anwinli ojeikere',
-    description: 'The Available Man',
-    contentTitle: 'The Capacity Before Glory',
-    contentSubtitle: '',
-    contentTag: 'Latest Sermon',
-    image: '/img/serm-rev.jpg',
-    url: 'https://open.spotify.com/show/4KLNlwoOOutIpPgcqfkhDt?si=2zoqF8c8QeeQbNhe72SloA',
-  }
-];
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      fill
+      className={fit}
+      sizes="(max-width: 1024px) 100vw, 60vw"
+      priority
+      placeholder="blur"
+      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
+      onError={() => {
+        if (imgSrc.includes('maxresdefault')) {
+          setImgSrc(imgSrc.replace('maxresdefault', 'hqdefault'));
+        }
+      }}
+    />
+  );
+}
 
 const TelegramIcon = () => (
   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[#2AABEE] flex items-center justify-center flex-shrink-0">
@@ -116,8 +81,13 @@ const getIcon = (iconType: string) => {
   }
 };
 
-export default function MediaSermons() {
-  const [activeItem, setActiveItem] = useState(mediaItems[0]);
+export default function MediaSermons({
+  items = defaultMediaItems,
+}: {
+  items?: MediaItem[];
+}) {
+  const mediaItems = items.length > 0 ? items : defaultMediaItems;
+  const [activeItem, setActiveItem] = useState<MediaItem>(mediaItems[0]);
 
   return (
     <div 
@@ -167,7 +137,7 @@ export default function MediaSermons() {
 
           {/* Right Side - Content Display */}
           <div className="w-full lg:w-[55%] xl:w-[60%] flex items-center">
-            <div className="w-full rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative h-[250px] sm:h-[300px] md:h-[400px] lg:aspect-[4/3]">
+            <div className="w-full rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative aspect-video">
               <BlurPlaceholder />
               <motion.div
                 key={activeItem.id}
@@ -177,15 +147,14 @@ export default function MediaSermons() {
                 transition={{ duration: 0.7, ease: "easeOut" }}
                 className="absolute inset-0 z-10"
               >
-                <Image
+                <MediaImage
                   src={activeItem.image}
                   alt={activeItem.contentTitle}
-                  fill
-                  className="object-contain md:object-cover"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  priority
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEQCEAxEPwAB//9k="
+                  fit={
+                    activeItem.fit === 'contain'
+                      ? 'object-contain'
+                      : 'object-cover'
+                  }
                 />
               </motion.div>
               
@@ -206,7 +175,7 @@ export default function MediaSermons() {
                   className="mt-1 sm:mt-2 px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 rounded-full border-2 border-white/80 text-white hover:bg-white hover:text-black transition-all duration-300 text-xs sm:text-sm md:text-base w-fit"
                   onClick={() => activeItem.url && window.open(activeItem.url, '_blank')}
                 >
-                  Watch
+                  {activeItem.cta ?? 'Watch'}
                 </button>
               </div>
             </div>

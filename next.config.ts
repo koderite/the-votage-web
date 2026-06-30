@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
         hostname: 'i.ytimg.com',
         pathname: '/vi/**',
       },
+      {
+        // Spotify episode/show artwork
+        protocol: 'https',
+        hostname: 'i.scdn.co',
+        pathname: '/image/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },

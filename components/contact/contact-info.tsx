@@ -6,9 +6,10 @@ export function ContactInfo() {
   const router = useRouter();
 
   const handleGetDirections = () => {
-    const latitude = 6.2937194;
-    const longitude = 5.5880919;
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    const destination = encodeURIComponent(
+      "The Winlos Center, Ascend School, Airport Road Extension, Benin City, Edo State, Nigeria"
+    );
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
     window.open(googleMapsUrl, '_blank');
   };
 
@@ -36,9 +37,9 @@ export function ContactInfo() {
                 Address
               </h2>
               <p className="text-[17px] leading-[1.7] text-[#4a4a4a]">
-                144, Opp. Dvd Filling<br />
-                Station, Airport Road,<br />
-                Benin City, Edo State
+                The Winlos Center,<br />
+                By Ascend School, Airport Road<br />
+                Extension, Benin City
               </p>
             </div>
 
@@ -50,21 +51,9 @@ export function ContactInfo() {
               <div className="space-y-3">
                 <div className="flex items-baseline gap-2">
                   <p className="text-[17px] font-semibold text-[#1a1a1a] min-w-[140px]">
-                    First Service:
+                    Sunday Service:
                   </p>
-                  <p className="text-[17px] text-[#4a4a4a]">7:00am</p>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-[17px] font-semibold text-[#1a1a1a] min-w-[140px]">
-                    Second Service:
-                  </p>
-                  <p className="text-[17px] text-[#4a4a4a]">8:30am</p>
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-[17px] font-semibold text-[#1a1a1a] min-w-[140px]">
-                    Third Service:
-                  </p>
-                  <p className="text-[17px] text-[#4a4a4a]">10:00am</p>
+                  <p className="text-[17px] text-[#4a4a4a]">8:00am</p>
                 </div>
               </div>
             </div>
