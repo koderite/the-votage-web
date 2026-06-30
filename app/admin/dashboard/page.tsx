@@ -143,43 +143,7 @@ export default function AdminDashboardPage() {
       }
     }
 
-    // 2. Fetch and log /api/home/
-    async function fetchHomeOverview() {
-      try {
-        console.log('[Dashboard] Fetching /api/home...');
-        const res = await fetch('/api/home')
-        if (res.ok) {
-          const data = await res.json()
-          console.log('[Dashboard] /api/home response loaded:', data)
-        } else {
-          console.error('[Dashboard] /api/home fetch failed status:', res.status)
-        }
-      } catch (err) {
-        console.error('[Dashboard] /api/home exception:', err)
-      }
-    }
-
-    // 3. Fetch and log /api/home/stats
-    async function fetchHomeStats() {
-      try {
-        console.log('[Dashboard] Fetching /api/home/stats...');
-        const res = await fetch('/api/home/stats')
-        if (res.ok) {
-          const data = await res.json()
-          console.log('[Dashboard] /api/home/stats response loaded:', data)
-        } else {
-          console.error('[Dashboard] /api/home/stats fetch failed status:', res.status)
-        }
-      } catch (err) {
-        console.error('[Dashboard] /api/home/stats exception:', err)
-      }
-    }
-
-    Promise.allSettled([
-      fetchDashboardSummary(),
-      fetchHomeOverview(),
-      fetchHomeStats(),
-    ]).finally(() => setLoading(false))
+    fetchDashboardSummary().finally(() => setLoading(false))
   }, [])
 
   const topCards = stats ? [
