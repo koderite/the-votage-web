@@ -35,12 +35,37 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 }
 
 export function MonthlyOverviewChart({ data }: MonthlyOverviewChartProps) {
-  const chartData = data.months.map((month, index) => ({
+  const isEmpty = !data || data.months.length === 0 || data.series1.every(v => v === 0)
+
+  const chartData = isEmpty ? [] : data.months.map((month, index) => ({
     month,
     series1: data.series1[index],
     series2: data.series2[index],
     series3: data.series3[index],
   }));
+
+  if (isEmpty) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+      >
+        <h3 className="text-[15px] font-semibold text-[#111827] mb-6">Monthly Overview</h3>
+        <div className="flex flex-col items-center justify-center h-[280px]">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+            <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+            <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+            <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+            <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+          </svg>
+          <p className="mt-3 text-sm text-[#9CA3AF]">No monthly data available</p>
+        </div>
+      </motion.div>
+    )
+  }
 
   return (
     <motion.div

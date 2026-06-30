@@ -10,7 +10,7 @@ import {
 } from 'recharts'
 import { PieChart, Pie, Cell } from 'recharts'
 import {
-  attendanceChartData, checkInMethodData, events as allEvents,
+  checkInMethodData, events as allEvents,
 } from '@/components/admin/data/members'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -127,6 +127,21 @@ function ChartSkeleton() {
   )
 }
 
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full min-h-[200px]">
+      <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+        <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+        <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+        <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+        <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+      </svg>
+      <p className="mt-3 text-sm text-[#9CA3AF]">{message}</p>
+    </div>
+  )
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ServiceBreakdownPage() {
@@ -179,8 +194,7 @@ export default function ServiceBreakdownPage() {
   const chartData = useMemo(() => {
     let rawData = data?.attendance_per_sunday_service_chart
     if (!rawData || rawData.length === 0) {
-      // Fallback to local mock data
-      rawData = attendanceChartData
+      return []
     }
 
     let filtered = rawData.map(d => ({ ...d }))
@@ -199,6 +213,15 @@ export default function ServiceBreakdownPage() {
     return filtered.slice(-chartPeriodWeeks)
   }, [data, serviceType, chartPeriod])
 
+  const chartDataWithTotal = useMemo(() => {
+    return chartData.map(d => ({
+      ...d,
+      total: d.s1 + d.s2 + d.s3,
+    }))
+  }, [chartData])
+
+  const noData = !loading && !error && (!data || !data.stats)
+
   return (
     <>
       <AdminGreeting />
@@ -214,10 +237,6 @@ export default function ServiceBreakdownPage() {
           <div className="flex flex-col gap-1">
             <label className="text-xs text-[#6B7280] font-medium">Data Range</label>
             <FilterDropdown options={dateRangeOptions}   value={dateRange}   onChange={setDateRange}   />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-xs text-[#6B7280] font-medium">Service Type</label>
-            <FilterDropdown options={serviceTypeOptions} value={serviceType} onChange={setServiceType} />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs text-[#6B7280] font-medium">Department</label>
@@ -243,6 +262,10 @@ export default function ServiceBreakdownPage() {
           <StatCardSkeleton />
           <StatCardSkeleton />
           <StatCardSkeleton />
+        </div>
+      ) : noData ? (
+        <div className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-gray-100">
+          <EmptyState message="No attendance data available for the selected filters." />
         </div>
       ) : (
         <motion.div
@@ -300,7 +323,7 @@ export default function ServiceBreakdownPage() {
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-        {/* Attendance Per Service – stacked bar */}
+        {/* Attendance per Sunday Service – bar chart */}
         {loading ? (
           <div className="lg:col-span-3">
             <ChartSkeleton />
@@ -308,6 +331,10 @@ export default function ServiceBreakdownPage() {
         ) : error ? (
           <div className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center h-[348px] border border-gray-100">
             <p className="text-sm text-red-500 font-medium">Failed to load chart data.</p>
+          </div>
+        ) : noData || chartDataWithTotal.length === 0 ? (
+          <div className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center h-[348px] border border-gray-100">
+            <EmptyState message="No attendance data available for the selected filters." />
           </div>
         ) : (
           <motion.div
@@ -317,12 +344,12 @@ export default function ServiceBreakdownPage() {
             className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-[15px] font-semibold text-[#111827]">Attendance Per Service</h3>
+              <h3 className="text-[15px] font-semibold text-[#111827]">Attendance per Sunday Service</h3>
               <ChartDropdown value={chartPeriod} onChange={setChartPeriod} options={['Last 5 weeks', 'Last 4 weeks', 'Last 3 weeks']} />
             </div>
             <div className="h-65">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
+                <BarChart data={chartDataWithTotal} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={18}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
                   <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 11 }} />
@@ -334,11 +361,18 @@ export default function ServiceBreakdownPage() {
                     iconType="circle"
                     iconSize={8}
                     wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
-                    formatter={(value) => <span style={{ color: '#6B7280' }}>{value}</span>}
+                    content={() => (
+                      <ul className="recharts-default-legend" style={{ padding: 0, margin: '0 auto', textAlign: 'center' }}>
+                        <li style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="#3B82F6">
+                            <circle cx="4" cy="4" r="4" />
+                          </svg>
+                          <span style={{ color: '#6B7280', fontSize: 12 }}>Sunday Service</span>
+                        </li>
+                      </ul>
+                    )}
                   />
-                  <Bar dataKey="s1" name="1st Service" stackId="a" fill="#F87171" radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="s2" name="2nd Service" stackId="a" fill="#2DD4BF" radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="s3" name="3rd Service" stackId="a" fill="#818CF8" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="total" name="Sunday Service" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -352,28 +386,34 @@ export default function ServiceBreakdownPage() {
           transition={{ duration: 0.5, delay: 0.25 }}
           className="lg:col-span-2 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
         >
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="text-[15px] font-semibold text-[#111827]">Check In Method</h3>
-            <span className="text-[12px] text-[#9CA3AF]">Online vs Physical</span>
-          </div>
-          <div className="flex flex-col items-center justify-center mt-4">
-            <PieChart width={160} height={160}>
-              <Pie data={checkInMethodData} cx={75} cy={75} innerRadius={45} outerRadius={75} dataKey="value" strokeWidth={0}>
-                {checkInMethodData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-            <div className="w-full space-y-3 mt-4">
-              {checkInMethodData.map((item) => (
-                <div key={item.name} className="flex items-center gap-3">
-                  <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-                  <span className="text-sm text-[#374151] flex-1">{item.name}</span>
-                  <span className="text-sm font-semibold text-[#111827]">{item.value}%</span>
+          {noData || checkInMethodData.every(d => d.value === 0) ? (
+            <EmptyState message="No check-in data available." />
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-[15px] font-semibold text-[#111827]">Check In Method</h3>
+                <span className="text-[12px] text-[#9CA3AF]">Online vs Physical</span>
+              </div>
+              <div className="flex flex-col items-center justify-center mt-4">
+                <PieChart width={160} height={160}>
+                  <Pie data={checkInMethodData} cx={75} cy={75} innerRadius={45} outerRadius={75} dataKey="value" strokeWidth={0}>
+                    {checkInMethodData.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+                <div className="w-full space-y-3 mt-4">
+                  {checkInMethodData.map((item) => (
+                    <div key={item.name} className="flex items-center gap-3">
+                      <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm text-[#374151] flex-1">{item.name}</span>
+                      <span className="text-sm font-semibold text-[#111827]">{item.value}%</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </>
+          )}
         </motion.div>
       </div>
 

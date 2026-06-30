@@ -186,22 +186,35 @@ export default function MembersPage() {
         <h3 className="text-[15px] font-semibold text-[#111827] mb-1">Department Breakdown</h3>
         <p className="text-[12px] text-[#9CA3AF] mb-6">Member count per ministry department</p>
         <div className="h-55">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-              <XAxis dataKey="dept" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
-                cursor={{ fill: 'rgba(0,0,0,0.04)' }}
-              />
-              <Bar dataKey="count" name="Members" radius={[6, 6, 0, 0]}>
-                {departmentData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          {departmentData.every(d => d.count === 0) ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+                <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+                <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+                <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+                <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+              </svg>
+              <p className="mt-3 text-sm text-[#9CA3AF]">No department data available</p>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={departmentData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={32}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
+                <XAxis dataKey="dept" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                <Tooltip
+                  contentStyle={{ background: '#1A1D29', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12 }}
+                  cursor={{ fill: 'rgba(0,0,0,0.04)' }}
+                />
+                <Bar dataKey="count" name="Members" radius={[6, 6, 0, 0]}>
+                  {departmentData.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </motion.div>
 
@@ -229,7 +242,7 @@ export default function MembersPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search"
-                className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-sm placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 w-44"
+                className="pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 w-44"
               />
             </div>
             <select

@@ -35,8 +35,24 @@ interface DashboardStats {
   needsAttention: number
 }
 
+function NoDataSVG() {
+  return (
+    <div className="flex flex-col items-center justify-center h-full min-h-[200px]">
+      <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="30" width="70" height="55" rx="6" stroke="#E5E7EB" strokeWidth="2" fill="#FAFAFA"/>
+        <path d="M15 38h70" stroke="#E5E7EB" strokeWidth="2"/>
+        <circle cx="50" cy="60" r="10" stroke="#D1D5DB" strokeWidth="2"/>
+        <path d="M46 60h8M50 56v8" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round"/>
+        <rect x="32" y="76" width="36" height="3" rx="1.5" fill="#E5E7EB"/>
+      </svg>
+      <p className="mt-3 text-sm text-[#9CA3AF]">No data available</p>
+    </div>
+  )
+}
+
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState(false)
   const monthlyMembership = getYearlyMonthlyData()
   const comparison = getYearlyComparisonData()
@@ -159,9 +175,11 @@ export default function AdminDashboardPage() {
       }
     }
 
-    fetchDashboardSummary()
-    fetchHomeOverview()
-    fetchHomeStats()
+    Promise.allSettled([
+      fetchDashboardSummary(),
+      fetchHomeOverview(),
+      fetchHomeStats(),
+    ]).finally(() => setLoading(false))
   }, [])
 
   const topCards = stats ? [
@@ -189,12 +207,16 @@ export default function AdminDashboardPage() {
         </button>
       </div>
 
-      {!stats ? (
+      {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
           <StatCardSkeleton />
           <StatCardSkeleton />
           <StatCardSkeleton />
           <StatCardSkeleton />
+        </div>
+      ) : !stats ? (
+        <div className="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-gray-100">
+          <NoDataSVG />
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
