@@ -10,7 +10,7 @@ import {
 } from 'recharts'
 import { PieChart, Pie, Cell } from 'recharts'
 import {
-  checkInMethodData, events as allEvents,
+  attendanceChartData, checkInMethodData, events as allEvents,
 } from '@/components/admin/data/members'
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -194,7 +194,8 @@ export default function ServiceBreakdownPage() {
   const chartData = useMemo(() => {
     let rawData = data?.attendance_per_sunday_service_chart
     if (!rawData || rawData.length === 0) {
-      return []
+      // Fallback to local mock data
+      rawData = attendanceChartData
     }
 
     let filtered = rawData.map(d => ({ ...d }))
@@ -220,7 +221,7 @@ export default function ServiceBreakdownPage() {
     }))
   }, [chartData])
 
-  const noData = !loading && !error && (!data || !data.stats)
+  const noData = !loading && !error && !data
 
   return (
     <>
@@ -237,6 +238,10 @@ export default function ServiceBreakdownPage() {
           <div className="flex flex-col gap-1">
             <label className="text-xs text-[#6B7280] font-medium">Data Range</label>
             <FilterDropdown options={dateRangeOptions}   value={dateRange}   onChange={setDateRange}   />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-[#6B7280] font-medium">Service Type</label>
+            <FilterDropdown options={serviceTypeOptions} value={serviceType} onChange={setServiceType} />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs text-[#6B7280] font-medium">Department</label>
@@ -332,7 +337,7 @@ export default function ServiceBreakdownPage() {
           <div className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center h-[348px] border border-gray-100">
             <p className="text-sm text-red-500 font-medium">Failed to load chart data.</p>
           </div>
-        ) : noData || chartDataWithTotal.length === 0 ? (
+        ) : noData ? (
           <div className="lg:col-span-3 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex items-center justify-center h-[348px] border border-gray-100">
             <EmptyState message="No attendance data available for the selected filters." />
           </div>
@@ -386,7 +391,7 @@ export default function ServiceBreakdownPage() {
           transition={{ duration: 0.5, delay: 0.25 }}
           className="lg:col-span-2 bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
         >
-          {noData || checkInMethodData.every(d => d.value === 0) ? (
+          {!noData ? (
             <EmptyState message="No check-in data available." />
           ) : (
             <>
