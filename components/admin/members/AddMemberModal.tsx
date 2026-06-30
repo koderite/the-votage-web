@@ -39,7 +39,7 @@ export function AddMemberModal({ onClose, onAdd }: AddMemberModalProps) {
   const fileRef = useRef<HTMLInputElement>(null)
 
   const inputClass =
-    'w-full px-3 py-3 bg-gray-50 rounded-lg text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 border border-transparent'
+    'w-full px-3 py-3 bg-gray-50 rounded-lg text-sm text-black placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-blue-100 border border-transparent'
 
   function handleManualSubmit() {
     if (!form.firstName || !form.lastName) return

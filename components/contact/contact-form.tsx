@@ -106,7 +106,7 @@ export function ContactForm() {
                   type="text"
                   id="firstName"
                   {...register('firstName')}
-                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                  className="w-full px-6 py-4 bg-white border-2 text-black rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
                 {errors.firstName && (
                   <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
@@ -124,7 +124,7 @@ export function ContactForm() {
                   type="text"
                   id="lastName"
                   {...register('lastName')}
-                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                  className="w-full px-6 py-4 bg-white border-2 text-black rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
                 {errors.lastName && (
                   <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
@@ -145,7 +145,7 @@ export function ContactForm() {
                   type="email"
                   id="email"
                   {...register('email')}
-                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                  className="w-full px-6 py-4 bg-white border-2 text-black rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -163,7 +163,7 @@ export function ContactForm() {
                   type="tel"
                   id="phone"
                   {...register('phone')}
-                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                  className="w-full px-6 py-4 bg-white border-2 text-black rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
               </motion.div>
             </div>
@@ -180,7 +180,7 @@ export function ContactForm() {
                   type="text"
                   id="subject"
                   {...register('subject')}
-                  className="w-full px-6 py-4 bg-white border-2 rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                  className="w-full px-6 py-4 bg-white border-2 text-black rounded-full transition-all duration-300 outline-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
                 />
                 {errors.subject && (
                   <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
@@ -199,7 +199,7 @@ export function ContactForm() {
                 id="message"
                 rows={6}
                 {...register('message')}
-                className="w-full px-6 py-4 bg-white border-2 rounded-3xl transition-all duration-300 outline-none resize-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
+                className="w-full px-6 py-4 bg-white border-2 text-black rounded-3xl transition-all duration-300 outline-none resize-none focus:border-[#1a1a1a] focus:shadow-md border-gray-300 hover:border-gray-400"
               />
                 {errors.message && (
                   <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>

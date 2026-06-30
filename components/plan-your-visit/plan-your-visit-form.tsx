@@ -31,38 +31,32 @@ export function PlanYourVisitContactForm() {
   const onSubmit = async (data: PlanVisitFormData) => {
     setResult("");
 
-    const payload = {
-      FirstName: data.firstName,
-      LastName: data.lastName,
-      Email: data.email,
-      Phone: data.phone,
-      Subject: data.subject,
-      Message: data.message,
-      Timestamp: new Date().toISOString(),
-    };
+    const submitFormData = new FormData();
+    submitFormData.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '');
+    submitFormData.append('firstName', data.firstName);
+    submitFormData.append('lastName', data.lastName);
+    submitFormData.append('email', data.email);
+    submitFormData.append('phone', data.phone || '');
+    submitFormData.append('subject', data.subject);
+    submitFormData.append('message', data.message);
+    submitFormData.append('from_name', `${data.firstName} ${data.lastName}`);
 
     try {
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: submitFormData
       });
 
       const responseData = await response.json();
 
-      if (responseData.status === "success") {
-        setResult(
-          "Thank you! Your visit request has been submitted successfully.",
-        );
+      if (responseData.success) {
+        setResult('Thank you! Your visit request has been submitted successfully.');
         reset();
       } else {
-        setResult("Something went wrong. Please try again later.");
+        setResult('Something went wrong. Please try again later.');
       }
     } catch (error) {
-      console.error("SpreadAPI error:", error);
-      setResult("An error occurred while submitting. Please try again later.");
+      setResult('An error occurred. Please try again later.');
     }
   };
 
@@ -126,7 +120,7 @@ export function PlanYourVisitContactForm() {
                 id="firstName"
                 {...register("firstName")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.firstName && (
                 <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
@@ -145,7 +139,7 @@ export function PlanYourVisitContactForm() {
                 id="lastName"
                 {...register("lastName")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.lastName && (
                 <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
@@ -170,7 +164,7 @@ export function PlanYourVisitContactForm() {
                 id="email"
                 {...register("email")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -189,7 +183,7 @@ export function PlanYourVisitContactForm() {
                 id="phone"
                 {...register("phone")}
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+                className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
               />
               {errors.phone && (
                 <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
@@ -210,7 +204,7 @@ export function PlanYourVisitContactForm() {
               id="subject"
               {...register("subject")}
               disabled={isSubmitting}
-              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-full outline-none transition-all duration-200 focus:border-black focus:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
             {errors.subject && (
               <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
@@ -230,7 +224,7 @@ export function PlanYourVisitContactForm() {
               {...register("message")}
               rows={5}
               disabled={isSubmitting}
-              className="w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed text-black/50 focus:text-black"
+              className="w-full px-6 py-4 border-2 border-black/80 rounded-4xl outline-none transition-all duration-200 focus:border-black focus:shadow-lg resize-none disabled:opacity-50 disabled:cursor-not-allowed text-black"
             />
             {errors.message && (
               <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>

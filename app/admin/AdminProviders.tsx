@@ -3,6 +3,7 @@
 import { SidebarProvider } from '@/components/admin/contexts/SidebarContext'
 import { Sidebar } from '@/components/admin/layout/Sidebar'
 import { HeaderBar } from '@/components/admin/layout/HeaderBar'
+import { Toaster } from '@/components/ui'
 
 export function AdminProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -21,6 +22,7 @@ export function AdminProviders({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
+      <Toaster />
     </SidebarProvider>
   )
 }

@@ -119,7 +119,13 @@ function pick<T>(arr: T[]): T {
 }
 
 function pickN<T>(arr: T[], n: number): T[] {
-  const shuffled = [...arr].sort(() => rng() - 0.5)
+  const shuffled = [...arr]
+  for (let i = 0; i < n && i < shuffled.length; i++) {
+    const j = i + Math.floor(rng() * (shuffled.length - i))
+    const temp = shuffled[i]
+    shuffled[i] = shuffled[j]
+    shuffled[j] = temp
+  }
   return shuffled.slice(0, n)
 }
 
@@ -335,76 +341,7 @@ function generateAttendance(last4: number): AttendanceRecord[] {
 let memberIdCounter = 0
 
 export function buildMembers(): Member[] {
-  const members: Member[] = []
-  const count = 1452
-
-  for (let i = 0; i < count; i++) {
-    const gender: Gender = rng() < 0.5 ? 'Male' : 'Female'
-    const firstName = pick(gender === 'Male' ? MALE_NAMES : FEMALE_NAMES)
-    const surname = pick(SURNAMES)
-    const name = `${firstName} ${surname}`
-    const isNone = rng() < 0.2
-    const dept = isNone ? 'None' as Department : DEPARTMENTS[i % DEPARTMENTS.length]
-
-    // 60% active (≥3 of last 4), 20% returning, 20% other
-    let last4: number
-    let isReturningMember = false
-    const rand = rng()
-
-    if (rand < 0.6) {
-      last4 = rng() < 0.6 ? 4 : 3
-    } else if (rand < 0.8) {
-      last4 = 2
-      isReturningMember = true
-    } else {
-      last4 = rng() < 0.5 ? 1 : 0
-    }
-
-    const marital = pick<MaritalStatus>(
-      gender === 'Male'
-        ? ['Single', 'Married', 'Married', 'Married', 'Single'] as MaritalStatus[]
-        : ['Single', 'Married', 'Married', 'Single', 'Widowed'] as MaritalStatus[]
-    )
-
-    let attendance = generateAttendance(last4)
-    if (isReturningMember) {
-      const recentSundays = all8Sundays()
-      attendance = attendance.filter(a =>
-        !recentSundays.slice(2, 6).includes(a.date)
-      )
-      if (!attendance.some(a => a.date === recentSundays[0])) {
-        attendance.push({
-          date: recentSundays[0],
-          services: pickN(SERVICES, Math.floor(rng() * 2) + 1),
-        })
-      }
-    }
-
-    const levelRoll = rng()
-    const level: MembershipLevel = levelRoll < 0.15
-      ? 'Regular'
-      : levelRoll < 0.23
-        ? 'Worker'
-        : levelRoll < 0.27
-          ? 'New Convert'
-          : DEPT_TO_LEVEL[dept]
-
-    memberIdCounter++
-    members.push({
-      id: memberIdCounter,
-      name,
-      phone: generatePhone(),
-      email: generateEmail(name),
-      gender,
-      department: dept,
-      membershipLevel: level,
-      maritalStatus: marital,
-      joined: pick(joinDates),
-      attendance,
-    })
-  }
-
-  return members
+  return []
 }
 
 export const allMembers = buildMembers()
@@ -460,8 +397,7 @@ export function needsAttention(member: Member): boolean {
 }
 
 export function isNewThisMonth(member: Member): boolean {
-  const now = new Date()
-  const currentMonth = now.toLocaleString('en-US', { month: 'short', year: 'numeric' })
+  const currentMonth = joinDates[joinDates.length - 1]
   return member.joined === currentMonth
 }
 
@@ -530,6 +466,15 @@ export function getYearlyMonthlyData(): MonthlyData {
   const rawMin = Math.min(...all)
   const rawMax = Math.max(...all)
 
+  if (rawMin === rawMax) {
+    return {
+      months: MONTHS,
+      series1,
+      series2,
+      series3,
+    }
+  }
+
   if (rawMin >= 901) return { months: MONTHS, series1, series2, series3 }
 
   const factor = (rawMax - 901) / (rawMax - rawMin)
@@ -585,9 +530,9 @@ export function buildAttendanceChartData(): AttendancePerService[] {
 
     return {
       date: formatDateShort(date),
-      s1: s1 * 2 + Math.floor(rng() * 30) + 100,
-      s2: s2 * 2 + Math.floor(rng() * 30) + 100,
-      s3: s3 * 2 + Math.floor(rng() * 30) + 100,
+      s1,
+      s2,
+      s3,
     }
   })
 }
@@ -602,9 +547,9 @@ export const attendanceChartData = buildAttendanceChartData()
 // ── Check-in Method Distribution ───────────────────────────────────────────────
 
 export const checkInMethodData = [
-  { name: 'Physical', value: 72, color: '#3B82F6' },
-  { name: 'Online',   value: 22, color: '#F43F5E' },
-  { name: 'Visitors', value: 6,  color: '#F59E0B' },
+  { name: 'Physical', value: 0, color: '#3B82F6' },
+  { name: 'Online',   value: 0, color: '#F43F5E' },
+  { name: 'Visitors', value: 0, color: '#F59E0B' },
 ]
 
 // ── Check-in Timeline (per service) ────────────────────────────────────────────
@@ -619,7 +564,6 @@ function generateCheckinTimeline(service: ServiceName): { time: string; count: n
   const start = SERVICE_START[service]
   const startHour = parseInt(start.split(':')[0])
   const startMin = parseInt(start.split(':')[1])
-  const baseFactor = service === '1st' ? 1 : service === '2nd' ? 1.2 : 0.9
 
   const points: { time: string; count: number }[] = []
 
@@ -628,10 +572,7 @@ function generateCheckinTimeline(service: ServiceName): { time: string; count: n
     const h = Math.floor(totalMin / 60)
     const m = totalMin % 60
     const time = `${h}:${m === 0 ? '00' : m}`
-    // Bell-curve-ish distribution
-    const peakFactor = 1 - Math.pow((i - 75) / 100, 2)
-    const count = Math.max(50, Math.round((peakFactor * 900 + 100) * baseFactor))
-    points.push({ time, count })
+    points.push({ time, count: 0 })
   }
 
   return points
@@ -649,7 +590,7 @@ export function getServiceCount(service: ServiceName): string {
   const attended = allMembers.filter(m =>
     m.attendance.some(a => a.date === all8Sundays()[0] && a.services.includes(service))
   ).length
-  return String(Math.round(attended * 1.5 + rng() * 50 + 100))
+  return String(attended)
 }
 
 export const defaultServiceCounts: Record<ServiceName, string> = {
@@ -667,14 +608,7 @@ export interface Event {
   change: string
 }
 
-export const events: Event[] = [
-  { title: 'Men Conference',              date: 'May 20, 2026', attendance: 547,  change: '6.2% vs prev'      },
-  { title: 'Benin Fire Conference',       date: 'May 30, 2026', attendance: 4875, change: '12.4% vs last year' },
-  { title: 'My 2 In 1 Conference',        date: 'May 30, 2026', attendance: 674,  change: '3.1% vs last year' },
-  { title: 'Easter Sunday',               date: 'Apr 5, 2026',  attendance: 2100, change: '8.7% vs last year' },
-  { title: 'VOTAGE Thanksgiving Service', date: 'May 30, 2026', attendance: 1560, change: '5.3% vs last year' },
-  { title: 'Tribe Sunday',                date: 'Jun 7, 2026',  attendance: 892,  change: '2.8% vs last week' },
-]
+export const events: Event[] = []
 
 // ── Dashboard Weekly Chart Data ────────────────────────────────────────────────
 
@@ -686,7 +620,7 @@ export function buildWeeklyChartData(): { time: string; value: number }[] {
     }, 0)
     return {
       time: `W${8 - i}`,
-      value: Math.round(total * 1.2 + rng() * 100 + 200),
+      value: total,
     }
   }).reverse()
 }
@@ -747,8 +681,11 @@ export function getOnboardingMembers(): OnboardingMember[] {
         m.attendance.some(a => a.date === sun && a.services.length > 0)
       )
 
+      // Use a local deterministic RNG seeded by member ID to keep percent/badges stable across renders
+      const localRng = createRng(m.id + 777)
+
       if (hasAttendedRecent) {
-        const progress = Math.min(100, Math.round(40 + rng() * 60))
+        const progress = Math.min(100, Math.round(40 + localRng() * 60))
         return {
           name: m.name,
           percent: progress,
@@ -760,7 +697,7 @@ export function getOnboardingMembers(): OnboardingMember[] {
 
       return {
         name: m.name,
-        percent: Math.round(rng() * 30),
+        percent: Math.round(localRng() * 30),
         badges: ['New', 'Need attention'],
       }
     })
@@ -800,13 +737,16 @@ export interface ContactAttempt {
 
 export function getContactAttempts(): ContactAttempt[] {
   const people = allMembers.slice(0, 6)
+  if (people.length === 0) return []
   const actions: ContactAttempt['icon'][] = ['call', 'sms', 'email', 'prayer']
   const times = ['2 hrs ago', 'yesterday', '2 days ago', '3 days ago', '4 days ago', '1 week ago']
 
+  // Seed local RNG to make contact attempts stable and deterministic across client/server renders
+  const localRng = createRng(12345)
   const entries: ContactAttempt[] = []
   for (let i = 0; i < 9; i++) {
     const person = people[i % people.length]
-    const action = pick(actions)
+    const action = actions[Math.floor(localRng() * actions.length)]
     const time = times[i % times.length]
 
     let text: string
@@ -907,20 +847,7 @@ export interface MonthlyRow {
 }
 
 function generateMonthlyData(): MonthlyRow[] {
-  let prev = 0
-  return MONTHS.slice(0, 6).map((month, i) => {
-    const base = 1800 + Math.floor(rng() * 400) - i * 30
-    const newMembers = Math.floor(20 + rng() * 40)
-    const growth = prev === 0 ? '-' : `${(((base - prev) / prev) * 100).toFixed(1)}%`
-    prev = base
-    return {
-      month: `${month} 2026`,
-      totalAttendance: base,
-      newMembers,
-      avgPerService: Math.round(base / 3 / 4),
-      growth,
-    }
-  })
+  return []
 }
 
 export const monthlyData = generateMonthlyData()
@@ -938,19 +865,7 @@ export interface YearRow {
 }
 
 function generateYearData(): YearRow[] {
-  const years = ['2023', '2024', '2025', '2026']
-  let prev = 0
-  return years.map((year, i) => {
-    const base = 6000 + i * 1800 + Math.floor(rng() * 500)
-    const q1 = Math.round(base * 0.22)
-    const q2 = Math.round(base * 0.26)
-    const q3 = Math.round(base * 0.24)
-    const q4 = Math.round(base * 0.28)
-    const total = q1 + q2 + q3 + q4
-    const growth = prev === 0 ? '-' : `${(((total - prev) / prev) * 100).toFixed(1)}%`
-    prev = total
-    return { year, q1, q2, q3, q4, total, growth }
-  })
+  return []
 }
 
 export const yearData = generateYearData()
@@ -976,7 +891,7 @@ export function buildFilteredWeeklyChart(members: Member[]): { time: string; val
     }, 0)
     return {
       time: `W${8 - i}`,
-      value: Math.round(total * 1.2 + rng() * 100 + 200),
+      value: total,
     }
   }).reverse()
 }
@@ -1002,22 +917,22 @@ export function buildFilteredStats(members: Member[]): FilteredStatRow[] {
     }, 0)
   )
 
-  const avg = Math.round(weeklyTotals.reduce((a, b) => a + b, 0) / weeklyTotals.length * 1.5 + 200)
-  const peak = Math.max(...weeklyTotals) * 2 + 300
+  const avg = weeklyTotals.length === 0 ? 0 : Math.round(weeklyTotals.reduce((a, b) => a + b, 0) / weeklyTotals.length)
+  const peak = Math.max(...weeklyTotals)
   const lowestAttendance = Math.min(...weeklyTotals)
-  const peakVsAvg = lowestAttendance === 0 ? 0 : Math.round((1 - lowestAttendance / Math.max(...weeklyTotals)) * 100)
-  const yearGrowth = membersList.length > 0 ? ((totalMembers - membersList.length) / membersList.length * 100 + 8.4) : 8.4
+  const peakVsAvg = lowestAttendance === 0 || Math.max(...weeklyTotals) === 0 ? 0 : Math.round((1 - lowestAttendance / Math.max(...weeklyTotals)) * 100)
+  const yearGrowth = membersList.length > 0 ? ((totalMembers - membersList.length) / membersList.length * 100) : 0
 
   return [
-    { label: 'Average Weekly', value: avg, change: '6.2%', changeLabel: 'vs last week', positive: true },
-    { label: 'Peak attendance', value: peak, date: 'Mar 5, week 11' },
-    { label: 'Lowest drop-off', value: lowestAttendance * 2 + 150, change: `${peakVsAvg}%`, changeLabel: 'from peak', positive: false },
-    { label: 'Year to year growth', value: `+ ${yearGrowth.toFixed(1)}%`, change: 'vs 2.1', changeLabel: 'prior to last year', positive: true },
+    { label: 'Average Weekly', value: avg, change: '0%', changeLabel: 'vs last week', positive: true },
+    { label: 'Peak attendance', value: peak, date: '-' },
+    { label: 'Lowest drop-off', value: lowestAttendance, change: `${peakVsAvg}%`, changeLabel: 'from peak', positive: false },
+    { label: 'Year to year growth', value: `+ ${yearGrowth.toFixed(1)}%`, change: 'vs 0', changeLabel: 'prior to last year', positive: true },
   ]
 }
 
 export function buildFilteredMonthlyData(members: Member[]): MonthlyData {
-  const factor = members.length / allMembers.length
+  const factor = allMembers.length === 0 ? 0 : members.length / allMembers.length
   return {
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     series1: [4200, 4100, 4300, 4000, 4200, 4100, 3900, 4100, 4200, 4200, 3800, 3700].map(v => Math.round(v * factor)),
@@ -1027,7 +942,7 @@ export function buildFilteredMonthlyData(members: Member[]): MonthlyData {
 }
 
 export function buildFilteredComparisonData(members: Member[]): { labels: string[]; series: { name: string; data: number[]; color: string }[] } {
-  const factor = members.length / allMembers.length
+  const factor = allMembers.length === 0 ? 0 : members.length / allMembers.length
   return {
     labels: ['Q1', 'Q2', 'Q3', 'Q4'],
     series: [

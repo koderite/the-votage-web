@@ -1,5 +1,15 @@
 'use client'
 
+export default function ReportsPage() {
+  return (
+    <div className="space-y-6">
+      <h1 className="text-xl font-semibold text-[#111827]">Reports</h1>
+      <p className="text-[#6B7280]">Coming soon.</p>
+    </div>
+  )
+}
+
+/*
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, ChevronDown, Download } from 'lucide-react'
@@ -94,7 +104,7 @@ function ServiceDropdown({ value, onChange }: { value: string; onChange: (v: str
   )
 }
 
-export default function ReportsPage() {
+function OriginalReportsPage() {
   const [serviceFilter, setServiceFilter] = useState('All Services')
   const [dataView, setDataView] = useState<'attendance' | 'members' | 'monthly' | 'yearly'>('attendance')
 
@@ -111,7 +121,7 @@ export default function ReportsPage() {
         </button>
       </div>
 
-      {/* Report Cards */}
+      // Report Cards
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -146,7 +156,7 @@ export default function ReportsPage() {
         ))}
       </motion.div>
 
-      {/* Data Review */}
+      // Data Review
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -219,22 +229,22 @@ export default function ReportsPage() {
               </thead>
               <tbody>
                 {memberRows.map((m, i) => (
-                    <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                      <td className="py-3 px-4">
-                        <input type="checkbox" className="rounded" />
-                      </td>
-                      <td className="py-3 px-4 text-sm text-[#374151]">{m.name}</td>
-                      <td className="py-3 px-4 text-sm text-[#374151]">{m.phone}</td>
-                      <td className="py-3 px-4 text-sm text-[#374151]">{m.email}</td>
-                      <td className="py-3 px-4 text-sm text-[#374151]">{m.gender}</td>
-                      <td className="py-3 px-4 text-sm text-[#374151]">{m.department}</td>
-                      <td className="py-3 px-4">
-                        <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${m.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'}`}>
-                          {m.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td className="py-3 px-4">
+                      <input type="checkbox" className="rounded" />
+                    </td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{m.name}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{m.phone}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{m.email}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{m.gender}</td>
+                    <td className="py-3 px-4 text-sm text-[#374151]">{m.department}</td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${m.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-pink-100 text-pink-600'}`}>
+                        {m.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -309,3 +319,4 @@ export default function ReportsPage() {
     </>
   )
 }
+*/
